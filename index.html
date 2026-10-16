@@ -789,7 +789,7 @@
 </head>
 <body>
 
-    <!-- MODAL FORMULARIO DE PUBLICACIÓN (Sustituye por completo a prompt y confirm) -->
+    <!-- MODAL FORMULARIO DE PUBLICACIÓN -->
     <div class="custom-modal-overlay" id="post-modal-overlay">
         <div class="custom-modal">
             <h3>🌸 Publicar Nueva Obra</h3>
@@ -899,7 +899,7 @@
             </div>
 
             <div class="grid" id="grid-recomendaciones">
-                <!-- Las publicaciones se cargarán automáticamente desde Firebase Firestore -->
+                <!-- Las publicaciones se cargarán en tiempo real -->
             </div>
         </div>
     </div>
@@ -913,7 +913,7 @@
             </div>
 
             <div class="forum-list" id="list-foro">
-                <!-- Los debates se cargarán automáticamente desde Firebase Firestore -->
+                <!-- Los debates se cargarán en tiempo real -->
             </div>
         </div>
     </div>
@@ -941,14 +941,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="profile-action-container">
-                    <!-- Botón de Seguir dinámico -->
-                </div>
-            </div>
-
-            <h3 style="font-family: 'Cinzel', serif; color: var(--accent-gold); margin-bottom: 1rem;">✨ Mis Obras y Favoritos</h3>
-            <div class="grid" id="grid-user-posts">
-                <p style="color: var(--text-dim); grid-column: 1/-1;">Aquí aparecerán tus publicaciones guardadas y favoritas en el jardín.</p>
+                <div id="profile-action-container"></div>
             </div>
         </div>
     </div>
@@ -961,7 +954,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy, increment, getDoc, setDoc, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, deleteDoc, updateDoc, query, orderBy, increment, getDoc, setDoc, serverTimestamp, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC79kLchfvUFYwM74jK_ChGjKL2aXvNpsI",
@@ -1169,7 +1162,6 @@
                 }
             } catch (err) {
                 console.error("Error al actualizar seguimiento:", err);
-                alert("Hubo un error al procesar la acción.");
             }
         };
 
@@ -1252,7 +1244,6 @@
                 }
             } catch (err) {
                 console.error("Error al iniciar sesión:", err);
-                alert("Error al iniciar sesión: " + err.message);
             }
         });
 
@@ -1261,7 +1252,6 @@
                 await signOut(auth);
                 profileModal.classList.remove('active');
                 updateUI(null);
-                alert('Sesión cerrada correctamente');
             } catch (err) {
                 console.error("Error al salir:", err);
             }
@@ -1289,19 +1279,12 @@
             alert('Gracias por reportar. Nuestro equipo de administración revisará el contenido.');
         };
 
-        // ELIMINAR PUBLICACIÓN (Permitida si es el autor O si es el Admin msunica3@gmail.com)
-        window.deletePost = async function(id, authorEmail) {
-            const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
-            const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-
+        window.deletePost = async function(id) {
             if (confirm('¿Estás segura de que deseas eliminar esta publicación?')) {
                 try {
                     await deleteDoc(doc(db, "recommendations", id));
-                    alert('Publicación eliminada correctamente.');
-                    window.loadRecommendations();
                 } catch (err) {
                     console.error("Error al eliminar:", err);
-                    alert("No se pudo eliminar la publicación.");
                 }
             }
         };
@@ -1317,11 +1300,8 @@
                     title: newTitle,
                     desc: newDesc
                 });
-                alert('¡Publicación actualizada!');
-                window.loadRecommendations();
             } catch (err) {
                 console.error("Error al editar:", err);
-                alert("No se pudo actualizar la publicación.");
             }
         };
 
@@ -1348,17 +1328,16 @@
             }
         };
 
-        // CARGAR RECOMENDACIONES Y COMENTARIOS DESDE FIRESTORE
-        window.loadRecommendations = async function() {
+        // TIEMPO REAL CON ONSNAPSHOT PARA RECOMENDACIONES
+        window.loadRecommendations = function() {
             const grid = document.getElementById('grid-recomendaciones');
             const currentName = localStorage.getItem('bl_user_name') || '';
             const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
             const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
-            try {
-                const q = query(collection(db, "recommendations"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
-                
+            const q = query(collection(db, "recommendations"), orderBy("createdAt", "desc"));
+            
+            onSnapshot(q, (querySnapshot) => {
                 if (querySnapshot.empty) {
                     grid.innerHTML = '<p style="color: var(--text-dim); grid-column: 1/-1;">Aún no hay obras publicadas en el jardín. ¡Sé la primera persona en publicar una!</p>';
                     return;
@@ -1377,7 +1356,7 @@
                     if (isOwner || isAdmin) {
                         menuOptions = `
                             ${isOwner ? `<button onclick="editPost('${id}', '${data.title.replace(/'/g, "\\'")}', '${data.desc.replace(/'/g, "\\'")}')">✏️ Editar</button>` : ''}
-                            <button onclick="deletePost('${id}', '${authorEmail}')" style="color:#ff9999;">🗑️ Eliminar</button>
+                            <button onclick="deletePost('${id}')" style="color:#ff9999;">🗑️ Eliminar</button>
                             <button onclick="sharePost('${data.title.replace(/'/g, "\\'")}')">🔗 Compartir</button>
                         `;
                     } else {
@@ -1439,12 +1418,9 @@
                     `;
                     grid.appendChild(card);
                 });
-            } catch (err) {
-                console.error("Error cargando recomendaciones:", err);
-            }
+            });
         };
 
-        // AGREGAR COMENTARIO A FIRESTORE
         window.addComment = async function(postId) {
             const container = document.getElementById(`comments-container-${postId}`);
             const input = container.querySelector('.input-comment');
@@ -1469,14 +1445,11 @@
                     comments: arrayUnion(newComment)
                 });
                 input.value = '';
-                window.loadRecommendations();
             } catch (err) {
                 console.error("Error al guardar comentario:", err);
-                alert("No se pudo enviar el comentario.");
             }
         };
 
-        // ELIMINAR COMENTARIO (Permitido al autor del comentario O al Admin msunica3@gmail.com)
         window.deleteComment = async function(postId, commentIndex) {
             if (!confirm('¿Deseas eliminar este comentario?')) return;
 
@@ -1488,15 +1461,13 @@
                     let comments = data.comments || [];
                     comments.splice(commentIndex, 1);
                     await updateDoc(docRef, { comments: comments });
-                    window.loadRecommendations();
                 }
             } catch (err) {
                 console.error("Error al eliminar comentario:", err);
-                alert("No se pudo eliminar el comentario.");
             }
         };
 
-        // GESTIÓN DEL MODAL DE PUBLICACIÓN
+        // MODAL DE PUBLICACIÓN
         let selectedCustomImage = null;
         const postModalOverlay = document.getElementById('post-modal-overlay');
         const modalInputTitle = document.getElementById('modal-input-title');
@@ -1566,24 +1537,20 @@
                     comments: [],
                     createdAt: serverTimestamp()
                 });
-                alert('¡Tu obra se ha publicado permanentemente en el jardín!');
-                window.loadRecommendations();
             } catch (err) {
                 console.error("Error al publicar:", err);
-                alert("Hubo un error al guardar la publicación.");
             }
         });
 
-        // CARGAR DEBATES DEL FORO DESDE FIRESTORE
-        window.loadForo = async function() {
+        // TIEMPO REAL CON ONSNAPSHOT PARA EL FORO
+        window.loadForo = function() {
             const listForo = document.getElementById('list-foro');
             const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
             const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
-            try {
-                const q = query(collection(db, "forum_posts"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
+            const q = query(collection(db, "forum_posts"), orderBy("createdAt", "desc"));
 
+            onSnapshot(q, (querySnapshot) => {
                 if (querySnapshot.empty) {
                     listForo.innerHTML = '<p style="color: var(--text-dim);">Aún no hay debates en el foro. ¡Crea el primero!</p>';
                     return;
@@ -1602,7 +1569,7 @@
                             <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
                             <div>
                                 <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${data.title}</h3>
-                                <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • 0 respuestas</p>
+                                <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • Activo en tiempo real</p>
                             </div>
                         </div>
                         <div style="display: flex; gap: 10px; align-items: center;">
@@ -1612,25 +1579,18 @@
                     `;
                     listForo.appendChild(item);
                 });
-            } catch (err) {
-                console.error("Error cargando foro:", err);
-            }
+            });
         };
 
-        // ELIMINAR DEBATE DEL FORO (Autor o Admin)
         window.deleteForumPost = async function(id) {
             if (!confirm('¿Estás segura de que deseas eliminar este debate?')) return;
             try {
                 await deleteDoc(doc(db, "forum_posts", id));
-                alert('Debate eliminado correctamente.');
-                window.loadForo();
             } catch (err) {
                 console.error("Error al eliminar debate:", err);
-                alert("No se pudo eliminar el debate.");
             }
         };
 
-        // NUEVO DEBATE EN EL FORO GUARDADO EN FIRESTORE
         document.getElementById('btn-add-forum').addEventListener('click', async () => {
             const debateTitle = prompt('¿Sobre qué tema te gustaría iniciar un debate en el foro?');
             if (!debateTitle) return;
@@ -1647,11 +1607,8 @@
                     authorEmail: currentEmail,
                     createdAt: serverTimestamp()
                 });
-                alert('¡Tu debate se ha publicado en el foro!');
-                window.loadForo();
             } catch (err) {
                 console.error("Error al publicar debate:", err);
-                alert("No se pudo publicar el debate.");
             }
         });
 
