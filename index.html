@@ -696,7 +696,7 @@
             <div class="notif-container">
                 <button class="notif-btn" id="notif-toggle-btn">
                     🔔
-                    <span class="notif-badge" id="notif-badge">2</span>
+                    <span class="notif-badge" id="notif-badge">0</span>
                 </button>
                 <div class="notif-modal" id="notif-modal">
                     <div class="notif-header">
@@ -704,10 +704,6 @@
                         <button class="btn-clear-notif" id="btn-mark-all-read">Marcar leídas</button>
                     </div>
                     <div id="notif-list">
-                        <div class="notif-item unread">
-                            <div>💬 @FujoQueen comentó tu reseña.</div>
-                            <button class="btn-mark-read" onclick="markRead(this)">✓</button>
-                        </div>
                         <div class="notif-item unread">
                             <div>🌸 ¡Bienvenida al refugio secreto!</div>
                             <button class="btn-mark-read" onclick="markRead(this)">✓</button>
@@ -785,16 +781,7 @@
             </div>
 
             <div class="forum-list" id="list-foro">
-                <div class="forum-item">
-                    <div class="user-info-clickable" onclick="openUserProfile('FujoReader', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=200&auto=format&fit=crop', 'fujoreader@example.com')">
-                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=200&auto=format&fit=crop" class="user-clickable-avatar" alt="FujoReader">
-                        <div>
-                            <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">🔍 Busco recomendaciones estilo Omegaverse / Fantasía</h3>
-                            <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @FujoReader • 12 respuestas</p>
-                        </div>
-                    </div>
-                    <a href="#" style="color:var(--accent-pink); text-decoration:none; font-weight:600;">Ver debate →</a>
-                </div>
+                <!-- Los debates se cargarán automáticamente desde Firebase Firestore -->
             </div>
         </div>
     </div>
@@ -842,7 +829,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy, increment, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy, increment, getDoc, setDoc, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC79kLchfvUFYwM74jK_ChGjKL2aXvNpsI",
@@ -1225,6 +1212,7 @@
             }
         };
 
+        // CARGAR RECOMENDACIONES Y COMENTARIOS DESDE FIRESTORE
         window.loadRecommendations = async function() {
             const grid = document.getElementById('grid-recomendaciones');
             const currentName = localStorage.getItem('bl_user_name') || '';
@@ -1245,6 +1233,7 @@
                     const isOwner = (data.author === currentName);
                     const likes = data.likes || 0;
                     const authorEmail = data.authorEmail || '';
+                    const comments = data.comments || [];
 
                     let menuOptions = '';
                     if (isOwner) {
@@ -1259,6 +1248,18 @@
                             <button onclick="sharePost('${data.title.replace(/'/g, "\\'")}')">🔗 Compartir</button>
                         `;
                     }
+
+                    let commentsHTML = '';
+                    comments.forEach(c => {
+                        commentsHTML += `
+                            <div class="comment-item">
+                                <img src="${c.authorPhoto}" class="user-clickable-avatar" onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')">
+                                <div class="comment-text">
+                                    <strong onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')" style="cursor:pointer; color:var(--accent-gold);">@${c.author}:</strong> ${c.text}
+                                </div>
+                            </div>
+                        `;
+                    });
 
                     const card = document.createElement('div');
                     card.className = 'card';
@@ -1284,10 +1285,11 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="comments-section">
+                        <div class="comments-section" id="comments-container-${id}">
+                            ${commentsHTML}
                             <div class="comment-input-box">
                                 <input type="text" placeholder="Escribe un comentario..." class="input-comment">
-                                <button onclick="addComment(this)">Comentar</button>
+                                <button onclick="addComment('${id}')">Comentar</button>
                             </div>
                         </div>
                     `;
@@ -1298,6 +1300,39 @@
             }
         };
 
+        // AGREGAR COMENTARIO A FIRESTORE
+        window.addComment = async function(postId) {
+            const container = document.getElementById(`comments-container-${postId}`);
+            const input = container.querySelector('.input-comment');
+            const commentText = input.value.trim();
+            if (!commentText) return;
+
+            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = localStorage.getItem('bl_user_email') || '';
+
+            const newComment = {
+                author: currentName,
+                authorPhoto: currentPhoto,
+                authorEmail: currentEmail,
+                text: commentText,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                const docRef = doc(db, "recommendations", postId);
+                await updateDoc(docRef, {
+                    comments: arrayUnion(newComment)
+                });
+                input.value = '';
+                window.loadRecommendations();
+            } catch (err) {
+                console.error("Error al guardar comentario:", err);
+                alert("No se pudo enviar el comentario.");
+            }
+        };
+
+        // BOTÓN PUBLICAR OBRA CORREGIDO (SIN setTimeout QUE BLOQUEABA LA GALERÍA)
         document.getElementById('btn-add-rec').addEventListener('click', () => {
             const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
@@ -1342,7 +1377,8 @@
                     authorEmail: authorEmail,
                     image: image,
                     likes: 0,
-                    createdAt: new Date()
+                    comments: [],
+                    createdAt: serverTimestamp()
                 });
                 alert('¡Tu obra se ha publicado permanentemente en el jardín!');
                 window.loadRecommendations();
@@ -1352,7 +1388,42 @@
             }
         }
 
-        document.getElementById('btn-add-forum').addEventListener('click', () => {
+        // CARGAR DEBATES DEL FORO DESDE FIRESTORE
+        window.loadForo = async function() {
+            const listForo = document.getElementById('list-foro');
+            try {
+                const q = query(collection(db, "forum_posts"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    listForo.innerHTML = '<p style="color: var(--text-dim);">Aún no hay debates en el foro. ¡Crea el primero!</p>';
+                    return;
+                }
+
+                listForo.innerHTML = '';
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const item = document.createElement('div');
+                    item.className = 'forum-item';
+                    item.innerHTML = `
+                        <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', '${data.authorEmail || ''}')">
+                            <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
+                            <div>
+                                <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${data.title}</h3>
+                                <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • 0 respuestas</p>
+                            </div>
+                        </div>
+                        <a href="#" style="color:var(--accent-pink); text-decoration:none; font-weight:600;">Ver debate →</a>
+                    `;
+                    listForo.appendChild(item);
+                });
+            } catch (err) {
+                console.error("Error cargando foro:", err);
+            }
+        };
+
+        // NUEVO DEBATE EN EL FORO GUARDADO EN FIRESTORE
+        document.getElementById('btn-add-forum').addEventListener('click', async () => {
             const debateTitle = prompt('¿Sobre qué tema te gustaría iniciar un debate en el foro?');
             if (!debateTitle) return;
 
@@ -1360,47 +1431,21 @@
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = localStorage.getItem('bl_user_email') || '';
 
-            const listForo = document.getElementById('list-foro');
-            const newForumItem = document.createElement('div');
-            newForumItem.className = 'forum-item';
-            newForumItem.innerHTML = `
-                <div class="user-info-clickable" onclick="openUserProfile('${currentName}', '${currentPhoto}', '${currentEmail}')">
-                    <img src="${currentPhoto}" class="user-clickable-avatar" alt="${currentName}">
-                    <div>
-                        <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${debateTitle}</h3>
-                        <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${currentName} • 0 respuestas</p>
-                    </div>
-                </div>
-                <a href="#" style="color:var(--accent-pink); text-decoration:none; font-weight:600;">Ver debate →</a>
-            `;
-
-            listForo.prepend(newForumItem);
-            alert('¡Tu debate se ha publicado en el foro!');
+            try {
+                await addDoc(collection(db, "forum_posts"), {
+                    title: debateTitle,
+                    author: currentName,
+                    authorPhoto: currentPhoto,
+                    authorEmail: currentEmail,
+                    createdAt: serverTimestamp()
+                });
+                alert('¡Tu debate se ha publicado en el foro!');
+                window.loadForo();
+            } catch (err) {
+                console.error("Error al publicar debate:", err);
+                alert("No se pudo publicar el debate.");
+            }
         });
-
-        window.addComment = function(button) {
-            const input = button.previousElementSibling;
-            const commentText = input.value.trim();
-            if (!commentText) return;
-
-            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
-            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            const currentEmail = localStorage.getItem('bl_user_email') || '';
-
-            const commentsSection = button.closest('.comments-section');
-
-            const commentHTML = document.createElement('div');
-            commentHTML.className = 'comment-item';
-            commentHTML.innerHTML = `
-                <img src="${currentPhoto}" class="user-clickable-avatar" onclick="openUserProfile('${currentName}', '${currentPhoto}', '${currentEmail}')">
-                <div class="comment-text">
-                    <strong onclick="openUserProfile('${currentName}', '${currentPhoto}', '${currentEmail}')" style="cursor:pointer; color:var(--accent-gold);">@${currentName}:</strong> ${commentText}
-                </div>
-            `;
-
-            commentsSection.insertBefore(commentHTML, button.closest('.comment-input-box'));
-            input.value = '';
-        };
 
         btnEditName.addEventListener('click', () => {
             const currentName = profileNameDisplay.textContent;
@@ -1414,6 +1459,7 @@
         });
 
         window.loadRecommendations();
+        window.loadForo();
     </script>
 </body>
 </html>
