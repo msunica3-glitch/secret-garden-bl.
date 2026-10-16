@@ -655,17 +655,21 @@
         .forum-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
-        .forum-item {
+        .forum-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             padding: 1.2rem;
             border-radius: 12px;
+        }
+
+        .forum-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 0.8rem;
         }
 
         .btn-add {
@@ -994,6 +998,7 @@
         const notifToggleBtn = document.getElementById('notif-toggle-btn');
         const notifModal = document.getElementById('notif-modal');
         const notifBadge = document.getElementById('notif-badge');
+        const notifList = document.getElementById('notif-list');
 
         notifToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1030,6 +1035,33 @@
             } else {
                 notifBadge.style.display = 'none';
             }
+        }
+
+        // CARGAR NOTIFICACIONES EN TIEMPO REAL DESDE FIRESTORE
+        function loadNotifications() {
+            const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+            if (!currentEmail) return;
+
+            const q = query(collection(db, "users", currentEmail, "notifications"), orderBy("createdAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                let html = `
+                    <div class="notif-item">
+                        <div>🌸 ¡Bienvenida al refugio secreto!</div>
+                        <button class="btn-mark-read" onclick="markRead(this)">✓</button>
+                    </div>
+                `;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    html += `
+                        <div class="notif-item unread">
+                            <div>❤️ <strong>@${data.sender}</strong> le dio me gusta a tu obra "${data.postTitle}"</div>
+                            <button class="btn-mark-read" onclick="markRead(this)">✓</button>
+                        </div>
+                    `;
+                });
+                notifList.innerHTML = html;
+                updateNotifCount();
+            });
         }
 
         window.switchView = function(viewId) {
@@ -1201,6 +1233,8 @@
                 localStorage.setItem('bl_user_name', name);
                 localStorage.setItem('bl_user_email', email);
                 localStorage.setItem('bl_user_photo', photo);
+
+                loadNotifications();
             } else {
                 btnLogin.style.display = 'flex';
                 userMenuContainer.style.display = 'none';
@@ -1229,6 +1263,7 @@
                     if (savedEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
                         if (adminBadgeSlot) adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
                     }
+                    loadNotifications();
                 } else {
                     updateUI(null);
                 }
@@ -1305,7 +1340,8 @@
             }
         };
 
-        window.toggleLike = async function(btn, id) {
+        // FUNCIÓN DE LIKE CON GENERACIÓN DE NOTIFICACIÓN AUTOMÁTICA
+        window.toggleLike = async function(btn, id, authorEmail, postTitle) {
             const isLiked = btn.classList.contains('liked');
             const spanCount = btn.querySelector('.like-count');
             let currentLikes = parseInt(spanCount.textContent);
@@ -1316,6 +1352,21 @@
             } else {
                 btn.classList.add('liked');
                 spanCount.textContent = currentLikes + 1;
+
+                // Crear notificación en Firestore para el autor de la obra si no es el mismo usuario
+                const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+                const currentName = localStorage.getItem('bl_user_name') || 'Alguien';
+                if (authorEmail && currentEmail && authorEmail.toLowerCase() !== currentEmail.toLowerCase()) {
+                    try {
+                        await addDoc(collection(db, "users", authorEmail, "notifications"), {
+                            sender: currentName,
+                            postTitle: postTitle,
+                            createdAt: serverTimestamp()
+                        });
+                    } catch (notifErr) {
+                        console.error("Error al enviar notificación:", notifErr);
+                    }
+                }
             }
 
             try {
@@ -1403,7 +1454,7 @@
                                     <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
                                     <span>@${data.author}</span>
                                 </div>
-                                <button class="like-btn" onclick="toggleLike(this, '${id}')">
+                                <button class="like-btn" onclick="toggleLike(this, '${id}', '${authorEmail}', '${data.title.replace(/'/g, "\\'")}')">
                                     ❤️ <span class="like-count">${likes}</span>
                                 </button>
                             </div>
@@ -1542,9 +1593,10 @@
             }
         });
 
-        // TIEMPO REAL CON ONSNAPSHOT PARA EL FORO
+        // TIEMPO REAL CON ONSNAPSHOT PARA EL FORO (CON DEBATES Y RESPUESTAS INTERactivas)
         window.loadForo = function() {
             const listForo = document.getElementById('list-foro');
+            const currentName = localStorage.getItem('bl_user_name') || '';
             const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
             const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
@@ -1561,20 +1613,45 @@
                     const data = docSnap.data();
                     const id = docSnap.id;
                     const isOwner = (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase());
+                    const comments = data.comments || [];
+
+                    let commentsHTML = '';
+                    comments.forEach((c, index) => {
+                        const isCommentOwner = (c.authorEmail && currentEmail && c.authorEmail.toLowerCase() === currentEmail.toLowerCase()) || (c.author === currentName);
+                        const showDeleteComment = isCommentOwner || isAdmin;
+
+                        commentsHTML += `
+                            <div class="comment-item">
+                                <div class="comment-content-wrapper">
+                                    <img src="${c.authorPhoto}" class="user-clickable-avatar" onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')">
+                                    <div class="comment-text">
+                                        <strong onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')" style="cursor:pointer; color:var(--accent-gold);">@${c.author}:</strong> ${c.text}
+                                    </div>
+                                </div>
+                                ${showDeleteComment ? `<button class="btn-delete-comment" onclick="deleteForumComment('${id}',${index})" title="Eliminar respuesta">🗑️</button>` : ''}
+                            </div>
+                        `;
+                    });
 
                     const item = document.createElement('div');
-                    item.className = 'forum-item';
+                    item.className = 'forum-card';
                     item.innerHTML = `
-                        <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', '${data.authorEmail || ''}')">
-                            <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
-                            <div>
-                                <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${data.title}</h3>
-                                <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • Activo en tiempo real</p>
+                        <div class="forum-header">
+                            <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', '${data.authorEmail || ''}')">
+                                <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
+                                <div>
+                                    <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${data.title}</h3>
+                                    <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • Activo en tiempo real</p>
+                                </div>
                             </div>
+                            ${(isOwner || isAdmin) ? `<button onclick="deleteForumPost('${id}')" style="background:none; border:none; color:#ff9999; cursor:pointer; font-size:1rem;" title="Eliminar debate">🗑️ Eliminar debate</button>` : ''}
                         </div>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <a href="#" style="color:var(--accent-pink); text-decoration:none; font-weight:600;">Ver debate →</a>
-                            ${(isOwner || isAdmin) ? `<button onclick="deleteForumPost('${id}')" style="background:none; border:none; color:#ff9999; cursor:pointer; font-size:1rem;" title="Eliminar debate">🗑️</button>` : ''}
+                        <div class="comments-section" id="forum-comments-${id}">
+                            ${commentsHTML}
+                            <div class="comment-input-box">
+                                <input type="text" placeholder="Escribe tu argumento para debatir..." class="input-forum-comment">
+                                <button onclick="addForumComment('${id}')">Debatir</button>
+                            </div>
                         </div>
                     `;
                     listForo.appendChild(item);
@@ -1582,8 +1659,54 @@
             });
         };
 
+        window.addForumComment = async function(postId) {
+            const container = document.getElementById(`forum-comments-${postId}`);
+            const input = container.querySelector('.input-forum-comment');
+            const commentText = input.value.trim();
+            if (!commentText) return;
+
+            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = localStorage.getItem('bl_user_email') || '';
+
+            const newComment = {
+                author: currentName,
+                authorPhoto: currentPhoto,
+                authorEmail: currentEmail,
+                text: commentText,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                const docRef = doc(db, "forum_posts", postId);
+                await updateDoc(docRef, {
+                    comments: arrayUnion(newComment)
+                });
+                input.value = '';
+            } catch (err) {
+                console.error("Error al debatir:", err);
+            }
+        };
+
+        window.deleteForumComment = async function(postId, commentIndex) {
+            if (!confirm('¿Deseas eliminar este comentario del debate?')) return;
+
+            try {
+                const docRef = doc(db, "forum_posts", postId);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    let comments = data.comments || [];
+                    comments.splice(commentIndex, 1);
+                    await updateDoc(docRef, { comments: comments });
+                }
+            } catch (err) {
+                console.error("Error al eliminar comentario:", err);
+            }
+        };
+
         window.deleteForumPost = async function(id) {
-            if (!confirm('¿Estás segura de que deseas eliminar este debate?')) return;
+            if (!confirm('¿Estás segura de que deseas eliminar este debate completo?')) return;
             try {
                 await deleteDoc(doc(db, "forum_posts", id));
             } catch (err) {
@@ -1605,6 +1728,7 @@
                     author: currentName,
                     authorPhoto: currentPhoto,
                     authorEmail: currentEmail,
+                    comments: [],
                     createdAt: serverTimestamp()
                 });
             } catch (err) {
