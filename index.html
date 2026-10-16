@@ -793,6 +793,19 @@
 </head>
 <body>
 
+    <!-- PANEL DE ACCESO: se muestra cuando alguien intenta participar sin iniciar sesión -->
+    <div class="custom-modal-overlay" id="login-gate-overlay" role="dialog" aria-modal="true" aria-labelledby="login-gate-title">
+        <div class="custom-modal" style="text-align:center; max-width:420px;">
+            <div style="font-size:2rem; margin-bottom:.5rem;">🌿</div>
+            <h3 id="login-gate-title">Entra al jardín secreto</h3>
+            <p style="color:var(--text-dim); margin:1rem 0 1.4rem;">Puedes explorar las publicaciones sin cuenta. Para dar me gusta, comentar, seguir o publicar, inicia sesión con Google.</p>
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel-modal" id="btn-close-login-gate">Ahora no</button>
+                <button type="button" class="btn-confirm-modal" id="btn-login-gate">🌸 Entrar con Google</button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL FORMULARIO DE PUBLICACIÓN -->
     <div class="custom-modal-overlay" id="post-modal-overlay">
         <div class="custom-modal">
@@ -977,6 +990,20 @@
 
         const ADMIN_EMAIL = "msunica3@gmail.com";
 
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[char]);
+        }
+
+        // La sesión válida siempre la confirma Firebase; localStorage nunca equivale a iniciar sesión.
+        const loginGateOverlay = document.getElementById('login-gate-overlay');
+        function requireLogin() {
+            if (auth.currentUser) return true;
+            loginGateOverlay.classList.add('active');
+            return false;
+        }
+
         const btnLogin = document.getElementById('btn-login');
         const userMenuContainer = document.getElementById('user-menu-container');
         const userAvatarImg = document.getElementById('user-avatar-img');
@@ -1000,8 +1027,19 @@
         const notifBadge = document.getElementById('notif-badge');
         const notifList = document.getElementById('notif-list');
 
+        document.getElementById('btn-close-login-gate').addEventListener('click', () => {
+            loginGateOverlay.classList.remove('active');
+        });
+        document.getElementById('btn-login-gate').addEventListener('click', () => {
+            btnLogin.click();
+        });
+        loginGateOverlay.addEventListener('click', (event) => {
+            if (event.target === loginGateOverlay) loginGateOverlay.classList.remove('active');
+        });
+
         notifToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
+            if (!requireLogin()) return;
             notifModal.classList.toggle('active');
         });
 
@@ -1039,7 +1077,7 @@
 
         // CARGAR NOTIFICACIONES EN TIEMPO REAL DESDE LA COLECCIÓN GLOBAL
         function loadNotifications() {
-            const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+            const currentEmail = auth.currentUser ? auth.currentUser.email : '';
             if (!currentEmail) return;
 
             const q = query(
@@ -1059,7 +1097,7 @@
                     const data = docSnap.data();
                     html += `
                         <div class="notif-item unread">
-                            <div>❤️ <strong>@${data.sender}</strong> le dio me gusta a tu obra "${data.postTitle}"</div>
+                            <div>❤️ <strong>@${escapeHTML(data.sender)}</strong> le dio me gusta a tu obra "${escapeHTML(data.postTitle)}"</div>
                             <button class="btn-mark-read" onclick="markRead(this)">✓</button>
                         </div>
                     `;
@@ -1094,7 +1132,7 @@
             document.getElementById('profile-heading-title').textContent = '👤 Perfil de ' + username;
 
             const currentUser = auth.currentUser;
-            const currentEmail = currentUser ? currentUser.email : localStorage.getItem('bl_user_email');
+            const currentEmail = currentUser ? currentUser.email : '';
 
             let followersCount = 0;
             let followingCount = 0;
@@ -1109,7 +1147,7 @@
                     followingCount = data.followingCount || 0;
                 }
 
-                if (currentEmail && currentEmail.toLowerCase() !== email.toLowerCase()) {
+                if (currentUser && currentEmail && email && currentEmail.toLowerCase() !== email.toLowerCase()) {
                     const followRef = doc(db, "users", username, "followers", currentEmail);
                     const followSnap = await getDoc(followRef);
                     isFollowing = followSnap.exists();
@@ -1121,7 +1159,7 @@
             profileStatFollowers.textContent = followersCount;
             profileStatFollowing.textContent = followingCount;
 
-            if (currentEmail && email && currentEmail.toLowerCase() !== email.toLowerCase()) {
+            if (!email || !currentEmail || currentEmail.toLowerCase() !== email.toLowerCase()) {
                 profileActionContainer.innerHTML = `
                     <button class="btn-add" id="btn-follow-toggle" onclick="toggleFollow('${username}', '${email}')">
                         ${isFollowing ? 'Dejar de seguir' : '✨ Seguir'}
@@ -1135,9 +1173,10 @@
         };
 
         window.openMyProfile = async function() {
+            if (!requireLogin()) return;
             const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            const currentEmail = localStorage.getItem('bl_user_email') || 'correo@email.com';
+            const currentEmail = auth.currentUser ? (auth.currentUser.email || '') : '';
 
             profileViewName.textContent = currentName;
             profileViewImg.src = currentPhoto;
@@ -1172,14 +1211,10 @@
         };
 
         window.toggleFollow = async function(targetUsername, targetEmail) {
+            if (!requireLogin()) return;
             const currentUser = auth.currentUser;
-            const currentName = localStorage.getItem('bl_user_name');
-            const currentEmail = currentUser ? currentUser.email : localStorage.getItem('bl_user_email');
-
-            if (!currentEmail) {
-                alert("Debes iniciar sesión para seguir a otros usuarios.");
-                return;
-            }
+            const currentName = localStorage.getItem('bl_user_name') || currentUser.displayName || 'Usuario';
+            const currentEmail = currentUser.email;
 
             const btn = document.getElementById('btn-follow-toggle');
             const isCurrentlyFollowing = btn.textContent.includes('Dejar');
@@ -1265,26 +1300,10 @@
         }
 
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                updateUI(user);
-            } else {
-                const savedName = localStorage.getItem('bl_user_name');
-                if (savedName) {
-                    btnLogin.style.display = 'none';
-                    userMenuContainer.style.display = 'block';
-                    profileNameDisplay.textContent = savedName;
-                    const savedEmail = localStorage.getItem('bl_user_email') || '';
-                    profileEmailDisplay.textContent = savedEmail;
-                    const savedPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-                    userAvatarImg.src = savedPhoto;
-                    
-                    if (savedEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                        if (adminBadgeSlot) adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
-                    }
-                    loadNotifications();
-                } else {
-                    updateUI(null);
-                }
+            updateUI(user || null);
+            if (!user) {
+                loginGateOverlay.classList.remove('active');
+                notifModal.classList.remove('active');
             }
         });
 
@@ -1292,11 +1311,13 @@
             try {
                 const result = await signInWithPopup(auth, provider);
                 if (result && result.user) {
+                    loginGateOverlay.classList.remove('active');
                     updateUI(result.user);
                     alert(`¡Bienvenid@ a Secret Garden, ${result.user.displayName}!`);
                 }
             } catch (err) {
                 console.error("Error al iniciar sesión:", err);
+                alert('No se pudo iniciar sesión con Google. Comprueba tu conexión e inténtalo de nuevo.');
             }
         });
 
@@ -1333,6 +1354,7 @@
         };
 
         window.deletePost = async function(id) {
+            if (!requireLogin()) return;
             if (confirm('¿Estás segura de que deseas eliminar esta publicación?')) {
                 try {
                     await deleteDoc(doc(db, "recommendations", id));
@@ -1343,6 +1365,7 @@
         };
 
         window.editPost = async function(id, oldTitle, oldDesc) {
+            if (!requireLogin()) return;
             const newTitle = prompt('Editar título:', oldTitle);
             if (!newTitle) return;
             const newDesc = prompt('Editar descripción:', oldDesc);
@@ -1360,6 +1383,7 @@
 
         // FUNCIÓN DE LIKE CON NOTIFICACIÓN GLOBAL EN FIRESTORE
         window.toggleLike = async function(btn, id, authorEmail, postTitle) {
+            if (!requireLogin()) return;
             const isLiked = btn.classList.contains('liked');
             const spanCount = btn.querySelector('.like-count');
             let currentLikes = parseInt(spanCount.textContent);
@@ -1372,7 +1396,7 @@
                 spanCount.textContent = currentLikes + 1;
 
                 // Enviar notificación a la colección global 'notifications'
-                const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+                const currentEmail = auth.currentUser ? auth.currentUser.email : '';
                 const currentName = localStorage.getItem('bl_user_name') || 'Alguien';
 
                 if (authorEmail && currentEmail && authorEmail.toLowerCase() !== currentEmail.toLowerCase()) {
@@ -1396,6 +1420,10 @@
                 });
             } catch (err) {
                 console.error("Error actualizando likes:", err);
+                // Revertir el cambio visual si Firestore rechaza la operación.
+                btn.classList.toggle('liked', isLiked);
+                spanCount.textContent = currentLikes;
+                alert('No se pudo guardar el me gusta. Inicia sesión e inténtalo de nuevo.');
             }
         };
 
@@ -1403,7 +1431,7 @@
         window.loadRecommendations = function() {
             const grid = document.getElementById('grid-recomendaciones');
             const currentName = localStorage.getItem('bl_user_name') || '';
-            const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+            const currentEmail = auth.currentUser ? auth.currentUser.email : '';
             const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
             const q = query(collection(db, "recommendations"), orderBy("createdAt", "desc"));
@@ -1418,7 +1446,7 @@
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
-                    const isOwner = (data.author === currentName || (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase()));
+                    const isOwner = (auth.currentUser && data.authorUid === auth.currentUser.uid) || (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase());
                     const likes = data.likes || 0;
                     const authorEmail = data.authorEmail || '';
                     const comments = data.comments || [];
@@ -1439,7 +1467,7 @@
 
                     let commentsHTML = '';
                     comments.forEach((c, index) => {
-                        const isCommentOwner = (c.authorEmail && currentEmail && c.authorEmail.toLowerCase() === currentEmail.toLowerCase()) || (c.author === currentName);
+                        const isCommentOwner = (auth.currentUser && c.authorUid === auth.currentUser.uid) || (c.authorEmail && currentEmail && c.authorEmail.toLowerCase() === currentEmail.toLowerCase());
                         const showDeleteComment = isCommentOwner || isAdmin;
 
                         commentsHTML += `
@@ -1467,8 +1495,8 @@
                         <img src="${data.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop'}" class="card-img" alt="Recomendación">
                         <div class="card-body">
                             <span class="card-tag">Recomendación</span>
-                            <h3 class="card-title">${data.title}</h3>
-                            <p class="card-desc">${data.desc}</p>
+                            <h3 class="card-title">${escapeHTML(data.title)}</h3>
+                            <p class="card-desc">${escapeHTML(data.desc)}</p>
                             <div class="card-footer">
                                 <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', '${authorEmail}')">
                                     <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
@@ -1493,19 +1521,21 @@
         };
 
         window.addComment = async function(postId) {
+            if (!requireLogin()) return;
             const container = document.getElementById(`comments-container-${postId}`);
             const input = container.querySelector('.input-comment');
             const commentText = input.value.trim();
             if (!commentText) return;
 
-            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
-            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            const currentEmail = localStorage.getItem('bl_user_email') || '';
+            const currentName = localStorage.getItem('bl_user_name') || auth.currentUser.displayName || 'Usuario';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = auth.currentUser.email || '';
 
             const newComment = {
                 author: currentName,
                 authorPhoto: currentPhoto,
                 authorEmail: currentEmail,
+                authorUid: auth.currentUser.uid,
                 text: commentText,
                 createdAt: new Date().toISOString()
             };
@@ -1522,6 +1552,7 @@
         };
 
         window.deleteComment = async function(postId, commentIndex) {
+            if (!requireLogin()) return;
             if (!confirm('¿Deseas eliminar este comentario?')) return;
 
             try {
@@ -1547,6 +1578,7 @@
         const fixedInput = document.getElementById('fixed-gallery-input');
 
         document.getElementById('btn-open-modal').addEventListener('click', () => {
+            if (!requireLogin()) return;
             modalInputTitle.value = '';
             modalInputDesc.value = '';
             selectedCustomImage = null;
@@ -1581,6 +1613,7 @@
         });
 
         document.getElementById('btn-submit-post').addEventListener('click', async () => {
+            if (!requireLogin()) return;
             const title = modalInputTitle.value.trim();
             const desc = modalInputDesc.value.trim();
 
@@ -1590,11 +1623,9 @@
             }
 
             const finalImage = selectedCustomImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';
-            const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
-            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            const currentEmail = localStorage.getItem('bl_user_email') || '';
-
-            postModalOverlay.classList.remove('active');
+            const currentName = localStorage.getItem('bl_user_name') || auth.currentUser.displayName || 'Usuario';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = auth.currentUser.email || '';
 
             try {
                 await addDoc(collection(db, "recommendations"), {
@@ -1603,13 +1634,16 @@
                     author: currentName,
                     authorPhoto: currentPhoto,
                     authorEmail: currentEmail,
+                    authorUid: auth.currentUser.uid,
                     image: finalImage,
                     likes: 0,
                     comments: [],
                     createdAt: serverTimestamp()
                 });
+                postModalOverlay.classList.remove('active');
             } catch (err) {
                 console.error("Error al publicar:", err);
+                alert('No se pudo publicar. Comprueba tu sesión e inténtalo de nuevo.');
             }
         });
 
@@ -1617,7 +1651,7 @@
         window.loadForo = function() {
             const listForo = document.getElementById('list-foro');
             const currentName = localStorage.getItem('bl_user_name') || '';
-            const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+            const currentEmail = auth.currentUser ? auth.currentUser.email : '';
             const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
             const q = query(collection(db, "forum_posts"), orderBy("createdAt", "desc"));
@@ -1632,12 +1666,12 @@
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
-                    const isOwner = (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase());
+                    const isOwner = (auth.currentUser && data.authorUid === auth.currentUser.uid) || (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase());
                     const comments = data.comments || [];
 
                     let commentsHTML = '';
                     comments.forEach((c, index) => {
-                        const isCommentOwner = (c.authorEmail && currentEmail && c.authorEmail.toLowerCase() === currentEmail.toLowerCase()) || (c.author === currentName);
+                        const isCommentOwner = (auth.currentUser && c.authorUid === auth.currentUser.uid) || (c.authorEmail && currentEmail && c.authorEmail.toLowerCase() === currentEmail.toLowerCase());
                         const showDeleteComment = isCommentOwner || isAdmin;
 
                         commentsHTML += `
@@ -1660,7 +1694,7 @@
                             <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', '${data.authorEmail || ''}')">
                                 <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
                                 <div>
-                                    <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${data.title}</h3>
+                                    <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${escapeHTML(data.title)}</h3>
                                     <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • Activo en tiempo real</p>
                                 </div>
                             </div>
@@ -1680,19 +1714,21 @@
         };
 
         window.addForumComment = async function(postId) {
+            if (!requireLogin()) return;
             const container = document.getElementById(`forum-comments-${postId}`);
             const input = container.querySelector('.input-forum-comment');
             const commentText = input.value.trim();
             if (!commentText) return;
 
-            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
-            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            const currentEmail = localStorage.getItem('bl_user_email') || '';
+            const currentName = localStorage.getItem('bl_user_name') || auth.currentUser.displayName || 'Usuario';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = auth.currentUser.email || '';
 
             const newComment = {
                 author: currentName,
                 authorPhoto: currentPhoto,
                 authorEmail: currentEmail,
+                authorUid: auth.currentUser.uid,
                 text: commentText,
                 createdAt: new Date().toISOString()
             };
@@ -1709,6 +1745,7 @@
         };
 
         window.deleteForumComment = async function(postId, commentIndex) {
+            if (!requireLogin()) return;
             if (!confirm('¿Deseas eliminar este comentario del debate?')) return;
 
             try {
@@ -1726,6 +1763,7 @@
         };
 
         window.deleteForumPost = async function(id) {
+            if (!requireLogin()) return;
             if (!confirm('¿Estás segura de que deseas eliminar este debate completo?')) return;
             try {
                 await deleteDoc(doc(db, "forum_posts", id));
@@ -1735,12 +1773,13 @@
         };
 
         document.getElementById('btn-add-forum').addEventListener('click', async () => {
+            if (!requireLogin()) return;
             const debateTitle = prompt('¿Sobre qué tema te gustaría iniciar un debate en el foro?');
             if (!debateTitle) return;
 
             const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            const currentEmail = localStorage.getItem('bl_user_email') || '';
+            const currentEmail = auth.currentUser ? (auth.currentUser.email || '') : '';
 
             try {
                 await addDoc(collection(db, "forum_posts"), {
@@ -1748,6 +1787,7 @@
                     author: currentName,
                     authorPhoto: currentPhoto,
                     authorEmail: currentEmail,
+                    authorUid: auth.currentUser.uid,
                     comments: [],
                     createdAt: serverTimestamp()
                 });
@@ -1757,6 +1797,7 @@
         });
 
         btnEditName.addEventListener('click', () => {
+            if (!requireLogin()) return;
             const currentName = profileNameDisplay.textContent;
             const newName = prompt('Ingresa tu nuevo nombre de usuario:', currentName);
             if (newName && newName.trim() !== '') {
