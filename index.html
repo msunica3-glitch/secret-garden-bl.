@@ -840,7 +840,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy, increment, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy, increment, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC79kLchfvUFYwM74jK_ChGjKL2aXvNpsI",
@@ -1024,7 +1024,7 @@
             window.switchView('perfil');
         };
 
-        // FUNCIÓN SEGUIR / DEJAR DE SEGUIR
+        // FUNCIÓN SEGUIR / DEJAR DE SEGUIR (ACTUALIZADA CON SETDOC Y MERGE)
         window.toggleFollow = async function(targetUsername, targetEmail) {
             const currentUser = auth.currentUser;
             const currentName = localStorage.getItem('bl_user_name');
@@ -1048,8 +1048,8 @@
                     btn.textContent = '✨ Seguir';
                     profileStatFollowers.textContent = Math.max(0, parseInt(profileStatFollowers.textContent) - 1);
                 } else {
-                    await setDoc(followRef, { email: currentEmail, name: currentName, timestamp: new Date() });
-                    await updateDoc(targetRef, { followersCount: increment(1) });
+                    await setDoc(followRef, { email: currentEmail, name: currentName, timestamp: serverTimestamp() }, { merge: true });
+                    await setDoc(targetRef, { followersCount: increment(1) }, { merge: true });
                     btn.textContent = 'Dejar de seguir';
                     profileStatFollowers.textContent = parseInt(profileStatFollowers.textContent) + 1;
                 }
@@ -1306,7 +1306,7 @@
             }
         };
 
-        // EVENTO DEL BOTÓN DE PUBLICAR OBRA
+        // EVENTO DEL BOTÓN DE PUBLICAR OBRA (CON SELECTOR DE GALERÍA MÓVIL)
         document.getElementById('btn-add-rec').addEventListener('click', () => {
             const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
@@ -1325,7 +1325,7 @@
             } else {
                 const imageInput = document.createElement('input');
                 imageInput.type = 'file';
-                imageInput.accept = 'image/*';
+                imageInput.accept = 'image/*'; // Atributo clave para que abra la galería móvil
                 
                 imageInput.onchange = (e) => {
                     const file = e.target.files[0];
