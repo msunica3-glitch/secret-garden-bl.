@@ -1187,15 +1187,26 @@
             try {
                 const targetRef = doc(db, "users", targetUsername);
                 const followRef = doc(db, "users", targetUsername, "followers", currentEmail);
+                
+                const myUserRef = doc(db, "users", currentName);
+                const followingRef = doc(db, "users", currentName, "following", targetEmail);
 
                 if (isCurrentlyFollowing) {
                     await deleteDoc(followRef);
                     await updateDoc(targetRef, { followersCount: increment(-1) });
+
+                    await deleteDoc(followingRef);
+                    await updateDoc(myUserRef, { followingCount: increment(-1) }).catch(() => {});
+
                     btn.textContent = '✨ Seguir';
                     profileStatFollowers.textContent = Math.max(0, parseInt(profileStatFollowers.textContent) - 1);
                 } else {
                     await setDoc(followRef, { email: currentEmail, name: currentName, timestamp: serverTimestamp() }, { merge: true });
                     await setDoc(targetRef, { followersCount: increment(1) }, { merge: true });
+
+                    await setDoc(followingRef, { email: targetEmail, name: targetUsername, timestamp: serverTimestamp() }, { merge: true });
+                    await setDoc(myUserRef, { followingCount: increment(1) }, { merge: true });
+
                     btn.textContent = 'Dejar de seguir';
                     profileStatFollowers.textContent = parseInt(profileStatFollowers.textContent) + 1;
                 }
