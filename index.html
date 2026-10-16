@@ -591,6 +591,14 @@
             gap: 8px;
             margin-bottom: 0.6rem;
             font-size: 0.82rem;
+            justify-content: space-between;
+        }
+
+        .comment-content-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            flex-grow: 1;
         }
 
         .comment-text {
@@ -599,6 +607,21 @@
             border-radius: 8px;
             flex-grow: 1;
             color: var(--text-light);
+        }
+
+        .btn-delete-comment {
+            background: none;
+            border: none;
+            color: #ff9999;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 2px 5px;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .btn-delete-comment:hover {
+            opacity: 1;
         }
 
         .comment-input-box {
@@ -1266,7 +1289,11 @@
             alert('Gracias por reportar. Nuestro equipo de administración revisará el contenido.');
         };
 
-        window.deletePost = async function(id) {
+        // ELIMINAR PUBLICACIÓN (Permitida si es el autor O si es el Admin msunica3@gmail.com)
+        window.deletePost = async function(id, authorEmail) {
+            const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+            const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
             if (confirm('¿Estás segura de que deseas eliminar esta publicación?')) {
                 try {
                     await deleteDoc(doc(db, "recommendations", id));
@@ -1325,6 +1352,8 @@
         window.loadRecommendations = async function() {
             const grid = document.getElementById('grid-recomendaciones');
             const currentName = localStorage.getItem('bl_user_name') || '';
+            const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+            const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
             try {
                 const q = query(collection(db, "recommendations"), orderBy("createdAt", "desc"));
@@ -1339,16 +1368,16 @@
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
-                    const isOwner = (data.author === currentName);
+                    const isOwner = (data.author === currentName || (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase()));
                     const likes = data.likes || 0;
                     const authorEmail = data.authorEmail || '';
                     const comments = data.comments || [];
 
                     let menuOptions = '';
-                    if (isOwner) {
+                    if (isOwner || isAdmin) {
                         menuOptions = `
-                            <button onclick="editPost('${id}', '${data.title.replace(/'/g, "\\'")}', '${data.desc.replace(/'/g, "\\'")}')">✏️ Editar</button>
-                            <button onclick="deletePost('${id}')" style="color:#ff9999;">🗑️ Eliminar</button>
+                            ${isOwner ? `<button onclick="editPost('${id}', '${data.title.replace(/'/g, "\\'")}', '${data.desc.replace(/'/g, "\\'")}')">✏️ Editar</button>` : ''}
+                            <button onclick="deletePost('${id}', '${authorEmail}')" style="color:#ff9999;">🗑️ Eliminar</button>
                             <button onclick="sharePost('${data.title.replace(/'/g, "\\'")}')">🔗 Compartir</button>
                         `;
                     } else {
@@ -1359,13 +1388,19 @@
                     }
 
                     let commentsHTML = '';
-                    comments.forEach(c => {
+                    comments.forEach((c, index) => {
+                        const isCommentOwner = (c.authorEmail && currentEmail && c.authorEmail.toLowerCase() === currentEmail.toLowerCase()) || (c.author === currentName);
+                        const showDeleteComment = isCommentOwner || isAdmin;
+
                         commentsHTML += `
                             <div class="comment-item">
-                                <img src="${c.authorPhoto}" class="user-clickable-avatar" onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')">
-                                <div class="comment-text">
-                                    <strong onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')" style="cursor:pointer; color:var(--accent-gold);">@${c.author}:</strong> ${c.text}
+                                <div class="comment-content-wrapper">
+                                    <img src="${c.authorPhoto}" class="user-clickable-avatar" onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')">
+                                    <div class="comment-text">
+                                        <strong onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')" style="cursor:pointer; color:var(--accent-gold);">@${c.author}:</strong> ${c.text}
+                                    </div>
                                 </div>
+                                ${showDeleteComment ? `<button class="btn-delete-comment" onclick="deleteComment('${id}',${index})" title="Eliminar comentario">🗑️</button>` : ''}
                             </div>
                         `;
                     });
@@ -1416,7 +1451,7 @@
             const commentText = input.value.trim();
             if (!commentText) return;
 
-            const currentName = localStorage.getItem('bl_user_name'] || 'Usuario';
+            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = localStorage.getItem('bl_user_email') || '';
 
@@ -1441,9 +1476,28 @@
             }
         };
 
-        // GESTIÓN DEL NUEVO MODAL DE PUBLICACIÓN (SIN PROMPT NI CONFIRM)
-        let selectedCustomImage = null;
+        // ELIMINAR COMENTARIO (Permitido al autor del comentario O al Admin msunica3@gmail.com)
+        window.deleteComment = async function(postId, commentIndex) {
+            if (!confirm('¿Deseas eliminar este comentario?')) return;
 
+            try {
+                const docRef = doc(db, "recommendations", postId);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    let comments = data.comments || [];
+                    comments.splice(commentIndex, 1);
+                    await updateDoc(docRef, { comments: comments });
+                    window.loadRecommendations();
+                }
+            } catch (err) {
+                console.error("Error al eliminar comentario:", err);
+                alert("No se pudo eliminar el comentario.");
+            }
+        };
+
+        // GESTIÓN DEL MODAL DE PUBLICACIÓN
+        let selectedCustomImage = null;
         const postModalOverlay = document.getElementById('post-modal-overlay');
         const modalInputTitle = document.getElementById('modal-input-title');
         const modalInputDesc = document.getElementById('modal-input-desc');
@@ -1462,7 +1516,6 @@
             postModalOverlay.classList.remove('active');
         });
 
-        // Este botón abre la galería directamente al hacer toque directo, sin bloqueos del navegador
         document.getElementById('btn-pick-gallery').addEventListener('click', () => {
             fixedInput.value = '';
             fixedInput.click();
@@ -1496,7 +1549,7 @@
 
             const finalImage = selectedCustomImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';
             const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
-            const currentPhoto = localStorage.getItem('bl_user_photo'] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = localStorage.getItem('bl_user_email') || '';
 
             postModalOverlay.classList.remove('active');
@@ -1524,6 +1577,9 @@
         // CARGAR DEBATES DEL FORO DESDE FIRESTORE
         window.loadForo = async function() {
             const listForo = document.getElementById('list-foro');
+            const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
+            const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
             try {
                 const q = query(collection(db, "forum_posts"), orderBy("createdAt", "desc"));
                 const querySnapshot = await getDocs(q);
@@ -1536,6 +1592,9 @@
                 listForo.innerHTML = '';
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
+                    const id = docSnap.id;
+                    const isOwner = (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase());
+
                     const item = document.createElement('div');
                     item.className = 'forum-item';
                     item.innerHTML = `
@@ -1546,12 +1605,28 @@
                                 <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • 0 respuestas</p>
                             </div>
                         </div>
-                        <a href="#" style="color:var(--accent-pink); text-decoration:none; font-weight:600;">Ver debate →</a>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <a href="#" style="color:var(--accent-pink); text-decoration:none; font-weight:600;">Ver debate →</a>
+                            ${(isOwner || isAdmin) ? `<button onclick="deleteForumPost('${id}')" style="background:none; border:none; color:#ff9999; cursor:pointer; font-size:1rem;" title="Eliminar debate">🗑️</button>` : ''}
+                        </div>
                     `;
                     listForo.appendChild(item);
                 });
             } catch (err) {
                 console.error("Error cargando foro:", err);
+            }
+        };
+
+        // ELIMINAR DEBATE DEL FORO (Autor o Admin)
+        window.deleteForumPost = async function(id) {
+            if (!confirm('¿Estás segura de que deseas eliminar este debate?')) return;
+            try {
+                await deleteDoc(doc(db, "forum_posts", id));
+                alert('Debate eliminado correctamente.');
+                window.loadForo();
+            } catch (err) {
+                console.error("Error al eliminar debate:", err);
+                alert("No se pudo eliminar el debate.");
             }
         };
 
