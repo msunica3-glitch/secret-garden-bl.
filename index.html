@@ -553,6 +553,10 @@
             font-size: 0.85rem;
             margin-top: 3rem;
         }
+        footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -604,7 +608,7 @@
                         <img id="user-avatar-img" src="" alt="Perfil">
                     </div>
 
-                    <!-- Modal de Perfil Flotante Simplificado -->
+                    <!-- Modal de Perfil Flotante -->
                     <div class="profile-modal" id="profile-modal">
                         <h3><span id="profile-name-display">Usuario</span> <span id="admin-badge-slot"></span></h3>
                         <p class="profile-email" id="profile-email-display">correo@email.com</p>
@@ -749,11 +753,12 @@
 
     <footer>
         <p>© 2026 SGB — Creado para la comunidad de fans del BL</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Soporte técnico: <a href="mailto:msunica3@gmail.com">msunica3@gmail.com</a></p>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC79kLchfvUFYwM74jK_ChGjKL2aXvNpsI",
@@ -848,7 +853,7 @@
                 profileViewBadge.innerHTML = '';
             }
 
-            btnEditName.style.display = 'none'; // Ocultar edición si es otro usuario
+            btnEditName.style.display = 'none';
             document.getElementById('profile-heading-title').textContent = '👤 Perfil de ' + username;
             
             switchView('perfil');
@@ -863,7 +868,6 @@
             profileViewImg.src = currentPhoto;
             profileViewEmail.textContent = currentEmail;
             
-            // Asignar Admin a tu usuario principal
             profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
             btnEditName.style.display = 'inline-block';
             document.getElementById('profile-heading-title').textContent = '👤 Mi Perfil';
@@ -899,13 +903,12 @@
                 profileNameDisplay.textContent = name;
                 profileEmailDisplay.textContent = email;
 
-                // ACTIVAR INSIGNIA ADMIN
-                adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
+                if (adminBadgeSlot) adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
+                if (profileViewBadge) profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
 
                 profileViewName.textContent = name;
                 profileViewEmail.textContent = email;
                 profileViewImg.src = photo;
-                profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
 
                 localStorage.setItem('bl_user_name', name);
                 localStorage.setItem('bl_user_email', email);
@@ -913,37 +916,43 @@
             } else {
                 btnLogin.style.display = 'flex';
                 userMenuContainer.style.display = 'none';
-                adminBadgeSlot.innerHTML = '';
+                if (adminBadgeSlot) adminBadgeSlot.innerHTML = '';
+                
                 localStorage.removeItem('bl_user_name');
                 localStorage.removeItem('bl_user_email');
                 localStorage.removeItem('bl_user_photo');
             }
         }
 
-        // REDIRECCIÓN Y AUTH
-        getRedirectResult(auth).then((result) => {
-            if (result && result.user) {
-                updateUI(result.user);
+        // AUTH CON POPUP (SOLUCIÓN MÓVIL)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                updateUI(user);
+            } else {
+                const savedName = localStorage.getItem('bl_user_name');
+                if (savedName) {
+                    btnLogin.style.display = 'none';
+                    userMenuContainer.style.display = 'block';
+                    profileNameDisplay.textContent = savedName;
+                    profileEmailDisplay.textContent = localStorage.getItem('bl_user_email') || '';
+                    const savedPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+                    userAvatarImg.src = savedPhoto;
+                    if (adminBadgeSlot) adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
+                } else {
+                    updateUI(null);
+                }
             }
-        }).catch((error) => console.error("Error redirección:", error));
-
-        const savedName = localStorage.getItem('bl_user_name');
-        if (savedName) {
-            btnLogin.style.display = 'none';
-            userMenuContainer.style.display = 'block';
-            profileNameDisplay.textContent = savedName;
-            profileEmailDisplay.textContent = localStorage.getItem('bl_user_email') || '';
-            const savedPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            userAvatarImg.src = savedPhoto;
-            adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
-        }
-
-        onAuthStateChanged(auth, (user) => updateUI(user));
+        });
 
         btnLogin.addEventListener('click', async () => {
             try {
-                await signInWithRedirect(auth, provider);
+                const result = await signInWithPopup(auth, provider);
+                if (result && result.user) {
+                    updateUI(result.user);
+                    alert(`¡Bienvenid@ ${result.user.displayName}!`);
+                }
             } catch (err) {
+                console.error("Error al iniciar sesión:", err);
                 alert("Error al iniciar sesión: " + err.message);
             }
         });
