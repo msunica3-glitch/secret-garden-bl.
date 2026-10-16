@@ -448,11 +448,70 @@
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
             box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            position: relative;
         }
 
         .card:hover {
             transform: translateY(-6px);
             box-shadow: 0 12px 35px rgba(212, 175, 55, 0.15);
+        }
+
+        /* MENÚ DE TRES PUNTOS */
+        .card-menu-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+        .card-menu-btn {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--border-color);
+            color: var(--accent-gold);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background: #0f1a14;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            width: 130px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+            z-index: 20;
+            overflow: hidden;
+        }
+
+        .card-dropdown.active {
+            display: block;
+        }
+
+        .card-dropdown button {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            padding: 0.5rem 0.8rem;
+            font-size: 0.8rem;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .card-dropdown button:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--accent-gold);
         }
 
         .card-img {
@@ -497,6 +556,26 @@
             border-top: 1px solid rgba(255,255,255,0.06);
             padding-top: 0.8rem;
             font-size: 0.82rem;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            transition: transform 0.2s;
+        }
+
+        .like-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .like-btn.liked {
+            color: var(--accent-pink);
         }
 
         /* COMENTARIOS */
@@ -690,55 +769,7 @@
             </div>
 
             <div class="grid" id="grid-recomendaciones">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop" class="card-img" alt="Manhwa">
-                    <div class="card-body">
-                        <span class="card-tag">Manhwa / Romance</span>
-                        <h3 class="card-title">Secret Whispers</h3>
-                        <p class="card-desc">Una historia sobre un encuentro inesperado en un jardín oculto bajo la luz de la luna...</p>
-                        <div class="card-footer">
-                            <div class="user-info-clickable" onclick="openUserProfile('FujoQueen', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop', false)">
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" class="user-clickable-avatar" alt="FujoQueen">
-                                <span>@FujoQueen</span>
-                            </div>
-                            <span>❤️ 142 Likes</span>
-                        </div>
-                    </div>
-                    <div class="comments-section">
-                        <div class="comment-item">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop" class="user-clickable-avatar" onclick="openUserProfile('Aria_BL', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop', false)">
-                            <div class="comment-text">
-                                <strong onclick="openUserProfile('Aria_BL', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop', false)" style="cursor:pointer; color:var(--accent-gold);">@Aria_BL:</strong> ¡Una obra maestra de misterio y romance!
-                            </div>
-                        </div>
-                        <div class="comment-input-box">
-                            <input type="text" placeholder="Escribe un comentario..." class="input-comment">
-                            <button onclick="addComment(this)">Comentar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop" class="card-img" alt="Manga">
-                    <div class="card-body">
-                        <span class="card-tag">Novela / Drama</span>
-                        <h3 class="card-title">Moonlight Romance</h3>
-                        <p class="card-desc">Drama, secretos de palacio y una lealtad inquebrantable en tiempos difíciles.</p>
-                        <div class="card-footer">
-                            <div class="user-info-clickable" onclick="openUserProfile('Aria_BL', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop', false)">
-                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop" class="user-clickable-avatar" alt="Aria_BL">
-                                <span>@Aria_BL</span>
-                            </div>
-                            <span>❤️ 98 Likes</span>
-                        </div>
-                    </div>
-                    <div class="comments-section">
-                        <div class="comment-input-box">
-                            <input type="text" placeholder="Escribe un comentario..." class="input-comment">
-                            <button onclick="addComment(this)">Comentar</button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Las publicaciones se cargarán automáticamente desde Firebase Firestore -->
             </div>
         </div>
     </div>
@@ -804,6 +835,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC79kLchfvUFYwM74jK_ChGjKL2aXvNpsI",
@@ -817,6 +849,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
         const btnLogin = document.getElementById('btn-login');
@@ -922,6 +955,7 @@
         window.addEventListener('click', () => {
             profileModal.classList.remove('active');
             notifModal.classList.remove('active');
+            document.querySelectorAll('.card-dropdown').forEach(d => d.classList.remove('active'));
         });
 
         profileModal.addEventListener('click', e => e.stopPropagation());
@@ -1004,6 +1038,213 @@
             }
         });
 
+        // MENÚ DESPLEGABLE DE TRES PUNTOS
+        window.toggleCardMenu = function(event, btn) {
+            event.stopPropagation();
+            document.querySelectorAll('.card-dropdown').forEach(d => {
+                if (d !== btn.nextElementSibling) d.classList.remove('active');
+            });
+            const dropdown = btn.nextElementSibling;
+            dropdown.classList.toggle('active');
+        };
+
+        // COMPARTIR PUBLICACIÓN
+        window.sharePost = function(title) {
+            if (navigator.share) {
+                navigator.share({ title: title, text: `¡Mira esta recomendación en Secret Garden BL: ${title}!`, url: window.location.href })
+                .catch(() => alert('Enlace copiado al portapapeles.'));
+            } else {
+                alert(`Compartir: "${title}" — ${window.location.href}`);
+            }
+        };
+
+        // REPORTAR PUBLICACIÓN
+        window.reportPost = function() {
+            alert('Gracias por reportar. Nuestro equipo de administración revisará el contenido.');
+        };
+
+        // ELIMINAR PUBLICACIÓN
+        window.deletePost = async function(id) {
+            if (confirm('¿Estás segura de que deseas eliminar esta publicación?')) {
+                try {
+                    await deleteDoc(doc(db, "recommendations", id));
+                    alert('Publicación eliminada correctamente.');
+                    loadRecommendations();
+                } catch (err) {
+                    console.error("Error al eliminar:", err);
+                    alert("No se pudo eliminar la publicación.");
+                }
+            }
+        };
+
+        // EDITAR PUBLICACIÓN
+        window.editPost = async function(id, oldTitle, oldDesc) {
+            const newTitle = prompt('Editar título:', oldTitle);
+            if (!newTitle) return;
+            const newDesc = prompt('Editar descripción:', oldDesc);
+            if (!newDesc) return;
+
+            try {
+                await updateDoc(doc(db, "recommendations", id), {
+                    title: newTitle,
+                    desc: newDesc
+                });
+                alert('¡Publicación actualizada!');
+                loadRecommendations();
+            } catch (err) {
+                console.error("Error al editar:", err);
+                alert("No se pudo actualizar la publicación.");
+            }
+        };
+
+        // DAR LIKE
+        window.toggleLike = async function(btn, id) {
+            const isLiked = btn.classList.contains('liked');
+            const spanCount = btn.querySelector('.like-count');
+            let currentLikes = parseInt(spanCount.textContent);
+
+            if (isLiked) {
+                btn.classList.remove('liked');
+                spanCount.textContent = currentLikes - 1;
+            } else {
+                btn.classList.add('liked');
+                spanCount.textContent = currentLikes + 1;
+            }
+
+            try {
+                const docRef = doc(db, "recommendations", id);
+                await updateDoc(docRef, {
+                    likes: increment(isLiked ? -1 : 1)
+                });
+            } catch (err) {
+                console.error("Error actualizando likes:", err);
+            }
+        };
+
+        // CARGAR RECOMENDACIONES DESDE FIRESTORE
+        async function loadRecommendations() {
+            const grid = document.getElementById('grid-recomendaciones');
+            const currentName = localStorage.getItem('bl_user_name') || '';
+
+            try {
+                const q = query(collection(db, "recommendations"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    grid.innerHTML = '<p style="color: var(--text-dim); grid-column: 1/-1;">Aún no hay obras publicadas en el jardín. ¡Sé la primera persona en publicar una!</p>';
+                    return;
+                }
+
+                grid.innerHTML = '';
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
+                    const isOwner = (data.author === currentName);
+                    const likes = data.likes || 0;
+
+                    let menuOptions = '';
+                    if (isOwner) {
+                        menuOptions = `
+                            <button onclick="editPost('${id}', '${data.title.replace(/'/g, "\\'")}', '${data.desc.replace(/'/g, "\\'")}')">✏️ Editar</button>
+                            <button onclick="deletePost('${id}')" style="color:#ff9999;">🗑️ Eliminar</button>
+                            <button onclick="sharePost('${data.title.replace(/'/g, "\\'")}')">🔗 Compartir</button>
+                        `;
+                    } else {
+                        menuOptions = `
+                            <button onclick="reportPost()">🚩 Reportar</button>
+                            <button onclick="sharePost('${data.title.replace(/'/g, "\\'")}')">🔗 Compartir</button>
+                        `;
+                    }
+
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-menu-container">
+                            <button class="card-menu-btn" onclick="toggleCardMenu(event, this)">⋮</button>
+                            <div class="card-dropdown">
+                                ${menuOptions}
+                            </div>
+                        </div>
+                        <img src="${data.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop'}" class="card-img" alt="Recomendación">
+                        <div class="card-body">
+                            <span class="card-tag">Recomendación</span>
+                            <h3 class="card-title">${data.title}</h3>
+                            <p class="card-desc">${data.desc}</p>
+                            <div class="card-footer">
+                                <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', true)">
+                                    <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
+                                    <span>@${data.author}</span>
+                                </div>
+                                <button class="like-btn" onclick="toggleLike(this, '${id}')">
+                                    ❤️ <span class="like-count">${likes}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="comments-section">
+                            <div class="comment-input-box">
+                                <input type="text" placeholder="Escribe un comentario..." class="input-comment">
+                                <button onclick="addComment(this)">Comentar</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Error cargando recomendaciones:", err);
+            }
+        }
+
+        // PUBLICAR RECOMENDACIÓN CON SUBIDA DE FOTO DESDE GALERÍA
+        document.getElementById('btn-add-rec').addEventListener('click', () => {
+            const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            
+            const title = prompt('Ingresa el título de la obra que recomiendas:');
+            if (!title) return;
+
+            const desc = prompt('Escribe una breve descripción o reseña:');
+            if (!desc) return;
+
+            const imageInput = document.createElement('input');
+            imageInput.type = 'file';
+            imageInput.accept = 'image/*';
+            
+            imageInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = async function(event) {
+                        const base64Image = event.target.result;
+                        await savePostToFirestore(title, desc, currentName, currentPhoto, base64Image);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    await savePostToFirestore(title, desc, currentName, currentPhoto, 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop');
+                }
+            };
+            
+            imageInput.click();
+        });
+
+        async function savePostToFirestore(title, desc, author, authorPhoto, image) {
+            try {
+                await addDoc(collection(db, "recommendations"), {
+                    title: title,
+                    desc: desc,
+                    author: author,
+                    authorPhoto: authorPhoto,
+                    image: image,
+                    likes: 0,
+                    createdAt: new Date()
+                });
+                alert('¡Tu obra se ha publicado permanentemente en el jardín!');
+                loadRecommendations();
+            } catch (err) {
+                console.error("Error al publicar:", err);
+                alert("Hubo un error al guardar la publicación.");
+            }
+        }
+
         window.addComment = function(button) {
             const input = button.previousElementSibling;
             const commentText = input.value.trim();
@@ -1038,43 +1279,8 @@
             }
         });
 
-        document.getElementById('btn-add-rec').addEventListener('click', () => {
-            const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
-            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            
-            const title = prompt('Ingresa el título de la obra que recomiendas:');
-            if (!title) return;
-
-            const desc = prompt('Escribe una breve descripción o reseña:');
-            if (!desc) return;
-
-            const grid = document.getElementById('grid-recomendaciones');
-            const newCard = document.createElement('div');
-            newCard.className = 'card';
-            newCard.innerHTML = `
-                <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop" class="card-img" alt="Recomendación">
-                <div class="card-body">
-                    <span class="card-tag">Recomendación</span>
-                    <h3 class="card-title">${title}</h3>
-                    <p class="card-desc">${desc}</p>
-                    <div class="card-footer">
-                        <div class="user-info-clickable" onclick="openUserProfile('${currentName}', '${currentPhoto}', true)">
-                            <img src="${currentPhoto}" class="user-clickable-avatar" alt="${currentName}">
-                            <span>@${currentName}</span>
-                        </div>
-                        <span>❤️ 1 Like</span>
-                    </div>
-                </div>
-                <div class="comments-section">
-                    <div class="comment-input-box">
-                        <input type="text" placeholder="Escribe un comentario..." class="input-comment">
-                        <button onclick="addComment(this)">Comentar</button>
-                    </div>
-                </div>
-            `;
-            grid.prepend(newCard);
-            alert('¡Tu obra se ha publicado en el jardín!');
-        });
+        // Cargar al iniciar la página
+        loadRecommendations();
     </script>
 </body>
 </html>
