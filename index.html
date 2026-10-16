@@ -958,7 +958,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, doc, deleteDoc, updateDoc, query, orderBy, increment, getDoc, setDoc, serverTimestamp, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, deleteDoc, updateDoc, query, where, orderBy, increment, getDoc, setDoc, serverTimestamp, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC79kLchfvUFYwM74jK_ChGjKL2aXvNpsI",
@@ -1037,12 +1037,17 @@
             }
         }
 
-        // CARGAR NOTIFICACIONES EN TIEMPO REAL DESDE FIRESTORE
+        // CARGAR NOTIFICACIONES EN TIEMPO REAL DESDE LA COLECCIÓN GLOBAL
         function loadNotifications() {
             const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
             if (!currentEmail) return;
 
-            const q = query(collection(db, "users", currentEmail, "notifications"), orderBy("createdAt", "desc"));
+            const q = query(
+                collection(db, "notifications"), 
+                where("recipientEmail", "==", currentEmail.toLowerCase()),
+                orderBy("createdAt", "desc")
+            );
+
             onSnapshot(q, (snapshot) => {
                 let html = `
                     <div class="notif-item">
@@ -1050,8 +1055,8 @@
                         <button class="btn-mark-read" onclick="markRead(this)">✓</button>
                     </div>
                 `;
-                snapshot.forEach(doc => {
-                    const data = doc.data();
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
                     html += `
                         <div class="notif-item unread">
                             <div>❤️ <strong>@${data.sender}</strong> le dio me gusta a tu obra "${data.postTitle}"</div>
@@ -1061,6 +1066,8 @@
                 });
                 notifList.innerHTML = html;
                 updateNotifCount();
+            }, (error) => {
+                console.error("Error escuchando notificaciones:", error);
             });
         }
 
@@ -1340,7 +1347,7 @@
             }
         };
 
-        // FUNCIÓN DE LIKE CON GENERACIÓN DE NOTIFICACIÓN AUTOMÁTICA
+        // FUNCIÓN DE LIKE CON NOTIFICACIÓN GLOBAL EN FIRESTORE
         window.toggleLike = async function(btn, id, authorEmail, postTitle) {
             const isLiked = btn.classList.contains('liked');
             const spanCount = btn.querySelector('.like-count');
@@ -1353,12 +1360,14 @@
                 btn.classList.add('liked');
                 spanCount.textContent = currentLikes + 1;
 
-                // Crear notificación en Firestore para el autor de la obra si no es el mismo usuario
+                // Enviar notificación a la colección global 'notifications'
                 const currentEmail = auth.currentUser ? auth.currentUser.email : localStorage.getItem('bl_user_email');
                 const currentName = localStorage.getItem('bl_user_name') || 'Alguien';
+
                 if (authorEmail && currentEmail && authorEmail.toLowerCase() !== currentEmail.toLowerCase()) {
                     try {
-                        await addDoc(collection(db, "users", authorEmail, "notifications"), {
+                        await addDoc(collection(db, "notifications"), {
+                            recipientEmail: authorEmail.toLowerCase(),
                             sender: currentName,
                             postTitle: postTitle,
                             createdAt: serverTimestamp()
@@ -1593,7 +1602,7 @@
             }
         });
 
-        // TIEMPO REAL CON ONSNAPSHOT PARA EL FORO (CON DEBATES Y RESPUESTAS INTERactivas)
+        // TIEMPO REAL CON ONSNAPSHOT PARA EL FORO
         window.loadForo = function() {
             const listForo = document.getElementById('list-foro');
             const currentName = localStorage.getItem('bl_user_name') || '';
