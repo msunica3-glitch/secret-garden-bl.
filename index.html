@@ -681,6 +681,9 @@
 </head>
 <body>
 
+    <!-- INPUT FIJO OCULTO PARA LA GALERÍA MÓVIL (EVITA CONGELAMIENTOS) -->
+    <input type="file" id="fixed-gallery-input" accept="image/*" style="display: none;">
+
     <header>
         <a href="#" class="logo" onclick="switchView('home')">🌸 Secret Garden BL</a>
         <nav>
@@ -857,7 +860,7 @@
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        const ADMIN_EMAIL = "msunica3@gmail.com"; // Tu correo de administrador
+        const ADMIN_EMAIL = "msunica3@gmail.com";
 
         const btnLogin = document.getElementById('btn-login');
         const userMenuContainer = document.getElementById('user-menu-container');
@@ -926,13 +929,11 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // VER PERFIL DE OTRO USUARIO CON SOPORTE DE SEGUIR
         window.openUserProfile = async function(username, avatarUrl, email = '') {
             profileViewName.textContent = username;
             profileViewImg.src = avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             profileViewEmail.textContent = email ? '@' + email.split('@')[0] : '@' + username.toLowerCase().replace(/\s+/g, '');
             
-            // Mostrar insignia de admin SÓLO si el correo coincide exactamente con el de la administradora
             if (email && email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
                 profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
             } else {
@@ -945,7 +946,6 @@
             const currentUser = auth.currentUser;
             const currentEmail = currentUser ? currentUser.email : localStorage.getItem('bl_user_email');
 
-            // Cargar estadísticas y estado de seguimiento desde Firestore
             let followersCount = 0;
             let followingCount = 0;
             let isFollowing = false;
@@ -971,7 +971,6 @@
             profileStatFollowers.textContent = followersCount;
             profileStatFollowing.textContent = followingCount;
 
-            // Configurar botón de Seguir (si no es su propio perfil)
             if (currentEmail && email && currentEmail.toLowerCase() !== email.toLowerCase()) {
                 profileActionContainer.innerHTML = `
                     <button class="btn-add" id="btn-follow-toggle" onclick="toggleFollow('${username}', '${email}')">
@@ -985,7 +984,6 @@
             window.switchView('perfil');
         };
 
-        // ABRIR MI PROPIO PERFIL
         window.openMyProfile = async function() {
             const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
@@ -995,7 +993,6 @@
             profileViewImg.src = currentPhoto;
             profileViewEmail.textContent = currentEmail;
             
-            // Insignia de admin solo si es la cuenta del admin
             if (currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
                 profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
             } else {
@@ -1024,7 +1021,6 @@
             window.switchView('perfil');
         };
 
-        // FUNCIÓN SEGUIR / DEJAR DE SEGUIR (ACTUALIZADA CON SETDOC Y MERGE)
         window.toggleFollow = async function(targetUsername, targetEmail) {
             const currentUser = auth.currentUser;
             const currentName = localStorage.getItem('bl_user_name');
@@ -1086,7 +1082,6 @@
                 profileNameDisplay.textContent = name;
                 profileEmailDisplay.textContent = email;
 
-                // Mostrar insignia de admin SOLO en el menú si es tu correo
                 if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
                     if (adminBadgeSlot) adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
                 } else {
@@ -1154,7 +1149,6 @@
             }
         });
 
-        // FUNCIONES GLOBALES DE INTERACCIÓN
         window.toggleCardMenu = function(event, btn) {
             event.stopPropagation();
             document.querySelectorAll('.card-dropdown').forEach(d => {
@@ -1232,7 +1226,6 @@
             }
         };
 
-        // CARGAR RECOMENDACIONES DESDE FIRESTORE
         window.loadRecommendations = async function() {
             const grid = document.getElementById('grid-recomendaciones');
             const currentName = localStorage.getItem('bl_user_name') || '';
@@ -1306,7 +1299,7 @@
             }
         };
 
-        // EVENTO DEL BOTÓN DE PUBLICAR OBRA (CON SELECTOR DE GALERÍA MÓVIL)
+        // EVENTO DEL BOTÓN DE PUBLICAR OBRA USANDO EL INPUT FIJO MÓVIL
         document.getElementById('btn-add-rec').addEventListener('click', () => {
             const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
@@ -1323,11 +1316,10 @@
             if (usarImagenPorDefecto) {
                 savePostToFirestore(title, desc, currentName, currentPhoto, currentEmail, 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop');
             } else {
-                const imageInput = document.createElement('input');
-                imageInput.type = 'file';
-                imageInput.accept = 'image/*'; // Atributo clave para que abra la galería móvil
-                
-                imageInput.onchange = (e) => {
+                const fixedInput = document.getElementById('fixed-gallery-input');
+                fixedInput.value = ''; // Limpiar selección anterior
+
+                fixedInput.onchange = (e) => {
                     const file = e.target.files[0];
                     if (file) {
                         const reader = new FileReader();
@@ -1335,11 +1327,10 @@
                             savePostToFirestore(title, desc, currentName, currentPhoto, currentEmail, event.target.result);
                         };
                         reader.readAsDataURL(file);
-                    } else {
-                        savePostToFirestore(title, desc, currentName, currentPhoto, currentEmail, 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop');
                     }
                 };
-                imageInput.click();
+
+                fixedInput.click(); // Activa la galería móvil de forma nativa sin bloqueos
             }
         });
 
@@ -1363,7 +1354,6 @@
             }
         }
 
-        // EVENTO DEL BOTÓN NUEVO DEBATE EN EL FORO
         document.getElementById('btn-add-forum').addEventListener('click', () => {
             const debateTitle = prompt('¿Sobre qué tema te gustaría iniciar un debate en el foro?');
             if (!debateTitle) return;
@@ -1425,7 +1415,6 @@
             }
         });
 
-        // Cargar al iniciar la página
         window.loadRecommendations();
     </script>
 </body>
