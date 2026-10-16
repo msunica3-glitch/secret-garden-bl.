@@ -663,6 +663,91 @@
             transform: scale(1.04);
         }
 
+        /* MODAL DE PUBLICACIÓN NUEVO Y SEGURO */
+        .custom-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .custom-modal-overlay.active {
+            display: flex;
+        }
+
+        .custom-modal {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+        }
+
+        .custom-modal h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-gold);
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .custom-modal label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 0.3rem;
+        }
+
+        .custom-modal input, .custom-modal textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.7rem 1rem;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .custom-modal textarea {
+            resize: vertical;
+            height: 90px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 0.7rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-cancel-modal {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-light);
+        }
+
+        .btn-confirm-modal {
+            background: var(--accent-pink);
+            color: white;
+        }
+
         footer {
             text-align: center;
             padding: 2.5rem;
@@ -680,6 +765,30 @@
     </style>
 </head>
 <body>
+
+    <!-- MODAL FORMULARIO DE PUBLICACIÓN (Sustituye por completo a prompt y confirm) -->
+    <div class="custom-modal-overlay" id="post-modal-overlay">
+        <div class="custom-modal">
+            <h3>🌸 Publicar Nueva Obra</h3>
+            <label for="modal-input-title">Título de la obra</label>
+            <input type="text" id="modal-input-title" placeholder="Ej. Jinx, La tiendita...">
+
+            <label for="modal-input-desc">Reseña o descripción</label>
+            <textarea id="modal-input-desc" placeholder="Escribe por qué la recomiendas..."></textarea>
+
+            <label>Imagen de portada</label>
+            <div style="display: flex; gap: 10px; margin-bottom: 1rem;">
+                <button type="button" class="btn-add" id="btn-pick-gallery" style="flex: 1; font-size: 0.8rem;">📁 Elegir de Galería</button>
+                <button type="button" class="btn-add" id="btn-use-default-img" style="flex: 1; font-size: 0.8rem; background: var(--accent-green); border: 1px solid var(--border-color);">✨ Usar Automática</button>
+            </div>
+            <p id="selected-file-name" style="font-size: 0.75rem; color: var(--accent-gold); margin-bottom: 1rem; font-style: italic;">Ningún archivo seleccionado (por defecto usará automática si no eliges).</p>
+
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel-modal" id="btn-close-modal">Cancelar</button>
+                <button type="button" class="btn-confirm-modal" id="btn-submit-post">Publicar</button>
+            </div>
+        </div>
+    </div>
 
     <input type="file" id="fixed-gallery-input" accept="image/*" style="display: none;">
 
@@ -763,7 +872,7 @@
         <div class="container">
             <div class="section-title">
                 <h2>📚 Recomendaciones de la Comunidad</h2>
-                <button class="btn-add" id="btn-add-rec">+ Publicar obra</button>
+                <button class="btn-add" id="btn-open-modal">+ Publicar obra</button>
             </div>
 
             <div class="grid" id="grid-recomendaciones">
@@ -1307,7 +1416,7 @@
             const commentText = input.value.trim();
             if (!commentText) return;
 
-            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
+            const currentName = localStorage.getItem('bl_user_name'] || 'Usuario';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = localStorage.getItem('bl_user_email') || '';
 
@@ -1332,50 +1441,74 @@
             }
         };
 
-        // BOTÓN PUBLICAR OBRA CORREGIDO (SIN setTimeout QUE BLOQUEABA LA GALERÍA)
-        document.getElementById('btn-add-rec').addEventListener('click', () => {
-            const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
-            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            const currentEmail = localStorage.getItem('bl_user_email') || '';
-            
-            const title = prompt('Ingresa el título de la obra que recomiendas:');
-            if (!title) return;
+        // GESTIÓN DEL NUEVO MODAL DE PUBLICACIÓN (SIN PROMPT NI CONFIRM)
+        let selectedCustomImage = null;
 
-            const desc = prompt('Escribe una breve descripción o reseña:');
-            if (!desc) return;
+        const postModalOverlay = document.getElementById('post-modal-overlay');
+        const modalInputTitle = document.getElementById('modal-input-title');
+        const modalInputDesc = document.getElementById('modal-input-desc');
+        const selectedFileName = document.getElementById('selected-file-name');
+        const fixedInput = document.getElementById('fixed-gallery-input');
 
-            const usarImagenPorDefecto = confirm('¿Deseas usar una imagen de portada automática? (Acepta para sí, Cancela para subir una foto de tu galería)');
-            
-            if (usarImagenPorDefecto) {
-                savePostToFirestore(title, desc, currentName, currentPhoto, currentEmail, 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop');
-            } else {
-                const fixedInput = document.getElementById('fixed-gallery-input');
-                fixedInput.value = ''; 
-
-                fixedInput.onchange = (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(event) {
-                            savePostToFirestore(title, desc, currentName, currentPhoto, currentEmail, event.target.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                };
-
-                fixedInput.click(); 
-            }
+        document.getElementById('btn-open-modal').addEventListener('click', () => {
+            modalInputTitle.value = '';
+            modalInputDesc.value = '';
+            selectedCustomImage = null;
+            selectedFileName.textContent = 'Ningún archivo seleccionado (por defecto usará automática si no eliges).';
+            postModalOverlay.classList.add('active');
         });
 
-        async function savePostToFirestore(title, desc, author, authorPhoto, authorEmail, image) {
+        document.getElementById('btn-close-modal').addEventListener('click', () => {
+            postModalOverlay.classList.remove('active');
+        });
+
+        // Este botón abre la galería directamente al hacer toque directo, sin bloqueos del navegador
+        document.getElementById('btn-pick-gallery').addEventListener('click', () => {
+            fixedInput.value = '';
+            fixedInput.click();
+        });
+
+        fixedInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFileName.textContent = `Archivo seleccionado: ${file.name}`;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    selectedCustomImage = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        document.getElementById('btn-use-default-img').addEventListener('click', () => {
+            selectedCustomImage = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';
+            selectedFileName.textContent = 'Imagen automática seleccionada.';
+        });
+
+        document.getElementById('btn-submit-post').addEventListener('click', async () => {
+            const title = modalInputTitle.value.trim();
+            const desc = modalInputDesc.value.trim();
+
+            if (!title || !desc) {
+                alert('Por favor, completa el título y la descripción.');
+                return;
+            }
+
+            const finalImage = selectedCustomImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';
+            const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
+            const currentPhoto = localStorage.getItem('bl_user_photo'] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = localStorage.getItem('bl_user_email') || '';
+
+            postModalOverlay.classList.remove('active');
+
             try {
                 await addDoc(collection(db, "recommendations"), {
                     title: title,
                     desc: desc,
-                    author: author,
-                    authorPhoto: authorPhoto,
-                    authorEmail: authorEmail,
-                    image: image,
+                    author: currentName,
+                    authorPhoto: currentPhoto,
+                    authorEmail: currentEmail,
+                    image: finalImage,
                     likes: 0,
                     comments: [],
                     createdAt: serverTimestamp()
@@ -1386,7 +1519,7 @@
                 console.error("Error al publicar:", err);
                 alert("Hubo un error al guardar la publicación.");
             }
-        }
+        });
 
         // CARGAR DEBATES DEL FORO DESDE FIRESTORE
         window.loadForo = async function() {
