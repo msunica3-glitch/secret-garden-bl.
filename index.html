@@ -73,6 +73,137 @@
             color: var(--accent-pink);
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* NOTIFICACIONES */
+        .notif-container {
+            position: relative;
+        }
+
+        .notif-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border-color);
+            color: var(--accent-gold);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .notif-btn:hover {
+            background: rgba(226, 176, 74, 0.2);
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--accent-pink);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .notif-modal {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 300px;
+            max-height: 380px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .notif-modal.active {
+            display: block;
+        }
+
+        .notif-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .notif-header h4 {
+            font-size: 0.95rem;
+            color: var(--accent-gold);
+        }
+
+        .btn-clear-notif {
+            background: none;
+            border: none;
+            color: var(--accent-pink);
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .notif-item {
+            padding: 0.6rem;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.2);
+            margin-bottom: 0.5rem;
+            font-size: 0.82rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .notif-item.unread {
+            border-left: 3px solid var(--accent-pink);
+            background: rgba(255, 133, 161, 0.1);
+        }
+
+        .btn-mark-read {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-mark-read:hover {
+            color: var(--accent-gold);
+        }
+
+        /* BADGE ADMIN */
+        .admin-badge {
+            background: linear-gradient(135deg, #e2b04a, #b8860b);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 7px;
+            border-radius: 6px;
+            margin-left: 6px;
+            display: inline-block;
+            vertical-align: middle;
+            text-transform: uppercase;
+            box-shadow: 0 0 8px rgba(226, 176, 74, 0.5);
+        }
+
         .btn-google {
             background: #ffffff;
             color: #333;
@@ -116,7 +247,29 @@
             object-fit: cover;
         }
 
-        /* MODAL DE PERFIL FLOTANTE ACTUALIZADO */
+        /* AVATAR DE COMENTARIOS / PUBLICACIONES */
+        .user-clickable-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--accent-gold);
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .user-clickable-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .user-info-clickable {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        /* MODAL DE PERFIL FLOTANTE */
         .profile-modal {
             display: none;
             position: absolute;
@@ -148,21 +301,6 @@
             color: var(--text-dim);
             margin-bottom: 1rem;
             word-break: break-all;
-        }
-
-        .profile-stats {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            background: rgba(0,0,0,0.3);
-            padding: 0.6rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .profile-stats strong {
-            color: var(--text-light);
         }
 
         .profile-btn {
@@ -331,6 +469,54 @@
             font-size: 0.85rem;
         }
 
+        /* SECCIÓN DE COMENTARIOS DENTRO DE CARD */
+        .comments-section {
+            background: rgba(0,0,0,0.2);
+            padding: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .comment-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 0.6rem;
+            font-size: 0.82rem;
+        }
+
+        .comment-text {
+            background: rgba(255,255,255,0.05);
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            flex-grow: 1;
+        }
+
+        .comment-input-box {
+            display: flex;
+            gap: 6px;
+            margin-top: 0.6rem;
+        }
+
+        .comment-input-box input {
+            flex-grow: 1;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.3rem 0.8rem;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .comment-input-box button {
+            background: var(--accent-pink);
+            border: none;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
         /* FORO SECTION */
         .forum-list {
             display: flex;
@@ -379,27 +565,53 @@
             <a onclick="switchView('foro')">Foro</a>
         </nav>
         
-        <div class="auth-container">
-            <!-- Botón de Entrar con Google -->
-            <button class="btn-google" id="btn-login">
-                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-                <span>Entrar con Google</span>
-            </button>
-
-            <!-- Avatar Circular -->
-            <div id="user-menu-container" style="display: none;">
-                <div class="user-avatar-btn" id="avatar-toggle-btn">
-                    <img id="user-avatar-img" src="" alt="Perfil">
+        <div class="header-actions">
+            <!-- BOTÓN Y MENÚ DE NOTIFICACIONES -->
+            <div class="notif-container">
+                <button class="notif-btn" id="notif-toggle-btn">
+                    🔔
+                    <span class="notif-badge" id="notif-badge">2</span>
+                </button>
+                <div class="notif-modal" id="notif-modal">
+                    <div class="notif-header">
+                        <h4>Notificaciones</h4>
+                        <button class="btn-clear-notif" id="btn-mark-all-read">Marcar leídas</button>
+                    </div>
+                    <div id="notif-list">
+                        <div class="notif-item unread">
+                            <div>💬 @FujoQueen comentó tu recomendación.</div>
+                            <button class="btn-mark-read" onclick="markRead(this)">✓</button>
+                        </div>
+                        <div class="notif-item unread">
+                            <div>🌸 ¡Bienvenida a Secret Garden BL!</div>
+                            <button class="btn-mark-read" onclick="markRead(this)">✓</button>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <!-- Modal de Perfil Flotante Simplificado -->
-                <div class="profile-modal" id="profile-modal">
-                    <h3 id="profile-name-display">Usuario</h3>
-                    <p class="profile-email" id="profile-email-display">correo@email.com</p>
-                    
-                    <!-- Enlace directo a la sección de perfil -->
-                    <a class="profile-btn" onclick="switchView('perfil'); profileModal.classList.remove('active');">👤 Perfil</a>
-                    <button class="profile-btn logout" id="btn-logout">🚪 Cerrar Sesión</button>
+            <!-- CONTENEDOR DE USUARIO Y LOGIN -->
+            <div class="auth-container">
+                <!-- Botón de Entrar con Google -->
+                <button class="btn-google" id="btn-login">
+                    <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                    <span>Entrar con Google</span>
+                </button>
+
+                <!-- Avatar Circular -->
+                <div id="user-menu-container" style="display: none;">
+                    <div class="user-avatar-btn" id="avatar-toggle-btn">
+                        <img id="user-avatar-img" src="" alt="Perfil">
+                    </div>
+
+                    <!-- Modal de Perfil Flotante Simplificado -->
+                    <div class="profile-modal" id="profile-modal">
+                        <h3><span id="profile-name-display">Usuario</span> <span id="admin-badge-slot"></span></h3>
+                        <p class="profile-email" id="profile-email-display">correo@email.com</p>
+                        
+                        <a class="profile-btn" onclick="openMyProfile(); profileModal.classList.remove('active');">👤 Mi Perfil</a>
+                        <button class="profile-btn logout" id="btn-logout">🚪 Cerrar Sesión</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -426,6 +638,7 @@
             </div>
 
             <div class="grid" id="grid-recomendaciones">
+                <!-- CARD 1 -->
                 <div class="card">
                     <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop" class="card-img" alt="Manhwa">
                     <div class="card-body">
@@ -433,12 +646,29 @@
                         <h3 class="card-title">Secret Whispers</h3>
                         <p class="card-desc">Una historia sobre un encuentro inesperado en un jardín oculto...</p>
                         <div class="card-footer">
-                            <span>Por: @FujoQueen</span>
+                            <div class="user-info-clickable" onclick="openUserProfile('FujoQueen', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop', false)">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" class="user-clickable-avatar" alt="FujoQueen">
+                                <span>@FujoQueen</span>
+                            </div>
                             <span>❤️ 142 Likes</span>
+                        </div>
+                    </div>
+                    <!-- COMENTARIOS DE LA CARD -->
+                    <div class="comments-section">
+                        <div class="comment-item">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop" class="user-clickable-avatar" onclick="openUserProfile('Aria_BL', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop', false)">
+                            <div class="comment-text">
+                                <strong onclick="openUserProfile('Aria_BL', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop', false)" style="cursor:pointer; color:var(--accent-gold);">@Aria_BL:</strong> ¡Me encanta este manhwa!
+                            </div>
+                        </div>
+                        <div class="comment-input-box">
+                            <input type="text" placeholder="Escribe un comentario..." class="input-comment">
+                            <button onclick="addComment(this)">Comentar</button>
                         </div>
                     </div>
                 </div>
 
+                <!-- CARD 2 -->
                 <div class="card">
                     <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop" class="card-img" alt="Manga">
                     <div class="card-body">
@@ -446,8 +676,17 @@
                         <h3 class="card-title">Moonlight Romance</h3>
                         <p class="card-desc">Drama, secretos de palacio y una lealtad inquebrantable.</p>
                         <div class="card-footer">
-                            <span>Por: @Aria_BL</span>
+                            <div class="user-info-clickable" onclick="openUserProfile('Aria_BL', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop', false)">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop" class="user-clickable-avatar" alt="Aria_BL">
+                                <span>@Aria_BL</span>
+                            </div>
                             <span>❤️ 98 Likes</span>
+                        </div>
+                    </div>
+                    <div class="comments-section">
+                        <div class="comment-input-box">
+                            <input type="text" placeholder="Escribe un comentario..." class="input-comment">
+                            <button onclick="addComment(this)">Comentar</button>
                         </div>
                     </div>
                 </div>
@@ -465,17 +704,12 @@
 
             <div class="forum-list" id="list-foro">
                 <div class="forum-item">
-                    <div>
-                        <h3>🔍 Busco recomendaciones estilo Omegaverse / Fantasía</h3>
-                        <p style="font-size:0.85rem; color:var(--text-dim)">Iniciado por @FujoReader • 12 respuestas</p>
-                    </div>
-                    <a href="#" style="color:var(--accent-pink); text-decoration:none;">Ver debate →</a>
-                </div>
-
-                <div class="forum-item">
-                    <div>
-                        <h3>☕ ¿Cuál fue el primer BL que leyeron este año?</h3>
-                        <p style="font-size:0.85rem; color:var(--text-dim)">Iniciado por @CherryBL • 28 respuestas</p>
+                    <div class="user-info-clickable" onclick="openUserProfile('FujoReader', 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=200&auto=format&fit=crop', false)">
+                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=200&auto=format&fit=crop" class="user-clickable-avatar" alt="FujoReader">
+                        <div>
+                            <h3>🔍 Busco recomendaciones estilo Omegaverse / Fantasía</h3>
+                            <p style="font-size:0.85rem; color:var(--text-dim)">Iniciado por @FujoReader • 12 respuestas</p>
+                        </div>
                     </div>
                     <a href="#" style="color:var(--accent-pink); text-decoration:none;">Ver debate →</a>
                 </div>
@@ -483,18 +717,21 @@
         </div>
     </div>
 
-    <!-- VISTA: PERFIL DE USUARIO -->
+    <!-- VISTA: PERFIL DE USUARIO (MÍO Y PÚBLICO) -->
     <div id="view-perfil" class="view-section">
         <div class="container">
             <div class="section-title">
-                <h2>👤 Mi Perfil</h2>
+                <h2 id="profile-heading-title">👤 Perfil</h2>
                 <button class="btn-add" id="btn-edit-name">✏️ Editar Nombre</button>
             </div>
 
             <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 2rem;">
                 <img id="profile-view-img" src="" alt="Avatar" style="width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--accent-gold); object-fit: cover;">
                 <div>
-                    <h3 id="profile-view-name" style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--accent-gold); margin-bottom: 0.3rem;">Usuario</h3>
+                    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--accent-gold); margin-bottom: 0.3rem;">
+                        <span id="profile-view-name">Usuario</span>
+                        <span id="profile-view-badge"></span>
+                    </h3>
                     <p id="profile-view-email" style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">correo@email.com</p>
                     <div style="display: flex; gap: 1.5rem; font-size: 0.9rem; color: var(--text-dim);">
                         <span>Seguidores: <strong id="profile-stat-followers" style="color: var(--text-light);">0</strong></span>
@@ -503,9 +740,9 @@
                 </div>
             </div>
 
-            <h3 style="font-family: 'Cinzel', serif; color: var(--accent-pink); margin-bottom: 1rem;">✨ Mis Publicaciones y Me Gusta</h3>
+            <h3 style="font-family: 'Cinzel', serif; color: var(--accent-pink); margin-bottom: 1rem;">✨ Publicaciones</h3>
             <div class="grid" id="grid-user-posts">
-                <p style="color: var(--text-dim); grid-column: 1/-1;">Aquí aparecerán las recomendaciones y publicaciones que realices.</p>
+                <p style="color: var(--text-dim); grid-column: 1/-1;">Aquí aparecerán las recomendaciones y publicaciones.</p>
             </div>
         </div>
     </div>
@@ -516,7 +753,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC79kLchfvUFYwM74jK_ChGjKL2aXvNpsI",
@@ -532,6 +769,7 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
+        // ELEMENTOS
         const btnLogin = document.getElementById('btn-login');
         const userMenuContainer = document.getElementById('user-menu-container');
         const userAvatarImg = document.getElementById('user-avatar-img');
@@ -543,8 +781,53 @@
         const profileViewName = document.getElementById('profile-view-name');
         const profileViewEmail = document.getElementById('profile-view-email');
         const profileViewImg = document.getElementById('profile-view-img');
+        const profileViewBadge = document.getElementById('profile-view-badge');
+        const adminBadgeSlot = document.getElementById('admin-badge-slot');
+        const btnEditName = document.getElementById('btn-edit-name');
 
-        // Control de Vistas
+        // NOTIFICACIONES
+        const notifToggleBtn = document.getElementById('notif-toggle-btn');
+        const notifModal = document.getElementById('notif-modal');
+        const notifBadge = document.getElementById('notif-badge');
+
+        notifToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifModal.classList.toggle('active');
+        });
+
+        window.markRead = function(btn) {
+            const item = btn.closest('.notif-item');
+            if (item.classList.contains('unread')) {
+                item.classList.remove('unread');
+                btn.textContent = '✓✓';
+                btn.style.color = 'var(--accent-pink)';
+                updateNotifCount();
+            }
+        };
+
+        document.getElementById('btn-mark-all-read').addEventListener('click', () => {
+            document.querySelectorAll('.notif-item.unread').forEach(item => {
+                item.classList.remove('unread');
+                const btn = item.querySelector('.btn-mark-read');
+                if (btn) {
+                    btn.textContent = '✓✓';
+                    btn.style.color = 'var(--accent-pink)';
+                }
+            });
+            updateNotifCount();
+        });
+
+        function updateNotifCount() {
+            const count = document.querySelectorAll('.notif-item.unread').length;
+            if (count > 0) {
+                notifBadge.style.display = 'block';
+                notifBadge.textContent = count;
+            } else {
+                notifBadge.style.display = 'none';
+            }
+        }
+
+        // CONTROL DE VISTAS
         window.switchView = function(viewId) {
             document.querySelectorAll('.view-section').forEach(section => {
                 section.classList.remove('active');
@@ -553,7 +836,42 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Abrir/Cerrar Modal de Perfil
+        // PERFILES PÚBLICOS
+        window.openUserProfile = function(username, avatarUrl, isAdmin = false) {
+            profileViewName.textContent = username;
+            profileViewImg.src = avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            profileViewEmail.textContent = '@' + username.toLowerCase().replace(/\s+/g, '');
+            
+            if (isAdmin) {
+                profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
+            } else {
+                profileViewBadge.innerHTML = '';
+            }
+
+            btnEditName.style.display = 'none'; // Ocultar edición si es otro usuario
+            document.getElementById('profile-heading-title').textContent = '👤 Perfil de ' + username;
+            
+            switchView('perfil');
+        };
+
+        window.openMyProfile = function() {
+            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = localStorage.getItem('bl_user_email') || 'correo@email.com';
+
+            profileViewName.textContent = currentName;
+            profileViewImg.src = currentPhoto;
+            profileViewEmail.textContent = currentEmail;
+            
+            // Asignar Admin a tu usuario principal
+            profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
+            btnEditName.style.display = 'inline-block';
+            document.getElementById('profile-heading-title').textContent = '👤 Mi Perfil';
+
+            switchView('perfil');
+        };
+
+        // ABRIR/CERRAR MODALES
         avatarToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             profileModal.classList.toggle('active');
@@ -561,13 +879,13 @@
 
         window.addEventListener('click', () => {
             profileModal.classList.remove('active');
+            notifModal.classList.remove('active');
         });
 
-        profileModal.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
+        profileModal.addEventListener('click', e => e.stopPropagation());
+        notifModal.addEventListener('click', e => e.stopPropagation());
 
-        // Actualizar interfaz
+        // ACTUALIZAR INTERFAZ Y ADMIN
         function updateUI(user) {
             if (user) {
                 btnLogin.style.display = 'none';
@@ -581,9 +899,13 @@
                 profileNameDisplay.textContent = name;
                 profileEmailDisplay.textContent = email;
 
+                // ACTIVAR INSIGNIA ADMIN
+                adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
+
                 profileViewName.textContent = name;
                 profileViewEmail.textContent = email;
                 profileViewImg.src = photo;
+                profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
 
                 localStorage.setItem('bl_user_name', name);
                 localStorage.setItem('bl_user_email', email);
@@ -591,11 +913,19 @@
             } else {
                 btnLogin.style.display = 'flex';
                 userMenuContainer.style.display = 'none';
+                adminBadgeSlot.innerHTML = '';
                 localStorage.removeItem('bl_user_name');
                 localStorage.removeItem('bl_user_email');
                 localStorage.removeItem('bl_user_photo');
             }
         }
+
+        // REDIRECCIÓN Y AUTH
+        getRedirectResult(auth).then((result) => {
+            if (result && result.user) {
+                updateUI(result.user);
+            }
+        }).catch((error) => console.error("Error redirección:", error));
 
         const savedName = localStorage.getItem('bl_user_name');
         if (savedName) {
@@ -605,20 +935,15 @@
             profileEmailDisplay.textContent = localStorage.getItem('bl_user_email') || '';
             const savedPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             userAvatarImg.src = savedPhoto;
-            profileViewName.textContent = savedName;
-            profileViewEmail.textContent = localStorage.getItem('bl_user_email') || '';
-            profileViewImg.src = savedPhoto;
+            adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
         }
 
-        onAuthStateChanged(auth, (user) => {
-            updateUI(user);
-        });
+        onAuthStateChanged(auth, (user) => updateUI(user));
 
         btnLogin.addEventListener('click', async () => {
             try {
                 await signInWithRedirect(auth, provider);
             } catch (err) {
-                console.error("Error al iniciar sesión:", err);
                 alert("Error al iniciar sesión: " + err.message);
             }
         });
@@ -634,7 +959,32 @@
             }
         });
 
-        const handleNameEdit = () => {
+        // COMENTARIOS EN PUBLICACIONES
+        window.addComment = function(button) {
+            const input = button.previousElementSibling;
+            const commentText = input.value.trim();
+            if (!commentText) return;
+
+            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+
+            const commentsSection = button.closest('.comments-section');
+
+            const commentHTML = document.createElement('div');
+            commentHTML.className = 'comment-item';
+            commentHTML.innerHTML = `
+                <img src="${currentPhoto}" class="user-clickable-avatar" onclick="openUserProfile('${currentName}', '${currentPhoto}', true)">
+                <div class="comment-text">
+                    <strong onclick="openUserProfile('${currentName}', '${currentPhoto}', true)" style="cursor:pointer; color:var(--accent-gold);">@${currentName}:</strong> ${commentText}
+                </div>
+            `;
+
+            commentsSection.insertBefore(commentHTML, button.closest('.comment-input-box'));
+            input.value = '';
+        };
+
+        // EDITAR NOMBRE
+        btnEditName.addEventListener('click', () => {
             const currentName = profileNameDisplay.textContent;
             const newName = prompt('Ingresa tu nuevo nombre de usuario:', currentName);
             if (newName && newName.trim() !== '') {
@@ -643,13 +993,13 @@
                 localStorage.setItem('bl_user_name', newName.trim());
                 alert('¡Nombre de usuario actualizado!');
             }
-        };
+        });
 
-        document.getElementById('btn-edit-name').addEventListener('click', handleNameEdit);
-
-        // AGREGAR RECOMENDACIÓN (Y GUARDAR EN PERFIL)
+        // PUBLICAR RECOMENDACIÓN
         document.getElementById('btn-add-rec').addEventListener('click', () => {
             const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            
             const title = prompt('Ingresa el título de la obra que recomiendas:');
             if (!title) return;
 
@@ -657,58 +1007,31 @@
             if (!desc) return;
 
             const grid = document.getElementById('grid-recomendaciones');
-            const userGrid = document.getElementById('grid-user-posts');
-            
-            // Limpiar mensaje por defecto si existe
-            if (userGrid.querySelector('p')) {
-                userGrid.innerHTML = '';
-            }
-
-            const cardHTML = `
+            const newCard = document.createElement('div');
+            newCard.className = 'card';
+            newCard.innerHTML = `
                 <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop" class="card-img" alt="Recomendación">
                 <div class="card-body">
                     <span class="card-tag">Recomendación</span>
                     <h3 class="card-title">${title}</h3>
                     <p class="card-desc">${desc}</p>
                     <div class="card-footer">
-                        <span>Por: @${currentName}</span>
+                        <div class="user-info-clickable" onclick="openUserProfile('${currentName}', '${currentPhoto}', true)">
+                            <img src="${currentPhoto}" class="user-clickable-avatar" alt="${currentName}">
+                            <span>@${currentName}</span>
+                        </div>
                         <span>❤️ 1 Like</span>
                     </div>
                 </div>
-            `;
-
-            const newCard = document.createElement('div');
-            newCard.className = 'card';
-            newCard.innerHTML = cardHTML;
-            grid.prepend(newCard);
-
-            // Clonar para la sección de perfil
-            const profileCard = document.createElement('div');
-            profileCard.className = 'card';
-            profileCard.innerHTML = cardHTML;
-            userGrid.prepend(profileCard);
-
-            alert('¡Tu recomendación se ha publicado!');
-        });
-
-        // CREAR TEMA EN EL FORO
-        document.getElementById('btn-add-forum').addEventListener('click', () => {
-            const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
-            const topic = prompt('Escribe el título de tu tema para el foro:');
-            if (!topic) return;
-
-            const list = document.getElementById('list-foro');
-            const newItem = document.createElement('div');
-            newItem.className = 'forum-item';
-            newItem.innerHTML = `
-                <div>
-                    <h3>💬 ${topic}</h3>
-                    <p style="font-size:0.85rem; color:var(--text-dim)">Iniciado por @${currentName} • 0 respuestas</p>
+                <div class="comments-section">
+                    <div class="comment-input-box">
+                        <input type="text" placeholder="Escribe un comentario..." class="input-comment">
+                        <button onclick="addComment(this)">Comentar</button>
+                    </div>
                 </div>
-                <a href="#" style="color:var(--accent-pink); text-decoration:none;">Ver debate →</a>
             `;
-            list.prepend(newItem);
-            alert('¡Nuevo tema creado en el foro!');
+            grid.prepend(newCard);
+            alert('¡Tu recomendación se ha publicado!');
         });
     </script>
 </body>
