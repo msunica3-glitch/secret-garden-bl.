@@ -423,7 +423,7 @@
 
         .section-title {
             font-family: 'Cinzel', serif;
-            font-size: 2rem;
+            font-size: 1.45rem;
             color: var(--accent-gold);
             margin-bottom: 1.5rem;
             border-bottom: 1px solid var(--border-color);
@@ -431,6 +431,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .recommendation-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .65rem;
+            margin: -.4rem 0 1.5rem;
+        }
+        .category-chip {
+            background: rgba(255,255,255,.04);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: .55rem 1rem;
+            cursor: pointer;
+            font-size: .78rem;
+            letter-spacing: .5px;
+        }
+        .category-chip.active, .category-chip:hover {
+            background: var(--accent-green);
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
         }
 
         /* RECOMENDACIONES GRID */
@@ -789,6 +811,81 @@
             color: var(--accent-gold);
             text-decoration: none;
         }
+
+        /* Ajustes para celular, tablet y computadora */
+        img, input, textarea, button { max-width: 100%; }
+        .quiz-banner { gap: 1.25rem; }
+        .hero h1 { font-size: clamp(1.8rem, 4vw, 3.2rem); }
+        .section-title h2 { font-size: inherit; line-height: 1.35; }
+        .forum-card, .card { min-width: 0; }
+        .card-desc, .comment-text { overflow-wrap: anywhere; }
+        @media (max-width: 900px) {
+            header { padding: .8rem 1rem; flex-wrap: wrap; gap: .8rem; }
+            .logo { font-size: 1.15rem; }
+            nav { gap: .9rem; flex-wrap: wrap; }
+            nav a { font-size: .82rem; }
+            .container { margin: 1.5rem auto; padding: 0 1rem; }
+            .section-title { font-size: 1.25rem; gap: .8rem; }
+            .grid { gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+            .quiz-banner { padding: 1.3rem; }
+        }
+        @media (max-width: 600px) {
+            header { position: sticky; padding: .7rem .8rem; }
+            .logo { width: 100%; justify-content: center; font-size: 1rem; }
+            header nav { order: 3; width: 100%; justify-content: center; gap: 1rem; }
+            .header-actions { margin-left: auto; margin-right: auto; }
+            .section-title { align-items: flex-start; flex-direction: column; font-size: 1.12rem; }
+            .section-title .btn-add { width: 100%; }
+            .quiz-banner { flex-direction: column; align-items: stretch; text-align: center; }
+            .quiz-info h3 { font-size: 1.1rem; }
+            .hero p { font-size: .95rem; padding: 0 .7rem; }
+            .custom-modal { padding: 1.2rem; max-height: 90vh; overflow-y: auto; }
+            .modal-buttons { flex-wrap: wrap; }
+            #profile-view-img { width: 68px !important; height: 68px !important; }
+            #view-perfil .container > div:nth-child(2) { padding: 1rem !important; gap: 1rem; flex-wrap: wrap; }
+            #view-perfil .container > div:nth-child(2) > div:first-child { gap: .8rem !important; min-width: 0; }
+            #view-perfil .container > div:nth-child(2) h3 { font-size: 1.15rem !important; }
+            #view-perfil .container > div:nth-child(2) div[style*="display: flex; gap: 1.8rem"] { gap: .8rem !important; flex-wrap: wrap; }
+        }
+
+        /* Nuevas secciones de comunidad, perfiles, reglas y ajustes */
+        .section-title { font-size: 1.18rem; }
+        .community-grid, .home-shortcuts, .leaderboard-list, .profile-post-grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); }
+        .community-tile, .home-tile, .leaderboard-card, .profile-post-card, .rules-card, .settings-card { background:var(--card-bg); border:1px solid var(--border-color); border-radius:14px; padding:1rem; }
+        .community-tile, .home-tile { cursor:pointer; transition:transform .2s,border-color .2s; }
+        .community-tile:hover, .home-tile:hover { transform:translateY(-3px); border-color:var(--accent-gold); }
+        .community-tile h3, .home-tile h3 { color:var(--accent-gold); font-size:1rem; margin:.35rem 0; }
+        .community-tile p, .home-tile p, .rules-card p, .rules-card li { color:var(--text-dim); font-size:.88rem; line-height:1.65; }
+        .forum-filters, .profile-tabs, .appearance-options { display:flex; flex-wrap:wrap; gap:.55rem; margin:0 0 1.2rem; }
+        .filter-chip, .profile-tab, .appearance-choice { border:1px solid var(--border-color); background:var(--card-bg); color:var(--text-light); border-radius:999px; padding:.55rem .9rem; cursor:pointer; }
+        .filter-chip.active, .profile-tab.active, .appearance-choice.active { background:var(--accent-green); border-color:var(--accent-gold); color:var(--accent-gold); }
+        .profile-bio { color:var(--text-dim); margin:.35rem 0 .8rem; max-width:620px; overflow-wrap:anywhere; }
+        .profile-post-card h4 { color:var(--accent-gold); margin-bottom:.4rem; }
+        .profile-post-card p { color:var(--text-dim); font-size:.85rem; }
+        .rank-number { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; font-weight:700; background:rgba(255,255,255,.07); border:1px solid var(--border-color); flex-shrink:0; }
+        .rank-1 .rank-number { background:linear-gradient(135deg,#ffe7a1,#b88720); color:#241900; }
+        .rank-2 .rank-number { background:linear-gradient(135deg,#f2f5f7,#8996a3); color:#172027; }
+        .rank-3 .rank-number { background:linear-gradient(135deg,#f1c49c,#9b6035); color:#241307; }
+        .rank-user { display:flex; align-items:center; gap:.75rem; min-width:0; }
+        .rank-user img { width:42px;height:42px;border-radius:50%;object-fit:cover; }
+        .rank-meta { color:var(--text-dim); font-size:.78rem; }
+        .rank-badge { display:inline-block; font-size:.68rem; font-weight:700; border-radius:999px; padding:.2rem .5rem; margin:.2rem .2rem 0 0; border:1px solid var(--border-color); }
+        .rank-badge.rank-1 { color:#ffdf76; border-color:#c69b32; }
+        .rank-badge.rank-2 { color:#dce5ed; border-color:#8798a8; }
+        .rank-badge.rank-3 { color:#e8b28a; border-color:#aa6b40; }
+        .rank-badge.rank-top10 { color:#b8d8b4; border-color:#6d9867; }
+        .rules-list { padding-left:1.25rem; margin:.6rem 0 0; }
+        .rules-card h3, .settings-card h3 { color:var(--accent-gold); margin-bottom:.45rem; }
+        .footer-links { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-top:.65rem; }
+        .footer-links button { background:none;border:0;color:var(--accent-gold);cursor:pointer;text-decoration:underline;font:inherit;font-size:.82rem; }
+        body.light-theme { --bg-dark:#f4f1e8; --card-bg:rgba(255,255,255,.96); --accent-pink:#b85c79; --accent-green:#dce9d9; --accent-gold:#536d3d; --text-light:#202a22; --text-dim:#5d6c60; --border-color:rgba(83,109,61,.3); background-color:var(--bg-dark); background-image:radial-gradient(circle at 50% 0%,#fffdf5 0%,#f4f1e8 75%); }
+        body.light-theme header, body.light-theme footer { background:rgba(255,253,245,.95); }
+        body.light-theme .hero-bg { filter:brightness(.8) contrast(1.02); }
+        body.light-theme .custom-modal input, body.light-theme .custom-modal textarea, body.light-theme .custom-modal select { background:#fff; color:#202a22; }
+        body.light-theme .notif-item { background:rgba(83,109,61,.08); }
+        body.light-theme .quiz-banner { background:linear-gradient(135deg,rgba(220,233,217,.95),rgba(255,255,255,.95)); }
+        @media(max-width:600px){ .home-shortcuts,.community-grid,.leaderboard-list,.profile-post-grid{grid-template-columns:1fr;} .footer-links{gap:.8rem;} }
+
     </style>
 </head>
 <body>
@@ -816,7 +913,15 @@
             <label for="modal-input-desc">Reseña o descripción</label>
             <textarea id="modal-input-desc" placeholder="Escribe por qué la recomiendas..."></textarea>
 
-            <label>Imagen de portada</label>
+            <label for="modal-input-category">Categoría</label>
+            <select id="modal-input-category" style="width:100%; background:rgba(0,0,0,.5); border:1px solid var(--border-color); border-radius:10px; padding:.7rem 1rem; color:white; margin-bottom:1rem;">
+                <option value="Manhwas">Manhwas</option>
+                <option value="Novelas">Novelas</option>
+                <option value="Mangas">Mangas</option>
+                <option value="Otros BL">Otros BL</option>
+            </select>
+
+            <label id="image-label">Imagen de portada</label>
             <div style="display: flex; gap: 10px; margin-bottom: 1rem;">
                 <button type="button" class="btn-add" id="btn-pick-gallery" style="flex: 1; font-size: 0.8rem;">📁 Elegir de Galería</button>
                 <button type="button" class="btn-add" id="btn-use-default-img" style="flex: 1; font-size: 0.8rem; background: var(--accent-green); border: 1px solid var(--border-color);">✨ Usar Automática</button>
@@ -830,6 +935,34 @@
         </div>
     </div>
 
+    <div class="custom-modal-overlay" id="quiz-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title">
+        <div class="custom-modal" id="quiz-modal-content">
+            <h3 id="quiz-modal-title">✨ Quiz BL del Día</h3>
+            <div id="quiz-modal-body"><p style="color:var(--text-dim)">Cargando el quiz...</p></div>
+            <div class="modal-buttons" id="quiz-modal-actions">
+                <button type="button" class="btn-cancel-modal" id="btn-close-quiz">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="custom-modal-overlay" id="profile-edit-overlay" role="dialog" aria-modal="true" aria-labelledby="profile-edit-title">
+        <div class="custom-modal">
+            <h3 id="profile-edit-title">🌿 Editar mi perfil</h3>
+            <label for="profile-edit-name">Nombre visible</label><input id="profile-edit-name" maxlength="40" placeholder="Tu nombre en el jardín">
+            <label for="profile-edit-bio">Biografía</label><textarea id="profile-edit-bio" maxlength="240" placeholder="Cuéntale algo a la comunidad (máximo 240 caracteres)"></textarea>
+            <p style="color:var(--text-dim);font-size:.78rem;margin-top:-.5rem;">Tu nombre visible no cambia la identidad de tu cuenta.</p>
+            <div class="modal-buttons"><button type="button" class="btn-cancel-modal" id="btn-cancel-profile-edit">Cancelar</button><button type="button" class="btn-confirm-modal" id="btn-save-profile-edit">Guardar cambios</button></div>
+        </div>
+    </div>
+    <div class="custom-modal-overlay" id="settings-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-modal-title">
+        <div class="custom-modal">
+            <h3 id="settings-modal-title">⚙️ Ajustes</h3>
+            <div class="settings-card"><h3>🎨 Apariencia</h3><p style="color:var(--text-dim);font-size:.86rem;margin-bottom:.8rem;">Elige cómo quieres ver Secret Garden BL.</p>
+                <div class="appearance-options"><button class="appearance-choice" data-theme-choice="light">☀️ Modo claro</button><button class="appearance-choice" data-theme-choice="dark">🌙 Modo oscuro</button><button class="appearance-choice" data-theme-choice="system">📱 Como mi dispositivo</button></div>
+            </div>
+            <div class="modal-buttons"><button type="button" class="btn-cancel-modal" id="btn-close-settings">Cerrar</button></div>
+        </div>
+    </div>
     <input type="file" id="fixed-gallery-input" accept="image/*" style="display: none;">
 
     <header>
@@ -878,6 +1011,7 @@
                         <p class="profile-email" id="profile-email-display">correo@email.com</p>
                         
                         <a class="profile-btn" onclick="openMyProfile(); profileModal.classList.remove('active');">👤 Mi Perfil</a>
+                        <a class="profile-btn" onclick="openSettings(); profileModal.classList.remove('active');">⚙️ Ajustes</a>
                         <button class="profile-btn logout" id="btn-logout">🚪 Cerrar Sesión</button>
                     </div>
                 </div>
@@ -902,8 +1036,24 @@
                     <h3>✨ Quiz BL del Día</h3>
                     <p>¿Qué tropo define tu lectura de hoy? ¡Descubre tu coincidencia romántica en la comunidad!</p>
                 </div>
-                <button class="btn-add" onclick="alert('Próximamente: ¡Quiz interactivo diario disponible!')">Participar</button>
+                <div style="display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center;">
+                    <button class="btn-add" id="btn-participate-quiz">Participar</button>
+                    <button class="btn-add" id="btn-create-quiz" style="display:none; background:var(--accent-green); border:1px solid var(--border-color);">＋ Crear Quiz</button>
+                </div>
             </div>
+        </div>
+        <div class="container">
+            <div class="section-title"><h2>🌱 Explora el jardín</h2></div>
+            <div class="home-shortcuts">
+                <div class="home-tile" onclick="switchView('recomendaciones')"><div style="font-size:1.6rem">📚</div><h3>Recomendaciones</h3><p>Descubre nuevas historias para tu lista de lectura.</p></div>
+                <div class="home-tile" onclick="switchView('foro')"><div style="font-size:1.6rem">💬</div><h3>Conversaciones</h3><p>Debates, sugerencias y charlas entre fans.</p></div>
+                <div class="home-tile" onclick="switchView('foro'); setForumCategory('suggestions')"><div style="font-size:1.6rem">💡</div><h3>Deja una sugerencia</h3><p>Ayuda a que nuestra comunidad siga creciendo.</p></div>
+            </div>
+            <div class="section-title" style="margin-top:2.3rem"><h2>💭 Tema para conversar</h2></div>
+            <div class="community-tile" id="daily-topic-card"><h3 id="daily-topic-title">Pregunta del jardín</h3><p id="daily-topic-text">Si pudieras recomendar un solo BL para que alguien se enamore del género, ¿cuál elegirías?</p><button class="btn-add" style="margin-top:.9rem" onclick="switchView('foro'); setForumCategory('fans')">Participar en el foro</button></div>
+            <div class="section-title" style="margin-top:2.3rem"><h2>🏆 Top 10 de la comunidad</h2><button class="btn-add" onclick="loadLeaderboard()">Actualizar</button></div>
+            <p style="color:var(--text-dim);font-size:.85rem;margin:-.8rem 0 1rem">Reconocemos la participación positiva. Los tres primeros tienen insignias especiales y los puestos 4 al 10 comparten la insignia Top 10.</p>
+            <div id="leaderboard-list" class="leaderboard-list"><p style="color:var(--text-dim)">Preparando el ranking de la comunidad…</p></div>
         </div>
     </div>
 
@@ -915,6 +1065,13 @@
                 <button class="btn-add" id="btn-open-modal">+ Publicar obra</button>
             </div>
 
+            <div class="recommendation-categories" id="recommendation-categories" aria-label="Filtrar recomendaciones">
+                <button class="category-chip active" data-category="Todas">TODAS</button>
+                <button class="category-chip" data-category="Manhwas">MANHWAS</button>
+                <button class="category-chip" data-category="Novelas">NOVELAS</button>
+                <button class="category-chip" data-category="Mangas">MANGAS</button>
+                <button class="category-chip" data-category="Otros BL">OTROS BL</button>
+            </div>
             <div class="grid" id="grid-recomendaciones">
                 <!-- Las publicaciones se cargarán en tiempo real -->
             </div>
@@ -929,6 +1086,13 @@
                 <button class="btn-add" id="btn-add-forum">+ Nuevo Debate</button>
             </div>
 
+            <div class="forum-filters" aria-label="Secciones del foro">
+                <button class="filter-chip active" data-forum-category="all" onclick="setForumCategory('all')">🌿 Todo</button>
+                <button class="filter-chip" data-forum-category="suggestions" onclick="setForumCategory('suggestions')">💡 Sugerencias</button>
+                <button class="filter-chip" data-forum-category="fans" onclick="setForumCategory('fans')">🌸 Entre fans</button>
+                <button class="filter-chip" data-forum-category="debates" onclick="setForumCategory('debates')">💬 Debates</button>
+            </div>
+            <div class="community-tile" style="margin-bottom:1.2rem"><h3 id="forum-category-title">🌿 El jardín conversa</h3><p id="forum-category-description">Comparte ideas, recomienda temas y conversa con otros miembros.</p><button class="btn-add" style="margin-top:.7rem" onclick="openForumComposer()">＋ Crear publicación</button></div>
             <div class="forum-list" id="list-foro">
                 <!-- Los debates se cargarán en tiempo real -->
             </div>
@@ -960,18 +1124,36 @@
                 </div>
                 <div id="profile-action-container"></div>
             </div>
+            <p id="profile-view-bio" class="profile-bio">Este jardín está esperando una pequeña presentación.</p>
+            <div class="profile-tabs"><button class="profile-tab active" data-profile-tab="posts" onclick="showProfileTab('posts')">📝 Publicaciones</button><button class="profile-tab" data-profile-tab="about" onclick="showProfileTab('about')">🌿 Sobre el perfil</button></div>
+            <div id="profile-posts-panel"><div id="profile-post-grid" class="profile-post-grid"><p style="color:var(--text-dim)">Las publicaciones aparecerán aquí.</p></div></div>
+            <div id="profile-about-panel" style="display:none" class="rules-card"><h3>Sobre este perfil</h3><p id="profile-about-copy">Aquí podrás conocer un poco más a este miembro de la comunidad.</p></div>
         </div>
     </div>
+
+    <!-- VISTA: REGLAS DE LA COMUNIDAD -->
+    <div id="view-reglas" class="view-section"><div class="container">
+        <div class="section-title"><h2>🌿 Reglas de la comunidad</h2></div>
+        <div class="rules-card"><h3>1. Respeto ante todo</h3><p>Debatimos ideas e historias sin insultar, acosar, amenazar ni atacar a otros miembros. Las diferencias de opinión no justifican el maltrato.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>2. Publica en la sección adecuada</h3><p>Usa recomendaciones para reseñas de obras y el foro para debates, sugerencias y conversaciones entre fans. Añade títulos y descripciones que expliquen tu publicación.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>3. Nada de spam ni suplantación</h3><p>No publiques repetidamente lo mismo, no finjas ser otra persona y no presentes contenido ajeno como propio.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>4. Protege tu privacidad</h3><p>No publiques datos privados tuyos ni de otras personas, como direcciones, contraseñas, documentos o información de contacto sin permiso.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>5. Contenido y enlaces</h3><p>No publiques enlaces maliciosos, contenido ilegal, amenazas ni material que infrinja las reglas de la comunidad. Respeta los derechos de autor y advierte sobre spoilers.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>6. Moderación y consecuencias</h3><p>La administración puede retirar publicaciones que incumplan estas normas. Según la gravedad o repetición, puede limitar la participación o tomar otras medidas razonables. La administración debe actuar de forma coherente y no editar publicaciones ajenas como si fueran propias.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>7. Reporta problemas</h3><p>Si ves contenido que incumple estas reglas, contacta con soporte técnico: <a href="mailto:msunica3@gmail.com">msunica3@gmail.com</a>.</p></div>
+        <button class="btn-add" style="margin-top:1.2rem" onclick="switchView('home')">Volver al inicio</button>
+    </div></div>
 
     <footer>
         <p>© 2026 Secret Garden BL — Refugio oficial de la comunidad</p>
         <p style="margin-top: 0.5rem; font-size: 0.8rem;">Soporte técnico: <a href="mailto:msunica3@gmail.com">msunica3@gmail.com</a></p>
+        <div class="footer-links"><button type="button" onclick="switchView('reglas')">Reglas de la comunidad</button><button type="button" onclick="openSettings()">Ajustes de apariencia</button></div>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, doc, deleteDoc, updateDoc, query, where, orderBy, increment, getDoc, setDoc, serverTimestamp, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, doc, deleteDoc, updateDoc, query, where, orderBy, increment, getDoc, getDocs, setDoc, serverTimestamp, arrayUnion, onSnapshot, runTransaction, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyC79kLchfvUFYwM74jK_ChGjKL2aXvNpsI",
@@ -991,6 +1173,20 @@
         const authPersistenceReady = setPersistence(auth, browserLocalPersistence);
         let recommendationsUnsubscribe = null;
         let forumUnsubscribe = null;
+        let notificationsUnsubscribe = null;
+        let dailyQuizUnsubscribe = null;
+        let activeRecommendationCategory = 'Todas';
+        const AUTO_IMAGES = [
+            'https://images.unsplash.com/photo-1519682337058-a94d519337bc?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1513001900722-370f803f498d?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop'
+        ];
+        const randomAutoImage = () => AUTO_IMAGES[Math.floor(Math.random() * AUTO_IMAGES.length)];
 
         const ADMIN_EMAIL = "msunica3@gmail.com";
 
@@ -1007,6 +1203,19 @@
                 return legacyName;
             }
             return user.displayName || 'Usuario BL';
+        }
+
+        // El documento de perfil usa una clave estable para que cambiar el nombre visible
+        // no rompa contadores ni referencias de seguidores/seguidos.
+        function getCurrentUserProfileKey(user = auth.currentUser) {
+            if (!user) return getCurrentUserName(user);
+            const key = `bl_profile_key_${user.uid}`;
+            let savedKey = localStorage.getItem(key);
+            if (!savedKey) {
+                savedKey = getCurrentUserName(user);
+                localStorage.setItem(key, savedKey);
+            }
+            return savedKey;
         }
 
         function isAdminUser(user = auth.currentUser) {
@@ -1075,24 +1284,26 @@
             notifModal.classList.toggle('active');
         });
 
-        window.markRead = function(btn) {
+        window.markRead = async function(btn) {
             const item = btn.closest('.notif-item');
-            if (item.classList.contains('unread')) {
-                item.classList.remove('unread');
-                btn.textContent = '✓✓';
-                btn.style.color = 'var(--accent-pink)';
-                updateNotifCount();
+            if (!item || !item.classList.contains('unread')) return;
+            const notificationId = item.dataset.notificationId;
+            if (notificationId && auth.currentUser) {
+                try { await updateDoc(doc(db, 'notifications', notificationId), { read: true }); }
+                catch (error) { console.warn('No se pudo guardar el estado de lectura:', error); return; }
             }
+            item.classList.remove('unread'); btn.textContent = '✓✓'; btn.style.color = 'var(--accent-pink)'; updateNotifCount();
         };
 
         document.getElementById('btn-mark-all-read').addEventListener('click', () => {
-            document.querySelectorAll('.notif-item.unread').forEach(item => {
+            document.querySelectorAll('.notif-item.unread').forEach(async item => {
+                const notificationId = item.dataset.notificationId;
+                if (notificationId && auth.currentUser) {
+                    try { await updateDoc(doc(db, 'notifications', notificationId), { read: true }); } catch (error) { console.warn('No se pudo marcar la notificación:', error); return; }
+                }
                 item.classList.remove('unread');
                 const btn = item.querySelector('.btn-mark-read');
-                if (btn) {
-                    btn.textContent = '✓✓';
-                    btn.style.color = 'var(--accent-pink)';
-                }
+                if (btn) { btn.textContent = '✓✓'; btn.style.color = 'var(--accent-pink)'; }
             });
             updateNotifCount();
         });
@@ -1112,13 +1323,14 @@
             const currentEmail = auth.currentUser ? auth.currentUser.email : '';
             if (!currentEmail) return;
 
+            if (notificationsUnsubscribe) notificationsUnsubscribe();
             const q = query(
-                collection(db, "notifications"), 
+                collection(db, "notifications"),
                 where("recipientEmail", "==", currentEmail.toLowerCase()),
                 orderBy("createdAt", "desc")
             );
 
-            onSnapshot(q, (snapshot) => {
+            notificationsUnsubscribe = onSnapshot(q, (snapshot) => {
                 let html = `
                     <div class="notif-item">
                         <div>🌸 ¡Bienvenida al refugio secreto!</div>
@@ -1128,9 +1340,9 @@
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     html += `
-                        <div class="notif-item unread">
+                        <div class="notif-item ${data.read ? '' : 'unread'}" data-notification-id="${docSnap.id}">
                             <div>❤️ <strong>@${escapeHTML(data.sender)}</strong> le dio me gusta a tu obra "${escapeHTML(data.postTitle)}"</div>
-                            <button class="btn-mark-read" onclick="markRead(this)">✓</button>
+                            <button class="btn-mark-read" onclick="markRead(this)">${data.read ? '✓✓' : '✓'}</button>
                         </div>
                     `;
                 });
@@ -1153,12 +1365,13 @@
             profileViewName.textContent = username;
             profileViewImg.src = avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             profileViewEmail.textContent = email ? '@' + email.split('@')[0] : '@' + username.toLowerCase().replace(/\s+/g, '');
-            
-            if (email && email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
-            } else {
-                profileViewBadge.innerHTML = '';
-            }
+            document.getElementById('profile-view-bio').textContent = 'Cargando presentación…';
+            document.getElementById('profile-about-copy').textContent = 'Este miembro forma parte de Secret Garden BL.';
+            showProfileTab('posts');
+            loadProfilePosts(username, email);
+            const rank = rankByEmail.get((email||'').toLowerCase());
+            profileViewBadge.innerHTML = email && email.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? '<span class="admin-badge">Admin</span>' : '';
+            if (rank) profileViewBadge.innerHTML += `<span class="rank-badge ${rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-top10'}">${rank===1?'Top 1 · Oro':rank===2?'Top 2 · Plata':rank===3?'Top 3 · Bronce':'Top 10'}</span>`;
 
             btnEditName.style.display = 'none';
             document.getElementById('profile-heading-title').textContent = '👤 Perfil de ' + username;
@@ -1170,17 +1383,25 @@
             let followingCount = 0;
             let isFollowing = false;
 
+            let targetProfileKey = username;
             try {
-                const userDocRef = doc(db, "users", username);
-                const userSnap = await getDoc(userDocRef);
+                let userSnap = await getDoc(doc(db, "users", username));
+                if (!userSnap.exists()) {
+                    const matches = await getDocs(query(collection(db, 'users'), where('displayName', '==', username), limit(1)));
+                    if (!matches.empty) { userSnap = matches.docs[0]; targetProfileKey = userSnap.id; }
+                } else { targetProfileKey = userSnap.id; }
                 if (userSnap.exists()) {
                     const data = userSnap.data();
                     followersCount = data.followersCount || 0;
                     followingCount = data.followingCount || 0;
+                    document.getElementById('profile-view-bio').textContent = data.bio || 'Este jardín está esperando una pequeña presentación.';
+                    document.getElementById('profile-about-copy').textContent = data.bio || 'Este miembro todavía no ha añadido una biografía.';
+                } else {
+                    document.getElementById('profile-view-bio').textContent = 'Este jardín está esperando una pequeña presentación.';
                 }
 
                 if (currentUser && currentEmail && email && currentEmail.toLowerCase() !== email.toLowerCase()) {
-                    const followRef = doc(db, "users", username, "followers", currentEmail);
+                    const followRef = doc(db, "users", targetProfileKey, "followers", currentEmail);
                     const followSnap = await getDoc(followRef);
                     isFollowing = followSnap.exists();
                 }
@@ -1193,7 +1414,7 @@
 
             if (!email || !currentEmail || currentEmail.toLowerCase() !== email.toLowerCase()) {
                 profileActionContainer.innerHTML = `
-                    <button class="btn-add" id="btn-follow-toggle" onclick="toggleFollow('${username}', '${email}')">
+                    <button class="btn-add" id="btn-follow-toggle" onclick="toggleFollow('${targetProfileKey}', '${email}', '${username}')">
                         ${isFollowing ? 'Dejar de seguir' : '✨ Seguir'}
                     </button>
                 `;
@@ -1206,31 +1427,35 @@
 
         window.openMyProfile = async function() {
             if (!requireLogin()) return;
+            await ensureCurrentUserProfile(auth.currentUser);
             const currentName = getCurrentUserName();
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = auth.currentUser ? (auth.currentUser.email || '') : '';
 
             profileViewName.textContent = currentName;
             profileViewImg.src = currentPhoto;
-            profileViewEmail.textContent = currentEmail;
+            profileViewEmail.textContent = currentEmail ? '@' + currentEmail.split('@')[0] : '';
+            loadProfilePosts(currentName, currentEmail, auth.currentUser.uid);
+            document.getElementById('profile-view-bio').textContent = 'Cargando presentación…';
+            showProfileTab('posts');
             
-            if (currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
-            } else {
-                profileViewBadge.innerHTML = '';
-            }
+            profileViewBadge.innerHTML = currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? '<span class="admin-badge">Admin</span>' : '';
+            const ownRank = rankByEmail.get(currentEmail.toLowerCase());
+            if (ownRank) profileViewBadge.innerHTML += `<span class="rank-badge ${ownRank===1?'rank-1':ownRank===2?'rank-2':ownRank===3?'rank-3':'rank-top10'}">${ownRank===1?'Top 1 · Oro':ownRank===2?'Top 2 · Plata':ownRank===3?'Top 3 · Bronce':'Top 10'}</span>`;
 
             btnEditName.style.display = 'inline-block';
             document.getElementById('profile-heading-title').textContent = '👤 Mi Perfil';
             profileActionContainer.innerHTML = '';
 
             try {
-                const userDocRef = doc(db, "users", currentName);
+                const userDocRef = doc(db, "users", getCurrentUserProfileKey(auth.currentUser));
                 const userSnap = await getDoc(userDocRef);
                 if (userSnap.exists()) {
                     const data = userSnap.data();
                     profileStatFollowers.textContent = data.followersCount || 0;
                     profileStatFollowing.textContent = data.followingCount || 0;
+                    document.getElementById('profile-view-bio').textContent = data.bio || 'Este jardín está esperando una pequeña presentación.';
+                    document.getElementById('profile-about-copy').textContent = data.bio || 'Todavía no has añadido una biografía.';
                 } else {
                     profileStatFollowers.textContent = 0;
                     profileStatFollowing.textContent = 0;
@@ -1242,43 +1467,150 @@
             window.switchView('perfil');
         };
 
-        window.toggleFollow = async function(targetUsername, targetEmail) {
+        let activeForumCategory = 'all';
+        window.setForumCategory = function(category) {
+            activeForumCategory = category;
+            document.querySelectorAll('[data-forum-category]').forEach(button => button.classList.toggle('active', button.dataset.forumCategory === category));
+            const titles = { all:['🌿 El jardín conversa','Comparte ideas, recomienda temas y conversa con otros miembros.'], suggestions:['💡 Sugerencias','Propón mejoras, actividades y nuevas ideas para Secret Garden BL.'], fans:['🌸 Entre fans','Preguntas divertidas, opiniones, teorías y conversaciones casuales.'], debates:['💬 Debates','Abre una conversación sobre una obra, personaje o tema BL.'] };
+            const selected = titles[category] || titles.all;
+            document.getElementById('forum-category-title').textContent = selected[0];
+            document.getElementById('forum-category-description').textContent = selected[1];
+            if (typeof window.loadForo === 'function') window.loadForo();
+        };
+        window.openForumComposer = function(category = activeForumCategory) {
+            if (!requireLogin()) return;
+            const button = document.getElementById('btn-add-forum');
+            if (button) button.click();
+            const categorySelect = document.getElementById('modal-input-category');
+            categorySelect.style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').style.display = 'block';
+            categorySelect.innerHTML = '<option value="debates">Debates</option><option value="suggestions">Sugerencias</option><option value="fans">Entre fans</option>';
+            if (['suggestions','fans','debates'].includes(category)) categorySelect.value = category;
+        };
+
+        window.showProfileTab = function(tab) {
+            document.querySelectorAll('[data-profile-tab]').forEach(button => button.classList.toggle('active', button.dataset.profileTab === tab));
+            document.getElementById('profile-posts-panel').style.display = tab === 'posts' ? 'block' : 'none';
+            document.getElementById('profile-about-panel').style.display = tab === 'about' ? 'block' : 'none';
+        };
+        async function loadProfilePosts(username, email, uid = '') {
+            const grid = document.getElementById('profile-post-grid');
+            grid.innerHTML = '<p style="color:var(--text-dim)">Cargando publicaciones…</p>';
+            try {
+                const [recSnap, forumSnap] = await Promise.all([getDocs(collection(db,'recommendations')), getDocs(collection(db,'forum_posts'))]);
+                const posts = [];
+                [...recSnap.docs].forEach(d => { const x=d.data(); if ((uid && x.authorUid===uid) || (email && x.authorEmail && x.authorEmail.toLowerCase()===email.toLowerCase()) || (!x.authorUid && x.author===username)) posts.push({id:d.id,...x,kind:'Recomendación'}); });
+                [...forumSnap.docs].forEach(d => { const x=d.data(); if ((uid && x.authorUid===uid) || (email && x.authorEmail && x.authorEmail.toLowerCase()===email.toLowerCase()) || (!x.authorUid && x.author===username)) posts.push({id:d.id,...x,kind:x.category==='suggestions'?'Sugerencia':x.category==='fans'?'Entre fans':'Foro'}); });
+                posts.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+                if (!posts.length) { grid.innerHTML='<p style="color:var(--text-dim)">Todavía no hay publicaciones públicas. ¡Este jardín espera tu primera contribución! 🌱</p>'; return; }
+                grid.innerHTML = posts.map(post => `<article class="profile-post-card"><span class="rank-badge rank-top10">${escapeHTML(post.kind)}</span><h4>${escapeHTML(post.title || 'Publicación')}</h4><p>${escapeHTML((post.desc || '').slice(0,150))}${(post.desc||'').length>150?'…':''}</p></article>`).join('');
+            } catch (error) { console.error('No se pudieron cargar las publicaciones del perfil:',error); grid.innerHTML='<p style="color:var(--text-dim)">No se pudieron cargar las publicaciones en este momento.</p>'; }
+        }
+
+        const rankByEmail = new Map();
+        window.loadLeaderboard = async function() {
+            const root = document.getElementById('leaderboard-list');
+            if (!root) return;
+            root.innerHTML = '<p style="color:var(--text-dim)">Actualizando el ranking…</p>';
+            try {
+                const [recSnap, forumSnap] = await Promise.all([getDocs(collection(db,'recommendations')),getDocs(collection(db,'forum_posts'))]);
+                const members = new Map();
+                function addContribution(data, amount=1) {
+                    const key = data.authorUid || (data.authorEmail||'').toLowerCase() || data.author || '';
+                    if (!key) return;
+                    const item = members.get(key) || {key, name:data.author||'Miembro del jardín', email:(data.authorEmail||'').toLowerCase(), photo:data.authorPhoto||'', score:0};
+                    item.score += amount; if (data.author) item.name=data.author; if (data.authorPhoto) item.photo=data.authorPhoto; if (data.authorEmail) item.email=data.authorEmail.toLowerCase(); members.set(key,item);
+                }
+                for (const snap of [...recSnap.docs,...forumSnap.docs]) {
+                    const data=snap.data(); addContribution(data,2);
+                    (data.comments||[]).forEach(comment=>addContribution(comment,1));
+                }
+                const ranked=[...members.values()].sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name)).slice(0,10);
+                rankByEmail.clear(); ranked.forEach((person,index)=>{person.rank=index+1;if(person.email)rankByEmail.set(person.email,person.rank);});
+                if (!ranked.length) { root.innerHTML='<div class="community-tile"><h3>Tu nombre puede estar aquí 🌱</h3><p>Aún no hay suficiente actividad para crear el ranking. Comparte una recomendación o participa en una conversación para empezar.</p></div>'; return; }
+                root.innerHTML=ranked.map(person=>{const rank=person.rank;const badge=rank===1?'Top 1 · Flor de Oro':rank===2?'Top 2 · Flor de Plata':rank===3?'Top 3 · Flor de Bronce':'Top 10 · Miembro destacado';const cls=rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-top10';return `<div class="leaderboard-card ${cls}"><div class="rank-user"><span class="rank-number">${rank}</span><img src="${escapeHTML(person.photo||'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop')}" alt=""><div style="min-width:0"><strong>${escapeHTML(person.name)}</strong><div class="rank-meta">${person.score} puntos de participación</div><span class="rank-badge ${cls}">${badge}</span></div></div></div>`}).join('');
+            } catch(error) { console.error('No se pudo cargar el ranking:',error); root.innerHTML='<p style="color:var(--text-dim)">No se pudo calcular el ranking. Comprueba los permisos de lectura de las publicaciones.</p>'; }
+        };
+        window.loadLeaderboard();
+
+        window.toggleFollow = async function(targetUsername, targetEmail, targetDisplayName = targetUsername) {
             if (!requireLogin()) return;
             const currentUser = auth.currentUser;
+            if (!currentUser || !targetEmail || targetEmail.toLowerCase() === (currentUser.email || '').toLowerCase()) return;
+
+            await ensureCurrentUserProfile(currentUser);
             const currentName = getCurrentUserName(currentUser);
-            const currentEmail = currentUser.email;
-
+            const currentEmail = currentUser.email || '';
             const btn = document.getElementById('btn-follow-toggle');
-            const isCurrentlyFollowing = btn.textContent.includes('Dejar');
+            if (!btn) return;
 
+            const targetRef = doc(db, "users", targetUsername);
+            const followRef = doc(db, "users", targetUsername, "followers", currentEmail);
+            const myUserRef = doc(db, "users", getCurrentUserProfileKey(currentUser));
+            const followingRef = doc(db, "users", getCurrentUserProfileKey(currentUser), "following", targetEmail);
+
+            btn.disabled = true;
             try {
-                const targetRef = doc(db, "users", targetUsername);
-                const followRef = doc(db, "users", targetUsername, "followers", currentEmail);
-                
-                const myUserRef = doc(db, "users", currentName);
-                const followingRef = doc(db, "users", currentName, "following", targetEmail);
+                // Los perfiles y sus contadores se actualizan en una sola transacción.
+                // Así las reglas pueden comprobar el cambio real del documento follower.
+                const result = await runTransaction(db, async (transaction) => {
+                    const targetSnap = await transaction.get(targetRef);
+                    const mySnap = await transaction.get(myUserRef);
+                    const followSnap = await transaction.get(followRef);
+                    const followingSnap = await transaction.get(followingRef);
 
-                if (isCurrentlyFollowing) {
-                    await deleteDoc(followRef);
-                    await updateDoc(targetRef, { followersCount: increment(-1) });
+                    if (!targetSnap.exists() || !mySnap.exists()) {
+                        throw new Error('PROFILE_NOT_READY');
+                    }
+                    if (targetSnap.data().ownerUid === currentUser.uid) {
+                        throw new Error('CANNOT_FOLLOW_SELF');
+                    }
 
-                    await deleteDoc(followingRef);
-                    await updateDoc(myUserRef, { followingCount: increment(-1) }).catch(() => {});
+                    const currentlyFollowing = followSnap.exists();
+                    const targetCount = Number(targetSnap.data().followersCount || 0);
+                    const myCount = Number(mySnap.data().followingCount || 0);
 
-                    btn.textContent = '✨ Seguir';
-                    profileStatFollowers.textContent = Math.max(0, parseInt(profileStatFollowers.textContent) - 1);
-                } else {
-                    await setDoc(followRef, { email: currentEmail, name: currentName, timestamp: serverTimestamp() }, { merge: true });
-                    await setDoc(targetRef, { followersCount: increment(1) }, { merge: true });
+                    if (currentlyFollowing) {
+                        transaction.delete(followRef);
+                        transaction.update(targetRef, { followersCount: Math.max(0, targetCount - 1) });
+                        if (followingSnap.exists()) transaction.delete(followingRef);
+                        transaction.update(myUserRef, { followingCount: Math.max(0, myCount - 1) });
+                        return { following: false, followersCount: Math.max(0, targetCount - 1) };
+                    }
 
-                    await setDoc(followingRef, { email: targetEmail, name: targetUsername, timestamp: serverTimestamp() }, { merge: true });
-                    await setDoc(myUserRef, { followingCount: increment(1) }, { merge: true });
+                    transaction.set(followRef, {
+                        email: currentEmail,
+                        name: currentName,
+                        followerUid: currentUser.uid,
+                        timestamp: serverTimestamp()
+                    });
+                    transaction.update(targetRef, { followersCount: targetCount + 1 });
+                    transaction.set(followingRef, {
+                        email: targetEmail,
+                        name: targetDisplayName,
+                        targetUid: targetSnap.data().ownerUid || '',
+                        timestamp: serverTimestamp()
+                    });
+                    transaction.update(myUserRef, { followingCount: myCount + 1 });
+                    return { following: true, followersCount: targetCount + 1 };
+                });
 
-                    btn.textContent = 'Dejar de seguir';
-                    profileStatFollowers.textContent = parseInt(profileStatFollowers.textContent) + 1;
-                }
+                btn.textContent = result.following ? 'Dejar de seguir' : '✨ Seguir';
+                profileStatFollowers.textContent = result.followersCount;
+                profileStatFollowing.textContent = result.following
+                    ? Number(profileStatFollowing.textContent || 0) + 1
+                    : Math.max(0, Number(profileStatFollowing.textContent || 0) - 1);
             } catch (err) {
                 console.error("Error al actualizar seguimiento:", err);
+                if (err.message === 'PROFILE_NOT_READY') {
+                    alert('Este perfil todavía se está preparando. Pídele a su titular que inicie sesión una vez y vuelve a intentarlo.');
+                } else if (err.message === 'CANNOT_FOLLOW_SELF') {
+                    alert('No puedes seguir tu propio perfil.');
+                } else {
+                    alert('No se pudo actualizar el seguimiento. Inténtalo de nuevo.');
+                }
+            } finally {
+                btn.disabled = false;
             }
         };
 
@@ -1296,8 +1628,67 @@
         profileModal.addEventListener('click', e => e.stopPropagation());
         notifModal.addEventListener('click', e => e.stopPropagation());
 
+        // Crea o migra el documento del perfil usando el UID permanente de Firebase.
+        // Evita dos inicializaciones simultáneas cuando Firebase restaura la sesión.
+        const profileInitializationTasks = new Map();
+        function ensureCurrentUserProfile(user) {
+            if (!user || !user.uid) return Promise.resolve();
+            if (profileInitializationTasks.has(user.uid)) return profileInitializationTasks.get(user.uid);
+            const task = (async () => {
+            const username = getCurrentUserName(user);
+            const keyStorageName = `bl_profile_key_${user.uid}`;
+            let profileKey = localStorage.getItem(keyStorageName);
+            if (!profileKey) {
+                try {
+                    let existing = await getDocs(query(collection(db, 'users'), where('ownerUid', '==', user.uid), limit(1)));
+                    if (existing.empty && user.email) existing = await getDocs(query(collection(db, 'users'), where('email', '==', user.email), limit(1)));
+                    profileKey = existing.empty ? username : existing.docs[0].id;
+                } catch (error) { profileKey = username; }
+                localStorage.setItem(keyStorageName, profileKey);
+            }
+            const profileRef = doc(db, "users", profileKey);
+            const profileSnap = await getDoc(profileRef);
+            const email = user.email || '';
+            const photoURL = user.photoURL || '';
+
+            if (!profileSnap.exists()) {
+                await setDoc(profileRef, {
+                    ownerUid: user.uid,
+                    email,
+                    displayName: username,
+                    photoURL,
+                    followersCount: 0,
+                    followingCount: 0,
+                    createdAt: serverTimestamp()
+                });
+                return;
+            }
+
+            const profile = profileSnap.data();
+            if (profile.ownerUid && profile.ownerUid !== user.uid) {
+                console.warn('El nombre de perfil ya está vinculado a otra cuenta; no se modificó.');
+                return;
+            }
+            if (!profile.ownerUid && profile.email && email && profile.email.toLowerCase() !== email.toLowerCase()) {
+                console.warn('No se pudo migrar el perfil antiguo porque el correo no coincide.');
+                return;
+            }
+
+            const updates = {};
+            if (!profile.ownerUid) updates.ownerUid = user.uid;
+            if (!profile.email) updates.email = email;
+            if (!profile.displayName) updates.displayName = username;
+            if (!profile.photoURL && photoURL) updates.photoURL = photoURL;
+            if (Object.keys(updates).length) await updateDoc(profileRef, updates);
+            })();
+            profileInitializationTasks.set(user.uid, task);
+            task.catch(() => profileInitializationTasks.delete(user.uid));
+            return task;
+        }
+
         function updateUI(user) {
             if (user) {
+                ensureCurrentUserProfile(user).catch(err => console.warn('No se pudo preparar el perfil de Firebase:', err));
                 btnLogin.style.display = 'none';
                 userMenuContainer.style.display = 'block';
 
@@ -1321,7 +1712,12 @@
                 localStorage.setItem('bl_user_photo', photo);
 
                 loadNotifications();
+                const createQuizButton = document.getElementById('btn-create-quiz');
+                if (createQuizButton) createQuizButton.style.display = isAdminUser(user) ? 'inline-flex' : 'none';
             } else {
+                if (notificationsUnsubscribe) { notificationsUnsubscribe(); notificationsUnsubscribe = null; }
+                const createQuizButton = document.getElementById('btn-create-quiz');
+                if (createQuizButton) createQuizButton.style.display = 'none';
                 btnLogin.style.display = 'flex';
                 userMenuContainer.style.display = 'none';
                 if (adminBadgeSlot) adminBadgeSlot.innerHTML = '';
@@ -1433,50 +1829,41 @@
             }
         };
 
-        // FUNCIÓN DE LIKE CON NOTIFICACIÓN GLOBAL EN FIRESTORE
+        // Un único me gusta por cuenta y publicación: el UID queda registrado en likedBy.
         window.toggleLike = async function(btn, id, authorEmail, postTitle) {
             if (!requireLogin()) return;
-            const isLiked = btn.classList.contains('liked');
+            const user = auth.currentUser;
             const spanCount = btn.querySelector('.like-count');
-            let currentLikes = parseInt(spanCount.textContent);
-
-            if (isLiked) {
-                btn.classList.remove('liked');
-                spanCount.textContent = currentLikes - 1;
-            } else {
-                btn.classList.add('liked');
-                spanCount.textContent = currentLikes + 1;
-
-                // Enviar notificación a la colección global 'notifications'
-                const currentEmail = auth.currentUser ? auth.currentUser.email : '';
-                const currentName = getCurrentUserName() || 'Alguien';
-
-                if (authorEmail && currentEmail && authorEmail.toLowerCase() !== currentEmail.toLowerCase()) {
-                    try {
-                        await addDoc(collection(db, "notifications"), {
-                            recipientEmail: authorEmail.toLowerCase(),
-                            sender: currentName,
-                            postTitle: postTitle,
-                            createdAt: serverTimestamp()
-                        });
-                    } catch (notifErr) {
-                        console.error("Error al enviar notificación:", notifErr);
-                    }
-                }
-            }
-
+            const docRef = doc(db, "recommendations", id);
+            const wasLiked = btn.classList.contains('liked');
+            btn.disabled = true;
             try {
-                const docRef = doc(db, "recommendations", id);
-                await updateDoc(docRef, {
-                    likes: increment(isLiked ? -1 : 1)
+                const result = await runTransaction(db, async (transaction) => {
+                    const snap = await transaction.get(docRef);
+                    if (!snap.exists()) throw new Error('La publicación ya no existe.');
+                    const data = snap.data();
+                    const likedBy = Array.isArray(data.likedBy) ? data.likedBy : [];
+                    const hasLiked = likedBy.includes(user.uid);
+                    if (hasLiked) {
+                        transaction.update(docRef, { likedBy: likedBy.filter(uid => uid !== user.uid), likes: Math.max(0, (Number(data.likes) || 0) - 1) });
+                        return { liked: false, count: Math.max(0, (Number(data.likes) || 0) - 1), changed: true };
+                    }
+                    transaction.update(docRef, { likedBy: [...likedBy, user.uid], likes: (Number(data.likes) || 0) + 1 });
+                    return { liked: true, count: (Number(data.likes) || 0) + 1, changed: true };
                 });
+                btn.classList.toggle('liked', result.liked);
+                spanCount.textContent = result.count;
+                if (result.liked && authorEmail && user.email && authorEmail.toLowerCase() !== user.email.toLowerCase()) {
+                    await addDoc(collection(db, "notifications"), {
+                        recipientEmail: authorEmail.toLowerCase(), sender: getCurrentUserName(user),
+                        postTitle: postTitle, postId: id, senderUid: user.uid, type: 'like', createdAt: serverTimestamp()
+                    }).catch(err => console.error('No se pudo enviar la notificación del me gusta:', err));
+                }
             } catch (err) {
-                console.error("Error actualizando likes:", err);
-                // Revertir el cambio visual si Firestore rechaza la operación.
-                btn.classList.toggle('liked', isLiked);
-                spanCount.textContent = currentLikes;
-                alert('No se pudo guardar el me gusta. Inicia sesión e inténtalo de nuevo.');
-            }
+                console.error('Error actualizando me gusta:', err);
+                btn.classList.toggle('liked', wasLiked);
+                alert('No se pudo guardar el me gusta. Inténtalo de nuevo.');
+            } finally { btn.disabled = false; }
         };
 
         // TIEMPO REAL CON ONSNAPSHOT PARA RECOMENDACIONES
@@ -1506,6 +1893,9 @@
                             console.warn("No se pudo vincular una publicación antigua a su cuenta:", err));
                     }
                     const likes = data.likes || 0;
+                    const likedBy = Array.isArray(data.likedBy) ? data.likedBy : [];
+                    const isLikedByCurrentUser = !!(currentUser && likedBy.includes(currentUser.uid));
+                    const category = data.category || 'Manhwas';
                     const authorEmail = data.authorEmail || '';
                     const comments = data.comments || [];
 
@@ -1526,7 +1916,7 @@
                     let commentsHTML = '';
                     comments.forEach((c, index) => {
                         const isCommentOwner = recordBelongsToUser(c, currentUser);
-                        const showDeleteComment = isCommentOwner || isAdmin;
+                        const showDeleteComment = isOwner || isAdmin;
 
                         commentsHTML += `
                             <div class="comment-item">
@@ -1541,6 +1931,7 @@
                         `;
                     });
 
+                    if (activeRecommendationCategory !== 'Todas' && category !== activeRecommendationCategory) return;
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
@@ -1552,7 +1943,7 @@
                         </div>
                         <img src="${data.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop'}" class="card-img" alt="Recomendación">
                         <div class="card-body">
-                            <span class="card-tag">Recomendación</span>
+                            <span class="card-tag">${escapeHTML(category)}</span>
                             <h3 class="card-title">${escapeHTML(data.title)}</h3>
                             <p class="card-desc">${escapeHTML(data.desc)}</p>
                             <div class="card-footer">
@@ -1560,7 +1951,7 @@
                                     <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
                                     <span>@${data.author}</span>
                                 </div>
-                                <button class="like-btn" onclick="toggleLike(this, '${id}', '${authorEmail}', '${data.title.replace(/'/g, "\\'")}')">
+                                <button class="like-btn ${isLikedByCurrentUser ? 'liked' : ''}" onclick="toggleLike(this, '${id}', '${authorEmail}', '${String(data.title || '').replace(/'/g, "\\'")}')">
                                     ❤️ <span class="like-count">${likes}</span>
                                 </button>
                             </div>
@@ -1627,6 +2018,14 @@
             }
         };
 
+        document.querySelectorAll('.category-chip').forEach(button => {
+            button.addEventListener('click', () => {
+                activeRecommendationCategory = button.dataset.category || 'Todas';
+                document.querySelectorAll('.category-chip').forEach(chip => chip.classList.toggle('active', chip === button));
+                if (typeof window.loadRecommendations === 'function') window.loadRecommendations();
+            });
+        });
+
         // MODAL DE PUBLICACIÓN
         let selectedCustomImage = null;
         const postModalOverlay = document.getElementById('post-modal-overlay');
@@ -1637,10 +2036,31 @@
 
         document.getElementById('btn-open-modal').addEventListener('click', () => {
             if (!requireLogin()) return;
+            postModalMode = 'recommendation';
+            document.getElementById('modal-input-category').innerHTML = '<option value="Manhwas">Manhwas</option><option value="Novelas">Novelas</option><option value="Mangas">Mangas</option><option value="Otros BL">Otros BL</option>';
+            document.getElementById('modal-input-category').style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').textContent = 'Categoría';
+            document.getElementById('image-label').style.display = 'block';
+            document.getElementById('btn-pick-gallery').style.display = 'block';
+            document.getElementById('btn-use-default-img').style.display = 'block';
+            selectedFileName.style.display = 'block';
+            originalPostModalTitle.textContent = '🌸 Publicar Nueva Obra';
+            modalInputTitle.previousElementSibling.textContent = 'Título de la obra';
+            originalDescLabel.textContent = 'Reseña o descripción';
+            modalInputTitle.placeholder = 'Ej. Jinx, La tiendita...';
+            modalInputDesc.placeholder = 'Escribe por qué la recomiendas...';
+            document.getElementById('modal-input-category').style.display = '';
+            document.querySelector('label[for="modal-input-category"]').style.display = '';
+            document.getElementById('image-label').style.display = '';
+            document.getElementById('btn-pick-gallery').style.display = '';
+            document.getElementById('btn-use-default-img').style.display = '';
+            selectedFileName.style.display = '';
             modalInputTitle.value = '';
             modalInputDesc.value = '';
             selectedCustomImage = null;
-            selectedFileName.textContent = 'Ningún archivo seleccionado (por defecto usará automática si no eliges).';
+            selectedFileName.textContent = 'Ningún archivo seleccionado (se elegirá una imagen variada automáticamente).';
+            document.getElementById('modal-input-category').value = 'Manhwas';
             postModalOverlay.classList.add('active');
         });
 
@@ -1666,8 +2086,8 @@
         };
 
         document.getElementById('btn-use-default-img').addEventListener('click', () => {
-            selectedCustomImage = 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';
-            selectedFileName.textContent = 'Imagen automática seleccionada.';
+            selectedCustomImage = randomAutoImage();
+            selectedFileName.textContent = 'Imagen automática elegida al azar. Puedes volver a pulsar para cambiarla.';
         });
 
         document.getElementById('btn-submit-post').addEventListener('click', async () => {
@@ -1680,12 +2100,21 @@
                 return;
             }
 
-            const finalImage = selectedCustomImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';
+            const finalImage = selectedCustomImage || randomAutoImage();
+            const category = document.getElementById('modal-input-category').value;
             const currentName = getCurrentUserName(auth.currentUser);
             const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = auth.currentUser.email || '';
 
             try {
+                if (postModalMode === 'forum') {
+                    await addDoc(collection(db, "forum_posts"), {
+                        title, desc, author: currentName, authorPhoto: currentPhoto, authorEmail: currentEmail,
+                        authorUid: auth.currentUser.uid, category: document.getElementById('modal-input-category').value || 'debates', comments: [], createdAt: serverTimestamp()
+                    });
+                    postModalOverlay.classList.remove('active');
+                    return;
+                }
                 await addDoc(collection(db, "recommendations"), {
                     title: title,
                     desc: desc,
@@ -1694,7 +2123,9 @@
                     authorEmail: currentEmail,
                     authorUid: auth.currentUser.uid,
                     image: finalImage,
+                    category: category,
                     likes: 0,
+                    likedBy: [],
                     comments: [],
                     createdAt: serverTimestamp()
                 });
@@ -1716,14 +2147,18 @@
                 const currentEmail = currentUser && currentUser.email ? currentUser.email.toLowerCase() : '';
                 const isAdmin = isAdminUser(currentUser);
                 if (querySnapshot.empty) {
-                    listForo.innerHTML = '<p style="color: var(--text-dim);">Aún no hay debates en el foro. ¡Crea el primero!</p>';
+                    listForo.innerHTML = '<div class="community-tile"><h3>🌱 Este espacio está esperando su primera conversación</h3><p>Empieza con una sugerencia, una pregunta divertida o un debate BL.</p><button class="btn-add" style="margin-top:.8rem" onclick="openForumComposer()">Crear publicación</button></div>';
                     return;
                 }
 
                 listForo.innerHTML = '';
+                let renderedForumCount = 0;
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
+                    const category = data.category || 'debates';
+                    if (activeForumCategory !== 'all' && category !== activeForumCategory) return;
+                    renderedForumCount += 1;
                     const isOwner = recordBelongsToUser(data, currentUser);
                     if (currentUser && !data.authorUid && data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail) {
                         updateDoc(doc(db, "forum_posts", id), { authorUid: currentUser.uid }).catch(err =>
@@ -1734,7 +2169,7 @@
                     let commentsHTML = '';
                     comments.forEach((c, index) => {
                         const isCommentOwner = recordBelongsToUser(c, currentUser);
-                        const showDeleteComment = isCommentOwner || isAdmin;
+                        const showDeleteComment = isOwner || isAdmin;
 
                         commentsHTML += `
                             <div class="comment-item">
@@ -1756,6 +2191,7 @@
                             <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', '${data.authorEmail || ''}')">
                                 <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
                                 <div>
+                                    <span class="rank-badge rank-top10">${category==='suggestions'?'💡 Sugerencia':category==='fans'?'🌸 Entre fans':'💬 Debate'}</span>
                                     <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${escapeHTML(data.title)}</h3>
                                     <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • Activo en tiempo real</p>
                                 </div>
@@ -1772,6 +2208,7 @@
                     `;
                     listForo.appendChild(item);
                 });
+                if (renderedForumCount === 0) listForo.innerHTML = '<div class="community-tile"><h3>🌱 Todavía no hay publicaciones en esta sección</h3><p>¡Puedes ser la primera persona en iniciar la conversación!</p><button class="btn-add" style="margin-top:.8rem" onclick="openForumComposer()">Crear publicación</button></div>';
             });
         };
 
@@ -1842,42 +2279,200 @@
             }
         };
 
-        document.getElementById('btn-add-forum').addEventListener('click', async () => {
+        let postModalMode = 'recommendation';
+        const originalPostModalTitle = postModalOverlay.querySelector('h3');
+        const originalDescLabel = document.querySelector('label[for="modal-input-desc"]');
+        document.getElementById('btn-add-forum').addEventListener('click', () => {
             if (!requireLogin()) return;
-            const debateTitle = prompt('¿Sobre qué tema te gustaría iniciar un debate en el foro?');
-            if (!debateTitle) return;
+            postModalMode = 'forum';
+            originalPostModalTitle.textContent = '💬 Nuevo Debate';
+            modalInputTitle.previousElementSibling.textContent = 'Título del debate';
+            originalDescLabel.textContent = 'Tema y contexto del debate';
+            modalInputTitle.placeholder = '¿Qué tema quieres debatir?';
+            modalInputDesc.placeholder = 'Explica el tema para que la comunidad pueda debatir...';
+            document.getElementById('modal-input-category').innerHTML = '<option value="debates">Debates</option><option value="suggestions">Sugerencias</option><option value="fans">Entre fans</option>';
+            document.getElementById('modal-input-category').style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').textContent = 'Sección del foro';
+            document.getElementById('image-label').style.display = 'none';
+            document.getElementById('btn-pick-gallery').style.display = 'none';
+            document.getElementById('btn-use-default-img').style.display = 'none';
+            selectedFileName.style.display = 'none';
+            modalInputTitle.value = ''; modalInputDesc.value = '';
+            postModalOverlay.classList.add('active');
+        });
 
+        // QUIZ BL DEL DÍA: creación para administración y participación de la comunidad.
+        const quizModalOverlay = document.getElementById('quiz-modal-overlay');
+        const quizModalBody = document.getElementById('quiz-modal-body');
+        const quizModalActions = document.getElementById('quiz-modal-actions');
+        let currentDailyQuiz = null;
+        document.getElementById('btn-close-quiz').addEventListener('click', () => quizModalOverlay.classList.remove('active'));
+        quizModalOverlay.addEventListener('click', (event) => { if (event.target === quizModalOverlay) quizModalOverlay.classList.remove('active'); });
+
+        function loadDailyQuiz() {
+            if (dailyQuizUnsubscribe) dailyQuizUnsubscribe();
+            const q = query(collection(db, 'daily_quizzes'), orderBy('createdAt', 'desc'), limit(1));
+            dailyQuizUnsubscribe = onSnapshot(q, (snapshot) => {
+                const bannerText = document.querySelector('.quiz-info p');
+                const participateButton = document.getElementById('btn-participate-quiz');
+                if (snapshot.empty) {
+                    currentDailyQuiz = null;
+                    if (bannerText) bannerText.textContent = 'Todavía no hay un quiz publicado. ¡Pronto habrá uno nuevo!';
+                    if (participateButton) participateButton.textContent = 'Ver Quiz';
+                    return;
+                }
+                const docSnap = snapshot.docs[0];
+                currentDailyQuiz = { id: docSnap.id, ...docSnap.data() };
+                if (bannerText) bannerText.textContent = currentDailyQuiz.title || '¡Responde el Quiz BL de hoy!';
+                if (participateButton) participateButton.textContent = 'Participar';
+            }, (error) => console.error('No se pudo cargar el quiz diario:', error));
+        }
+        loadDailyQuiz();
+
+        document.getElementById('btn-participate-quiz').addEventListener('click', async () => {
+            if (!requireLogin()) return;
+            if (!currentDailyQuiz) {
+                quizModalBody.innerHTML = '<p>Todavía no hay un quiz publicado. ¡Vuelve pronto!</p>';
+                quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-close-quiz-inner">Cerrar</button>';
+                quizModalOverlay.classList.add('active');
+                document.getElementById('btn-close-quiz-inner').onclick = () => quizModalOverlay.classList.remove('active');
+                return;
+            }
+            const quiz = currentDailyQuiz;
+            const responseRef = doc(db, 'daily_quizzes', quiz.id, 'responses', auth.currentUser.uid);
+            const responseSnap = await getDoc(responseRef).catch(() => null);
+            if (responseSnap && responseSnap.exists()) {
+                const response = responseSnap.data();
+                let answerData = {};
+                try { const answerSnap = await getDoc(doc(db, 'daily_quizzes', quiz.id, 'answer', 'key')); if (answerSnap.exists()) answerData = answerSnap.data(); } catch (error) { console.warn('Solución del quiz no disponible:', error); }
+                const hasAnswer = Number.isInteger(answerData.correctIndex);
+                const correct = hasAnswer && Number(response.answerIndex) === Number(answerData.correctIndex);
+                quizModalBody.innerHTML = `<p style="margin-bottom:1rem">Ya participaste en este quiz.</p><h4>${escapeHTML(quiz.question || '')}</h4><p>Tu respuesta: <strong>${escapeHTML((quiz.options || [])[response.answerIndex] || 'Respuesta registrada')}</strong></p>${hasAnswer ? (correct ? '<p style="color:var(--accent-gold)">¡Correcto! 🌟</p>' : `<p>¡Gracias por participar! 🌱 La respuesta correcta era: <strong>${escapeHTML((quiz.options || [])[Number(answerData.correctIndex)] || '')}</strong></p>`) : '<p>¡Gracias por participar! 🌱</p>'}${answerData.explanation ? `<p style="margin-top:.7rem;color:var(--text-dim)">${escapeHTML(answerData.explanation)}</p>` : ''}`;
+                quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-close-quiz-inner">Cerrar</button>';
+                document.getElementById('btn-close-quiz-inner').onclick = () => quizModalOverlay.classList.remove('active');
+                quizModalOverlay.classList.add('active'); return;
+            }
+            quizModalBody.innerHTML = `<p style="color:var(--text-dim); margin-bottom:1rem">${escapeHTML(quiz.title || 'Quiz BL del Día')}</p><h4 style="margin-bottom:1rem">${escapeHTML(quiz.question || '')}</h4><div id="quiz-options" style="display:grid;gap:.65rem">${(quiz.options || []).map((option, i) => `<label style="display:flex;gap:.6rem;align-items:center;border:1px solid var(--border-color);padding:.7rem;border-radius:10px;cursor:pointer"><input type="radio" name="daily-quiz-answer" value="${i}" style="width:auto;margin:0"> <span>${escapeHTML(option)}</span></label>`).join('')}</div>`;
+            quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-close-quiz-inner">Cerrar</button><button type="button" class="btn-confirm-modal" id="btn-submit-quiz-answer">Enviar respuesta</button>';
+            document.getElementById('btn-close-quiz-inner').onclick = () => quizModalOverlay.classList.remove('active');
+            document.getElementById('btn-submit-quiz-answer').onclick = async () => {
+                const selected = document.querySelector('input[name="daily-quiz-answer"]:checked');
+                if (!selected) { alert('Elige una respuesta antes de enviar.'); return; }
+                const answerIndex = Number(selected.value);
+                try {
+                    await setDoc(responseRef, { uid: auth.currentUser.uid, answerIndex, answeredAt: serverTimestamp() });
+                    let answerData = {};
+                    try { const answerSnap = await getDoc(doc(db, 'daily_quizzes', quiz.id, 'answer', 'key')); if (answerSnap.exists()) answerData = answerSnap.data(); } catch (answerError) { console.warn('Solución del quiz no disponible:', answerError); }
+                    const hasAnswer = Number.isInteger(answerData.correctIndex);
+                    const correct = hasAnswer && answerIndex === Number(answerData.correctIndex);
+                    quizModalBody.innerHTML = `<h4 style="margin-bottom:1rem">${hasAnswer ? (correct ? '¡Respuesta correcta! 🌟' : '¡Gracias por participar! 🌱') : '¡Respuesta registrada! 🌱'}</h4>${hasAnswer && !correct ? `<p>La respuesta correcta era: <strong>${escapeHTML((quiz.options || [])[Number(answerData.correctIndex)] || '')}</strong></p>` : ''}<p>${escapeHTML(answerData.explanation || '')}</p>`;
+                    quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-close-quiz-result">Cerrar</button>';
+                    document.getElementById('btn-close-quiz-result').onclick = () => quizModalOverlay.classList.remove('active');
+                } catch (error) { console.error('No se pudo guardar la respuesta:', error); alert('No se pudo guardar tu respuesta. Inténtalo de nuevo.'); }
+            };
+            quizModalOverlay.classList.add('active');
+        });
+
+        document.getElementById('btn-create-quiz').addEventListener('click', () => {
+            if (!isAdminUser()) { alert('Solo la administradora puede publicar el Quiz BL del Día.'); return; }
+            quizModalBody.innerHTML = `
+                <label for="quiz-create-title">Título del quiz</label><input id="quiz-create-title" placeholder="Ej. ¿Qué tropo BL eres hoy?">
+                <label for="quiz-create-question">Pregunta</label><textarea id="quiz-create-question" placeholder="Escribe la pregunta"></textarea>
+                <label for="quiz-option-0">Opción 1 (correcta)</label><input id="quiz-option-0" placeholder="Respuesta correcta">
+                <label for="quiz-option-1">Opción 2</label><input id="quiz-option-1" placeholder="Segunda opción">
+                <label for="quiz-option-2">Opción 3</label><input id="quiz-option-2" placeholder="Tercera opción">
+                <label for="quiz-option-3">Opción 4</label><input id="quiz-option-3" placeholder="Cuarta opción">
+                <label for="quiz-create-explanation">Explicación (opcional)</label><textarea id="quiz-create-explanation" placeholder="Una breve explicación"></textarea>
+                <p style="color:var(--text-dim);font-size:.8rem">La primera opción se marca como correcta. Puedes preparar el contenido antes de publicarlo.</p>`;
+            quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-cancel-create-quiz">Cancelar</button><button type="button" class="btn-confirm-modal" id="btn-save-create-quiz">Publicar Quiz</button>';
+            document.getElementById('btn-cancel-create-quiz').onclick = () => quizModalOverlay.classList.remove('active');
+            document.getElementById('btn-save-create-quiz').onclick = async () => {
+                if (!isAdminUser()) return;
+                const title = document.getElementById('quiz-create-title').value.trim();
+                const question = document.getElementById('quiz-create-question').value.trim();
+                const options = [0,1,2,3].map(i => document.getElementById(`quiz-option-${i}`).value.trim());
+                const explanation = document.getElementById('quiz-create-explanation').value.trim();
+                if (!title || !question || options.some(option => !option)) { alert('Completa el título, la pregunta y las cuatro opciones.'); return; }
+                try {
+                    const quizRef = await addDoc(collection(db, 'daily_quizzes'), { title, question, options, createdBy: auth.currentUser.uid, createdAt: serverTimestamp() });
+                    await setDoc(doc(db, 'daily_quizzes', quizRef.id, 'answer', 'key'), { correctIndex: 0, explanation, createdBy: auth.currentUser.uid });
+                    quizModalOverlay.classList.remove('active');
+                    alert('¡Quiz BL del Día publicado! 🌸');
+                } catch (error) { console.error('No se pudo publicar el quiz:', error); alert('No se pudo publicar el quiz. Revisa los permisos de Firebase.'); }
+            };
+            quizModalOverlay.classList.add('active');
+        });
+
+        const profileEditOverlay = document.getElementById('profile-edit-overlay');
+        btnEditName.addEventListener('click', async () => {
+            if (!requireLogin()) return;
             const currentName = getCurrentUserName();
-            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
-            const currentEmail = auth.currentUser ? (auth.currentUser.email || '') : '';
-
+            document.getElementById('profile-edit-name').value = currentName;
             try {
-                await addDoc(collection(db, "forum_posts"), {
-                    title: debateTitle,
-                    author: currentName,
-                    authorPhoto: currentPhoto,
-                    authorEmail: currentEmail,
-                    authorUid: auth.currentUser.uid,
-                    comments: [],
-                    createdAt: serverTimestamp()
-                });
-            } catch (err) {
-                console.error("Error al publicar debate:", err);
+                const snap = await getDoc(doc(db, 'users', getCurrentUserProfileKey(auth.currentUser)));
+                document.getElementById('profile-edit-bio').value = snap.exists() ? (snap.data().bio || '') : '';
+            } catch (error) { document.getElementById('profile-edit-bio').value = ''; }
+            profileEditOverlay.classList.add('active');
+        });
+        document.getElementById('btn-cancel-profile-edit').addEventListener('click', () => profileEditOverlay.classList.remove('active'));
+        profileEditOverlay.addEventListener('click', e => { if (e.target === profileEditOverlay) profileEditOverlay.classList.remove('active'); });
+        document.getElementById('btn-save-profile-edit').addEventListener('click', async () => {
+            if (!requireLogin()) return;
+            const user = auth.currentUser;
+            const oldName = getCurrentUserName(user);
+            const newName = document.getElementById('profile-edit-name').value.trim();
+            const bio = document.getElementById('profile-edit-bio').value.trim();
+            if (!newName) { alert('El nombre no puede quedar vacío.'); return; }
+            if (newName.length > 40 || bio.length > 240) { alert('El nombre admite 40 caracteres y la biografía 240.'); return; }
+            try {
+                await ensureCurrentUserProfile(user);
+                const profileKey = getCurrentUserProfileKey(user);
+                const profileRef = doc(db, 'users', profileKey);
+                const duplicateNames = await getDocs(query(collection(db, 'users'), where('displayName', '==', newName), limit(5)));
+                if (duplicateNames.docs.some(item => item.id !== profileKey && (item.data().displayName || '').toLowerCase() === newName.toLowerCase())) {
+                    alert('Ese nombre visible ya está en uso. Prueba con otro.'); return;
+                }
+                const profileSnap = await getDoc(profileRef);
+                if (profileSnap.exists()) await updateDoc(profileRef, { displayName: newName, bio, photoURL: user.photoURL || '' });
+                localStorage.setItem(`bl_user_name_${user.uid}`, newName);
+                localStorage.setItem('bl_user_name', newName);
+                profileNameDisplay.textContent = newName;
+                profileViewName.textContent = newName;
+                document.getElementById('profile-view-bio').textContent = bio || 'Este jardín está esperando una pequeña presentación.';
+                profileEditOverlay.classList.remove('active');
+                await openMyProfile();
+            } catch (error) {
+                console.error('No se pudo guardar el perfil:', error);
+                alert('No se pudieron guardar los cambios. Comprueba los permisos de Firebase.');
             }
         });
 
-        btnEditName.addEventListener('click', () => {
-            if (!requireLogin()) return;
-            const currentName = profileNameDisplay.textContent;
-            const newName = prompt('Ingresa tu nuevo nombre de usuario:', currentName);
-            if (newName && newName.trim() !== '') {
-                profileNameDisplay.textContent = newName.trim();
-                profileViewName.textContent = newName.trim();
-                localStorage.setItem(`bl_user_name_${auth.currentUser.uid}`, newName.trim());
-                localStorage.setItem('bl_user_name', newName.trim());
-                alert('¡Nombre de usuario actualizado!');
-            }
-        });
+        // Ajustes de apariencia guardados localmente en este dispositivo.
+        const settingsOverlay = document.getElementById('settings-modal-overlay');
+        function applyTheme(choice) {
+            const resolved = choice === 'system' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : choice;
+            document.body.classList.toggle('light-theme', resolved === 'light');
+            localStorage.setItem('secretGardenTheme', choice);
+            document.querySelectorAll('[data-theme-choice]').forEach(button => button.classList.toggle('active', button.dataset.themeChoice === choice));
+        }
+        window.openSettings = function() { settingsOverlay.classList.add('active'); applyTheme(localStorage.getItem('secretGardenTheme') || 'dark'); };
+        document.querySelectorAll('[data-theme-choice]').forEach(button => button.addEventListener('click', () => applyTheme(button.dataset.themeChoice)));
+        document.getElementById('btn-close-settings').addEventListener('click', () => settingsOverlay.classList.remove('active'));
+        settingsOverlay.addEventListener('click', e => { if (e.target === settingsOverlay) settingsOverlay.classList.remove('active'); });
+        applyTheme(localStorage.getItem('secretGardenTheme') || 'dark');
+        const dailyTopics = [
+            ['Pregunta del jardín','Si pudieras recomendar un solo BL para que alguien se enamore del género, ¿cuál elegirías?'],
+            ['Debate amistoso','¿Qué personaje secundario merecía tener su propia historia?'],
+            ['Pregunta del día','¿Qué tropo BL nunca te cansas de leer y por qué?'],
+            ['Entre fans','¿Qué pareja tiene la mejor química para ti?'],
+            ['Teoría del jardín','¿Qué historia te hizo cambiar de opinión sobre un personaje?'],
+            ['Recomendación exprés','Recomienda un BL para alguien que necesita una historia que enganche desde el capítulo uno.'],
+            ['Día de opiniones','¿Prefieres leer la historia completa o esperar capítulo por capítulo?']
+        ];
+        const topicIndex = Math.floor(Date.now()/86400000)%dailyTopics.length;
+        document.getElementById('daily-topic-title').textContent = dailyTopics[topicIndex][0];
+        document.getElementById('daily-topic-text').textContent = dailyTopics[topicIndex][1];
 
     </script>
 </body>
