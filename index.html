@@ -681,7 +681,6 @@
 </head>
 <body>
 
-    <!-- INPUT FIJO OCULTO PARA LA GALERÍA MÓVIL (EVITA CONGELAMIENTOS) -->
     <input type="file" id="fixed-gallery-input" accept="image/*" style="display: none;">
 
     <header>
@@ -1299,7 +1298,6 @@
             }
         };
 
-        // EVENTO DEL BOTÓN DE PUBLICAR OBRA USANDO EL INPUT FIJO MÓVIL
         document.getElementById('btn-add-rec').addEventListener('click', () => {
             const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
@@ -1317,7 +1315,7 @@
                 savePostToFirestore(title, desc, currentName, currentPhoto, currentEmail, 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop');
             } else {
                 const fixedInput = document.getElementById('fixed-gallery-input');
-                fixedInput.value = ''; // Limpiar selección anterior
+                fixedInput.value = ''; 
 
                 fixedInput.onchange = (e) => {
                     const file = e.target.files[0];
@@ -1330,7 +1328,7 @@
                     }
                 };
 
-                fixedInput.click(); // Activa la galería móvil de forma nativa sin bloqueos
+                fixedInput.click(); 
             }
         });
 
