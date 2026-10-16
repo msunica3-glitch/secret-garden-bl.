@@ -970,7 +970,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, doc, deleteDoc, updateDoc, query, where, orderBy, increment, getDoc, setDoc, serverTimestamp, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -987,8 +987,40 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+        // Mantiene la sesión de Google en este navegador hasta que la persona cierre sesión.
+        const authPersistenceReady = setPersistence(auth, browserLocalPersistence);
+        let recommendationsUnsubscribe = null;
+        let forumUnsubscribe = null;
 
         const ADMIN_EMAIL = "msunica3@gmail.com";
+
+        function getCurrentUserName(user = auth.currentUser) {
+            if (!user) return 'Usuario';
+            const uidKey = `bl_user_name_${user.uid}`;
+            const savedName = localStorage.getItem(uidKey);
+            if (savedName) return savedName;
+            // Migra el nombre anterior solo si el correo guardado coincide con la sesión actual.
+            const legacyEmail = localStorage.getItem('bl_user_email');
+            const legacyName = localStorage.getItem('bl_user_name');
+            if (legacyName && legacyEmail && user.email && legacyEmail.toLowerCase() === user.email.toLowerCase()) {
+                localStorage.setItem(uidKey, legacyName);
+                return legacyName;
+            }
+            return user.displayName || 'Usuario BL';
+        }
+
+        function isAdminUser(user = auth.currentUser) {
+            return !!(user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
+        }
+
+        function recordBelongsToUser(record, user = auth.currentUser) {
+            if (!record || !user) return false;
+            // Los documentos nuevos se identifican por UID. Solo los antiguos, sin UID,
+            // usan el correo como puente de recuperación de propiedad.
+            if (record.authorUid) return record.authorUid === user.uid;
+            return !!(record.authorEmail && user.email &&
+                record.authorEmail.toLowerCase() === user.email.toLowerCase());
+        }
 
         function escapeHTML(value) {
             return String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -1174,7 +1206,7 @@
 
         window.openMyProfile = async function() {
             if (!requireLogin()) return;
-            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
+            const currentName = getCurrentUserName();
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = auth.currentUser ? (auth.currentUser.email || '') : '';
 
@@ -1213,7 +1245,7 @@
         window.toggleFollow = async function(targetUsername, targetEmail) {
             if (!requireLogin()) return;
             const currentUser = auth.currentUser;
-            const currentName = localStorage.getItem('bl_user_name') || currentUser.displayName || 'Usuario';
+            const currentName = getCurrentUserName(currentUser);
             const currentEmail = currentUser.email;
 
             const btn = document.getElementById('btn-follow-toggle');
@@ -1269,7 +1301,7 @@
                 btnLogin.style.display = 'none';
                 userMenuContainer.style.display = 'block';
 
-                const name = user.displayName || 'Usuario BL';
+                const name = getCurrentUserName(user);
                 const email = user.email || '';
                 const photo = user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
 
@@ -1283,6 +1315,7 @@
                     if (adminBadgeSlot) adminBadgeSlot.innerHTML = '';
                 }
 
+                localStorage.setItem(`bl_user_name_${user.uid}`, name);
                 localStorage.setItem('bl_user_name', name);
                 localStorage.setItem('bl_user_email', email);
                 localStorage.setItem('bl_user_photo', photo);
@@ -1293,6 +1326,7 @@
                 userMenuContainer.style.display = 'none';
                 if (adminBadgeSlot) adminBadgeSlot.innerHTML = '';
                 
+                // No borrar el nombre guardado por UID: se recupera al volver a entrar.
                 localStorage.removeItem('bl_user_name');
                 localStorage.removeItem('bl_user_email');
                 localStorage.removeItem('bl_user_photo');
@@ -1301,6 +1335,10 @@
 
         onAuthStateChanged(auth, (user) => {
             updateUI(user || null);
+            // Re-renderizar permisos al entrar/salir. Antes se calculaban una sola vez
+            // cuando Firebase aún no había terminado de restaurar la sesión.
+            if (typeof window.loadRecommendations === 'function') window.loadRecommendations();
+            if (typeof window.loadForo === 'function') window.loadForo();
             if (!user) {
                 loginGateOverlay.classList.remove('active');
                 notifModal.classList.remove('active');
@@ -1309,6 +1347,7 @@
 
         btnLogin.addEventListener('click', async () => {
             try {
+                await authPersistenceReady;
                 const result = await signInWithPopup(auth, provider);
                 if (result && result.user) {
                     loginGateOverlay.classList.remove('active');
@@ -1355,17 +1394,30 @@
 
         window.deletePost = async function(id) {
             if (!requireLogin()) return;
-            if (confirm('¿Estás segura de que deseas eliminar esta publicación?')) {
-                try {
-                    await deleteDoc(doc(db, "recommendations", id));
-                } catch (err) {
-                    console.error("Error al eliminar:", err);
+            try {
+                const postRef = doc(db, "recommendations", id);
+                const postSnap = await getDoc(postRef);
+                if (!postSnap.exists()) return;
+                if (!recordBelongsToUser(postSnap.data(), auth.currentUser) && !isAdminUser()) {
+                    alert('Solo la autora o la administradora pueden eliminar esta publicación.');
+                    return;
                 }
+                if (confirm('¿Estás segura de que deseas eliminar esta publicación?')) {
+                    await deleteDoc(postRef);
+                }
+            } catch (err) {
+                console.error("Error al eliminar:", err);
+                alert('No se pudo eliminar. Comprueba los permisos de Firebase.');
             }
         };
 
         window.editPost = async function(id, oldTitle, oldDesc) {
             if (!requireLogin()) return;
+            const postSnap = await getDoc(doc(db, "recommendations", id));
+            if (!postSnap.exists() || !recordBelongsToUser(postSnap.data(), auth.currentUser)) {
+                alert('Solo puedes editar tus propias publicaciones.');
+                return;
+            }
             const newTitle = prompt('Editar título:', oldTitle);
             if (!newTitle) return;
             const newDesc = prompt('Editar descripción:', oldDesc);
@@ -1397,7 +1449,7 @@
 
                 // Enviar notificación a la colección global 'notifications'
                 const currentEmail = auth.currentUser ? auth.currentUser.email : '';
-                const currentName = localStorage.getItem('bl_user_name') || 'Alguien';
+                const currentName = getCurrentUserName() || 'Alguien';
 
                 if (authorEmail && currentEmail && authorEmail.toLowerCase() !== currentEmail.toLowerCase()) {
                     try {
@@ -1430,13 +1482,13 @@
         // TIEMPO REAL CON ONSNAPSHOT PARA RECOMENDACIONES
         window.loadRecommendations = function() {
             const grid = document.getElementById('grid-recomendaciones');
-            const currentName = localStorage.getItem('bl_user_name') || '';
-            const currentEmail = auth.currentUser ? auth.currentUser.email : '';
-            const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-
+            if (recommendationsUnsubscribe) recommendationsUnsubscribe();
             const q = query(collection(db, "recommendations"), orderBy("createdAt", "desc"));
             
-            onSnapshot(q, (querySnapshot) => {
+            recommendationsUnsubscribe = onSnapshot(q, (querySnapshot) => {
+                const currentUser = auth.currentUser;
+                const currentEmail = currentUser && currentUser.email ? currentUser.email.toLowerCase() : '';
+                const isAdmin = isAdminUser(currentUser);
                 if (querySnapshot.empty) {
                     grid.innerHTML = '<p style="color: var(--text-dim); grid-column: 1/-1;">Aún no hay obras publicadas en el jardín. ¡Sé la primera persona en publicar una!</p>';
                     return;
@@ -1446,7 +1498,13 @@
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
-                    const isOwner = (auth.currentUser && data.authorUid === auth.currentUser.uid) || (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase());
+                    const isOwner = recordBelongsToUser(data, currentUser);
+                    // Recuperación gradual de publicaciones antiguas: una vez validado el
+                    // correo de Google, se les añade el UID permanente de su autora.
+                    if (currentUser && !data.authorUid && data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail) {
+                        updateDoc(doc(db, "recommendations", id), { authorUid: currentUser.uid }).catch(err =>
+                            console.warn("No se pudo vincular una publicación antigua a su cuenta:", err));
+                    }
                     const likes = data.likes || 0;
                     const authorEmail = data.authorEmail || '';
                     const comments = data.comments || [];
@@ -1467,7 +1525,7 @@
 
                     let commentsHTML = '';
                     comments.forEach((c, index) => {
-                        const isCommentOwner = (auth.currentUser && c.authorUid === auth.currentUser.uid) || (c.authorEmail && currentEmail && c.authorEmail.toLowerCase() === currentEmail.toLowerCase());
+                        const isCommentOwner = recordBelongsToUser(c, currentUser);
                         const showDeleteComment = isCommentOwner || isAdmin;
 
                         commentsHTML += `
@@ -1527,7 +1585,7 @@
             const commentText = input.value.trim();
             if (!commentText) return;
 
-            const currentName = localStorage.getItem('bl_user_name') || auth.currentUser.displayName || 'Usuario';
+            const currentName = getCurrentUserName(auth.currentUser);
             const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = auth.currentUser.email || '';
 
@@ -1623,7 +1681,7 @@
             }
 
             const finalImage = selectedCustomImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop';
-            const currentName = localStorage.getItem('bl_user_name') || auth.currentUser.displayName || 'Usuario';
+            const currentName = getCurrentUserName(auth.currentUser);
             const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = auth.currentUser.email || '';
 
@@ -1650,13 +1708,13 @@
         // TIEMPO REAL CON ONSNAPSHOT PARA EL FORO
         window.loadForo = function() {
             const listForo = document.getElementById('list-foro');
-            const currentName = localStorage.getItem('bl_user_name') || '';
-            const currentEmail = auth.currentUser ? auth.currentUser.email : '';
-            const isAdmin = currentEmail && currentEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-
+            if (forumUnsubscribe) forumUnsubscribe();
             const q = query(collection(db, "forum_posts"), orderBy("createdAt", "desc"));
 
-            onSnapshot(q, (querySnapshot) => {
+            forumUnsubscribe = onSnapshot(q, (querySnapshot) => {
+                const currentUser = auth.currentUser;
+                const currentEmail = currentUser && currentUser.email ? currentUser.email.toLowerCase() : '';
+                const isAdmin = isAdminUser(currentUser);
                 if (querySnapshot.empty) {
                     listForo.innerHTML = '<p style="color: var(--text-dim);">Aún no hay debates en el foro. ¡Crea el primero!</p>';
                     return;
@@ -1666,12 +1724,16 @@
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
-                    const isOwner = (auth.currentUser && data.authorUid === auth.currentUser.uid) || (data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail.toLowerCase());
+                    const isOwner = recordBelongsToUser(data, currentUser);
+                    if (currentUser && !data.authorUid && data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail) {
+                        updateDoc(doc(db, "forum_posts", id), { authorUid: currentUser.uid }).catch(err =>
+                            console.warn("No se pudo vincular un debate antiguo a su cuenta:", err));
+                    }
                     const comments = data.comments || [];
 
                     let commentsHTML = '';
                     comments.forEach((c, index) => {
-                        const isCommentOwner = (auth.currentUser && c.authorUid === auth.currentUser.uid) || (c.authorEmail && currentEmail && c.authorEmail.toLowerCase() === currentEmail.toLowerCase());
+                        const isCommentOwner = recordBelongsToUser(c, currentUser);
                         const showDeleteComment = isCommentOwner || isAdmin;
 
                         commentsHTML += `
@@ -1720,7 +1782,7 @@
             const commentText = input.value.trim();
             if (!commentText) return;
 
-            const currentName = localStorage.getItem('bl_user_name') || auth.currentUser.displayName || 'Usuario';
+            const currentName = getCurrentUserName(auth.currentUser);
             const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = auth.currentUser.email || '';
 
@@ -1764,11 +1826,19 @@
 
         window.deleteForumPost = async function(id) {
             if (!requireLogin()) return;
-            if (!confirm('¿Estás segura de que deseas eliminar este debate completo?')) return;
             try {
-                await deleteDoc(doc(db, "forum_posts", id));
+                const postRef = doc(db, "forum_posts", id);
+                const postSnap = await getDoc(postRef);
+                if (!postSnap.exists()) return;
+                if (!recordBelongsToUser(postSnap.data(), auth.currentUser) && !isAdminUser()) {
+                    alert('Solo la autora o la administradora pueden eliminar este debate.');
+                    return;
+                }
+                if (!confirm('¿Estás segura de que deseas eliminar este debate completo?')) return;
+                await deleteDoc(postRef);
             } catch (err) {
                 console.error("Error al eliminar debate:", err);
+                alert('No se pudo eliminar. Comprueba los permisos de Firebase.');
             }
         };
 
@@ -1777,7 +1847,7 @@
             const debateTitle = prompt('¿Sobre qué tema te gustaría iniciar un debate en el foro?');
             if (!debateTitle) return;
 
-            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
+            const currentName = getCurrentUserName();
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             const currentEmail = auth.currentUser ? (auth.currentUser.email || '') : '';
 
@@ -1803,13 +1873,12 @@
             if (newName && newName.trim() !== '') {
                 profileNameDisplay.textContent = newName.trim();
                 profileViewName.textContent = newName.trim();
+                localStorage.setItem(`bl_user_name_${auth.currentUser.uid}`, newName.trim());
                 localStorage.setItem('bl_user_name', newName.trim());
                 alert('¡Nombre de usuario actualizado!');
             }
         });
 
-        window.loadRecommendations();
-        window.loadForo();
     </script>
 </body>
 </html>
