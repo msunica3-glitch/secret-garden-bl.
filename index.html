@@ -929,7 +929,7 @@
 
             btnEditName.style.display = 'none';
             document.getElementById('profile-heading-title').textContent = '👤 Perfil de ' + username;
-            switchView('perfil');
+            window.switchView('perfil');
         };
 
         window.openMyProfile = function() {
@@ -944,7 +944,7 @@
             profileViewBadge.innerHTML = '<span class="admin-badge">Admin</span>';
             btnEditName.style.display = 'inline-block';
             document.getElementById('profile-heading-title').textContent = '👤 Mi Perfil';
-            switchView('perfil');
+            window.switchView('perfil');
         };
 
         avatarToggleBtn.addEventListener('click', (e) => {
@@ -1038,7 +1038,7 @@
             }
         });
 
-        // MENÚ DESPLEGABLE DE TRES PUNTOS
+        // FUNCIONES GLOBALES DE INTERACCIÓN
         window.toggleCardMenu = function(event, btn) {
             event.stopPropagation();
             document.querySelectorAll('.card-dropdown').forEach(d => {
@@ -1048,7 +1048,6 @@
             dropdown.classList.toggle('active');
         };
 
-        // COMPARTIR PUBLICACIÓN
         window.sharePost = function(title) {
             if (navigator.share) {
                 navigator.share({ title: title, text: `¡Mira esta recomendación en Secret Garden BL: ${title}!`, url: window.location.href })
@@ -1058,18 +1057,16 @@
             }
         };
 
-        // REPORTAR PUBLICACIÓN
         window.reportPost = function() {
             alert('Gracias por reportar. Nuestro equipo de administración revisará el contenido.');
         };
 
-        // ELIMINAR PUBLICACIÓN
         window.deletePost = async function(id) {
             if (confirm('¿Estás segura de que deseas eliminar esta publicación?')) {
                 try {
                     await deleteDoc(doc(db, "recommendations", id));
                     alert('Publicación eliminada correctamente.');
-                    loadRecommendations();
+                    window.loadRecommendations();
                 } catch (err) {
                     console.error("Error al eliminar:", err);
                     alert("No se pudo eliminar la publicación.");
@@ -1077,7 +1074,6 @@
             }
         };
 
-        // EDITAR PUBLICACIÓN
         window.editPost = async function(id, oldTitle, oldDesc) {
             const newTitle = prompt('Editar título:', oldTitle);
             if (!newTitle) return;
@@ -1090,14 +1086,13 @@
                     desc: newDesc
                 });
                 alert('¡Publicación actualizada!');
-                loadRecommendations();
+                window.loadRecommendations();
             } catch (err) {
                 console.error("Error al editar:", err);
                 alert("No se pudo actualizar la publicación.");
             }
         };
 
-        // DAR LIKE
         window.toggleLike = async function(btn, id) {
             const isLiked = btn.classList.contains('liked');
             const spanCount = btn.querySelector('.like-count');
@@ -1122,7 +1117,7 @@
         };
 
         // CARGAR RECOMENDACIONES DESDE FIRESTORE
-        async function loadRecommendations() {
+        window.loadRecommendations = async function() {
             const grid = document.getElementById('grid-recomendaciones');
             const currentName = localStorage.getItem('bl_user_name') || '';
 
@@ -1192,9 +1187,9 @@
             } catch (err) {
                 console.error("Error cargando recomendaciones:", err);
             }
-        }
+        };
 
-        // PUBLICAR RECOMENDACIÓN CON SUBIDA DE FOTO DESDE GALERÍA
+        // EVENTO DEL BOTÓN DE PUBLICAR OBRA
         document.getElementById('btn-add-rec').addEventListener('click', () => {
             const currentName = localStorage.getItem('bl_user_name') || 'Anónimo';
             const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
@@ -1205,25 +1200,29 @@
             const desc = prompt('Escribe una breve descripción o reseña:');
             if (!desc) return;
 
-            const imageInput = document.createElement('input');
-            imageInput.type = 'file';
-            imageInput.accept = 'image/*';
+            const usarImagenPorDefecto = confirm('¿Deseas usar una imagen de portada automática? (Acepta para sí, Cancela para subir una foto de tu galería)');
             
-            imageInput.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = async function(event) {
-                        const base64Image = event.target.result;
-                        await savePostToFirestore(title, desc, currentName, currentPhoto, base64Image);
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    await savePostToFirestore(title, desc, currentName, currentPhoto, 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop');
-                }
-            };
-            
-            imageInput.click();
+            if (usarImagenPorDefecto) {
+                savePostToFirestore(title, desc, currentName, currentPhoto, 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop');
+            } else {
+                const imageInput = document.createElement('input');
+                imageInput.type = 'file';
+                imageInput.accept = 'image/*';
+                
+                imageInput.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            savePostToFirestore(title, desc, currentName, currentPhoto, event.target.result);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        savePostToFirestore(title, desc, currentName, currentPhoto, 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop');
+                    }
+                };
+                imageInput.click();
+            }
         });
 
         async function savePostToFirestore(title, desc, author, authorPhoto, image) {
@@ -1238,12 +1237,38 @@
                     createdAt: new Date()
                 });
                 alert('¡Tu obra se ha publicado permanentemente en el jardín!');
-                loadRecommendations();
+                window.loadRecommendations();
             } catch (err) {
                 console.error("Error al publicar:", err);
                 alert("Hubo un error al guardar la publicación.");
             }
         }
+
+        // EVENTO DEL BOTÓN NUEVO DEBATE EN EL FORO
+        document.getElementById('btn-add-forum').addEventListener('click', () => {
+            const debateTitle = prompt('¿Sobre qué tema te gustaría iniciar un debate en el foro?');
+            if (!debateTitle) return;
+
+            const currentName = localStorage.getItem('bl_user_name') || 'Usuario';
+            const currentPhoto = localStorage.getItem('bl_user_photo') || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+
+            const listForo = document.getElementById('list-foro');
+            const newForumItem = document.createElement('div');
+            newForumItem.className = 'forum-item';
+            newForumItem.innerHTML = `
+                <div class="user-info-clickable" onclick="openUserProfile('${currentName}', '${currentPhoto}', true)">
+                    <img src="${currentPhoto}" class="user-clickable-avatar" alt="${currentName}">
+                    <div>
+                        <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${debateTitle}</h3>
+                        <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${currentName} • 0 respuestas</p>
+                    </div>
+                </div>
+                <a href="#" style="color:var(--accent-pink); text-decoration:none; font-weight:600;">Ver debate →</a>
+            `;
+
+            listForo.prepend(newForumItem);
+            alert('¡Tu debate se ha publicado en el foro!');
+        });
 
         window.addComment = function(button) {
             const input = button.previousElementSibling;
@@ -1280,7 +1305,7 @@
         });
 
         // Cargar al iniciar la página
-        loadRecommendations();
+        window.loadRecommendations();
     </script>
 </body>
 </html>
