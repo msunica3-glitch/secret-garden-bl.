@@ -382,23 +382,23 @@
             position: relative;
             z-index: 2;
             max-width: 850px;
-            padding: 2rem;
+            padding: 1.15rem 1.5rem;
         }
 
         .hero h1 {
             font-family: 'Cinzel', serif;
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 5vw, 2.8rem);
             color: var(--accent-gold);
             text-shadow: 0 4px 20px rgba(0,0,0,0.9);
-            margin-bottom: 1rem;
+            margin-bottom: .55rem;
             letter-spacing: 2px;
         }
 
         .hero p {
-            font-size: 1.15rem;
+            font-size: 1rem;
             color: var(--text-dim);
             font-style: italic;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             text-shadow: 0 2px 10px rgba(0,0,0,0.8);
         }
 
@@ -407,8 +407,8 @@
             background: linear-gradient(135deg, rgba(27, 56, 36, 0.6), rgba(14, 23, 18, 0.9));
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 3rem;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -418,8 +418,8 @@
         .quiz-info h3 {
             font-family: 'Cinzel', serif;
             color: var(--accent-gold);
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+            margin-bottom: 0.35rem;
         }
 
         .quiz-info p {
@@ -881,8 +881,8 @@
         .rank-1 .rank-number { background:linear-gradient(135deg,#ffe7a1,#b88720); color:#241900; }
         .rank-2 .rank-number { background:linear-gradient(135deg,#f2f5f7,#8996a3); color:#172027; }
         .rank-3 .rank-number { background:linear-gradient(135deg,#f1c49c,#9b6035); color:#241307; }
-        .leaderboard-list { display:flex; flex-direction:row; gap:1rem; overflow-x:auto; padding:.25rem .1rem 1rem; scroll-snap-type:x proximity; }
-        .leaderboard-card { min-width:260px; max-width:320px; flex:0 0 280px; scroll-snap-align:start; position:relative; overflow:hidden; }
+        .leaderboard-list { display:flex; flex-direction:column; gap:.75rem; overflow-x:visible; padding:.25rem .1rem 1rem; scroll-snap-type:none; }
+        .leaderboard-card { width:100%; min-width:0; max-width:none; flex:0 0 auto; scroll-snap-align:none; position:relative; overflow:hidden; }
         .leaderboard-card.rank-1 { border:1px solid #e8c65a; box-shadow:0 0 22px rgba(232,198,90,.28); background:linear-gradient(145deg,rgba(110,78,14,.38),var(--card-bg) 70%); }
         .leaderboard-card.rank-2 { border:1px solid #bdc9d4; box-shadow:0 0 18px rgba(189,201,212,.18); }
         .leaderboard-card.rank-3 { border:1px solid #c88758; box-shadow:0 0 18px rgba(200,135,88,.18); }
@@ -893,6 +893,7 @@
         .avatar-color-options { display:flex; flex-wrap:wrap; gap:.55rem; margin:.35rem 0 1rem; }
         .avatar-color-choice { width:42px; height:42px; border-radius:50%; border:3px solid var(--avatar-color); background:color-mix(in srgb,var(--avatar-color) 28%, transparent); cursor:pointer; font-size:1.1rem; }
         .avatar-color-choice.active { outline:2px solid var(--accent-gold); outline-offset:3px; transform:scale(1.08); }
+        .avatar-emoji-choice { border-color:var(--border-color); background:var(--card-bg); font-size:1.45rem; }
         .user-clickable-avatar.avatar-colorized, #profile-view-img.avatar-colorized, #user-avatar-img.avatar-colorized { background:var(--avatar-color,#d8839a); padding:3px; }
         .rank-user { display:flex; align-items:center; gap:.75rem; min-width:0; }
         .rank-user img { width:42px;height:42px;border-radius:50%;object-fit:cover; }
@@ -984,7 +985,20 @@
             <h3 id="profile-edit-title">🌿 Editar mi perfil</h3>
             <label for="profile-edit-name">Nombre visible</label><input id="profile-edit-name" maxlength="40" placeholder="Tu nombre en el jardín">
             <label for="profile-edit-bio">Biografía</label><textarea id="profile-edit-bio" maxlength="240" placeholder="Cuéntale algo a la comunidad (máximo 240 caracteres)"></textarea>
-            <label>Color de tu carita de perfil</label><div id="avatar-color-options" class="avatar-color-options" role="group" aria-label="Colores del avatar">
+            <label>Elige tu carita de perfil</label>
+            <div id="avatar-emoji-options" class="avatar-color-options" role="group" aria-label="Caritas de perfil">
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="😊" aria-label="Feliz">😊</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="🥰" aria-label="Enamorada">🥰</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="😎" aria-label="Con estilo">😎</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="🥹" aria-label="Emocionada">🥹</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="😈" aria-label="Traviesa">😈</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="😭" aria-label="Llorando">😭</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="😴" aria-label="Con sueño">😴</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="🤩" aria-label="Fascinada">🤩</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="😻" aria-label="Amor por los gatos">😻</button>
+                <button type="button" class="avatar-color-choice avatar-emoji-choice" data-avatar-emoji="💜" aria-label="Corazón morado">💜</button>
+            </div>
+            <label>Color de fondo de tu carita</label><div id="avatar-color-options" class="avatar-color-options" role="group" aria-label="Colores del avatar">
                 <button type="button" class="avatar-color-choice" data-avatar-color="#d8839a" style="--avatar-color:#d8839a" aria-label="Rosa">🌸</button>
                 <button type="button" class="avatar-color-choice" data-avatar-color="#7b9cff" style="--avatar-color:#7b9cff" aria-label="Azul">💙</button>
                 <button type="button" class="avatar-color-choice" data-avatar-color="#a98bff" style="--avatar-color:#a98bff" aria-label="Lila">💜</button>
@@ -1175,12 +1189,22 @@
                 <div id="profile-action-container"></div>
             </div>
             <p id="profile-view-bio" class="profile-bio">Este jardín está esperando una pequeña presentación.</p>
-            <div class="profile-tabs"><button class="profile-tab active" data-profile-tab="posts" onclick="showProfileTab('posts')">📝 Publicaciones</button><button class="profile-tab" data-profile-tab="comments" onclick="showProfileTab('comments')">💬 Comentarios</button><button class="profile-tab" data-profile-tab="about" onclick="showProfileTab('about')">🌿 Sobre el perfil</button></div>
+            <div class="profile-tabs"><button class="profile-tab active" data-profile-tab="posts" onclick="showProfileTab('posts')">📝 Publicaciones</button><button class="profile-tab" data-profile-tab="comments" onclick="showProfileTab('comments')">💬 Comentarios</button></div>
             <div id="profile-posts-panel"><div id="profile-post-grid" class="profile-post-grid"><p style="color:var(--text-dim)">Las publicaciones aparecerán aquí.</p></div></div>
             <div id="profile-comments-panel" style="display:none"><div id="profile-comment-list" class="profile-post-grid"><p style="color:var(--text-dim)">Los comentarios aparecerán aquí.</p></div></div>
-            <div id="profile-about-panel" style="display:none" class="rules-card"><h3>Sobre este perfil</h3><p id="profile-about-copy">Aquí podrás conocer un poco más a este miembro de la comunidad.</p></div>
         </div>
     </div>
+
+    <!-- VISTA: SOBRE SGB -->
+    <div id="view-sobre-sgb" class="view-section"><div class="container">
+        <div class="section-title"><h2>🌸 Sobre Secret Garden BL</h2></div>
+        <div class="rules-card"><h3>¿Qué es SGB?</h3><p>Secret Garden BL es un refugio para fans del BL: un espacio para descubrir historias, compartir recomendaciones y conversar con otras personas que disfrutan este género.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>🌱 Nuestro propósito</h3><p>Crear una comunidad acogedora donde cada miembro pueda expresarse con respeto, descubrir nuevas obras y ayudar a que el jardín crezca.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>✨ ¿Cómo funciona?</h3><p>Explora recomendaciones, publica obras que te gusten, participa en debates y sugerencias del foro, comenta, da «Me gusta» y descubre el ranking de participación.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>🌿 ¿Qué pueden hacer los miembros?</h3><ul class="rules-list"><li>Personalizar su perfil y biografía.</li><li>Compartir recomendaciones y participar en conversaciones.</li><li>Comentar, reaccionar y seguir perfiles.</li><li>Consultar notificaciones y participar en el quiz cuando esté disponible.</li></ul></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>🛡️ Reglas básicas</h3><p>Trata a los demás con respeto, evita el spam y la suplantación, protege tu información privada, publica en la sección adecuada y reporta los problemas. Consulta las <a href="#" onclick="switchView('reglas');return false;">Reglas de la comunidad</a> completas.</p></div>
+        <button class="btn-add" style="margin-top:1.2rem" onclick="switchView('home')">Volver al inicio</button>
+    </div></div>
 
     <!-- VISTA: REGLAS DE LA COMUNIDAD -->
     <div id="view-reglas" class="view-section"><div class="container">
@@ -1198,9 +1222,8 @@
     <footer>
         <p>© 2026 Secret Garden BL — Refugio oficial de la comunidad</p>
         <p style="margin-top: 0.5rem; font-size: 0.8rem;">Soporte técnico: <a href="mailto:msunica3@gmail.com">msunica3@gmail.com</a></p>
-        <div class="footer-links"><button type="button" onclick="switchView('reglas')">Reglas de la comunidad</button><button type="button" onclick="openSettings()">Ajustes de apariencia</button></div>
+        <div class="footer-links"><button type="button" onclick="switchView('sobre-sgb')">Sobre SGB</button><button type="button" onclick="switchView('reglas')">Reglas de la comunidad</button><button type="button" onclick="openSettings()">Ajustes de apariencia</button></div>
     </footer>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -1417,7 +1440,6 @@
             profileViewImg.src = avatarUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
             profileViewEmail.textContent = email ? '@' + email.split('@')[0] : '@' + username.toLowerCase().replace(/\s+/g, '');
             document.getElementById('profile-view-bio').textContent = 'Cargando presentación…';
-            document.getElementById('profile-about-copy').textContent = 'Este miembro forma parte de Secret Garden BL.';
             showProfileTab('posts');
             loadProfilePosts(username, email);
             loadProfileComments(username, email);
@@ -1447,7 +1469,6 @@
                     followersCount = data.followersCount || 0;
                     followingCount = data.followingCount || 0;
                     document.getElementById('profile-view-bio').textContent = data.bio || 'Este jardín está esperando una pequeña presentación.';
-                    document.getElementById('profile-about-copy').textContent = data.bio || 'Este miembro todavía no ha añadido una biografía.';
                 } else {
                     document.getElementById('profile-view-bio').textContent = 'Este jardín está esperando una pequeña presentación.';
                 }
@@ -1506,10 +1527,10 @@
                 if (userSnap.exists()) {
                     const data = userSnap.data();
                     applyAvatarColor(data.avatarColor || '#d8839a');
+                    applyAvatarEmoji(data.avatarEmoji || '😊', data.avatarColor || '#d8839a');
                     profileStatFollowers.textContent = data.followersCount || 0;
                     profileStatFollowing.textContent = data.followingCount || 0;
                     document.getElementById('profile-view-bio').textContent = data.bio || 'Este jardín está esperando una pequeña presentación.';
-                    document.getElementById('profile-about-copy').textContent = data.bio || 'Todavía no has añadido una biografía.';
                 } else {
                     profileStatFollowers.textContent = 0;
                     profileStatFollowing.textContent = 0;
@@ -1547,7 +1568,6 @@
             document.getElementById('profile-posts-panel').style.display = tab === 'posts' ? 'block' : 'none';
             const commentsPanel = document.getElementById('profile-comments-panel');
             if (commentsPanel) commentsPanel.style.display = tab === 'comments' ? 'block' : 'none';
-            document.getElementById('profile-about-panel').style.display = tab === 'about' ? 'block' : 'none';
         };
         async function loadProfileComments(username, email, uid = '') {
             const root = document.getElementById('profile-comment-list');
@@ -1800,8 +1820,8 @@
         profileModal.addEventListener('click', e => e.stopPropagation());
         notifModal.addEventListener('click', e => e.stopPropagation());
 
-        // Crea o migra el documento del perfil usando o UID permanente de Firebase.
-        // Evita duas inicializações simultâneas quando o Firebase restaura a sessão.
+        // Crea o migra el documento del perfil usando el UID permanente de Firebase.
+        // Evita dos inicializaciones simultáneas cuando Firebase restaura la sesión.
         const profileInitializationTasks = new Map();
         function ensureCurrentUserProfile(user) {
             if (!user || !user.uid) return Promise.resolve();
@@ -1869,6 +1889,12 @@
                 const photo = user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
 
                 userAvatarImg.src = photo;
+                getDoc(doc(db, 'users', getCurrentUserProfileKey(user))).then(profileSnap => {
+                    if (profileSnap.exists()) {
+                        const profileData = profileSnap.data();
+                        if (profileData.avatarEmoji) applyAvatarEmoji(profileData.avatarEmoji, profileData.avatarColor || '#d8839a');
+                    }
+                }).catch(error => console.warn('No se pudo cargar la carita del perfil:', error));
                 profileNameDisplay.textContent = name;
                 profileEmailDisplay.textContent = email;
 
@@ -2038,6 +2064,40 @@
             } finally { btn.disabled = false; }
         };
 
+        const liveCommentUnsubscribers = new Map();
+        function watchLiveComments(parentCollection, parentId, containerId, isForum = false) {
+            const key = `${parentCollection}/${parentId}`;
+            if (liveCommentUnsubscribers.has(key)) liveCommentUnsubscribers.get(key)();
+            const commentsRef = collection(db, parentCollection, parentId, 'comments');
+            const unsubscribe = onSnapshot(commentsRef, async snapshot => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                let legacy = [];
+                try {
+                    const parentSnap = await getDoc(doc(db, parentCollection, parentId));
+                    if (parentSnap.exists()) legacy = (parentSnap.data().comments || []).map((c, index) => ({ ...c, _legacy:true, id:`legacy-${index}` }));
+                } catch (error) { console.warn('No se pudieron actualizar comentarios antiguos:', error); }
+                const currentUser = auth.currentUser;
+                const isAdmin = isAdminUser(currentUser);
+                const independent = snapshot.docs.map(commentDoc => ({ ...commentDoc.data(), id:commentDoc.id, _legacy:false }));
+                const comments = legacy.concat(independent);
+                const html = comments.map(c => {
+                    const owner = recordBelongsToUser(c, currentUser);
+                    const canDelete = isAdmin || (!c._legacy && owner);
+                    const deleteCall = isForum ? 'deleteForumComment' : 'deleteComment';
+                    const escapedText = escapeHTML(c.text || '');
+                    const escapedName = escapeHTML(c.author || 'Miembro');
+                    const escapedPhoto = escapeHTML(c.authorPhoto || '');
+                    const escapedEmail = escapeHTML(c.authorEmail || '');
+                    return `<div class="comment-item"><div class="comment-content-wrapper"><img src="${escapedPhoto}" class="user-clickable-avatar" alt="" onclick="openUserProfile('${escapedName}','${escapedPhoto}','${escapedEmail}')"><div class="comment-text"><strong onclick="openUserProfile('${escapedName}','${escapedPhoto}','${escapedEmail}')" style="cursor:pointer;color:var(--accent-gold)">@${escapedName}:</strong> ${escapedText}</div></div>${canDelete ? `<button class="btn-delete-comment" onclick="${deleteCall}('${parentId}','${c.id}',${c._legacy?'true':'false'})" title="Eliminar comentario">🗑️</button>` : ''}</div>`;
+                }).join('');
+                const inputBox = container.querySelector('.comment-input-box');
+                container.innerHTML = html;
+                if (inputBox) container.appendChild(inputBox);
+                else container.insertAdjacentHTML('beforeend', isForum ? `<div class="comment-input-box"><input type="text" placeholder="Escribe tu argumento para debatir..." class="input-forum-comment"><button onclick="addForumComment('${parentId}')">Debatir</button></div>` : `<div class="comment-input-box"><input type="text" placeholder="Escribe un comentario..." class="input-comment"><button onclick="addComment('${parentId}')">Comentar</button></div>`);
+            }, error => console.warn('No se pudo escuchar comentarios en tiempo real:', error));
+            liveCommentUnsubscribers.set(key, unsubscribe);
+        }
         // TIEMPO REAL CON ONSNAPSHOT PARA RECOMENDACIONES
         window.loadRecommendations = function() {
             const grid = document.getElementById('grid-recomendaciones');
@@ -2144,6 +2204,7 @@
                         </div>
                     `;
                     grid.appendChild(card);
+                    watchLiveComments('recommendations', id, `comments-container-${id}`, false);
                 });
             });
         };
@@ -2400,6 +2461,7 @@
                         </div>
                     `;
                     listForo.appendChild(item);
+                    watchLiveComments('forum_posts', id, `forum-comments-${id}`, true);
                 });
                 if (renderedForumCount === 0) listForo.innerHTML = '<div class="community-tile"><h3>🌱 Todavía no hay publicaciones en esta sección</h3><p>¡Puedes ser la primera persona en iniciar la conversación!</p><button class="btn-add" style="margin-top:.8rem" onclick="openForumComposer()">Crear publicación</button></div>';
             });
@@ -2614,6 +2676,8 @@
                 const snap = await getDoc(doc(db, 'users', getCurrentUserProfileKey(auth.currentUser)));
                 document.getElementById('profile-edit-bio').value = snap.exists() ? (snap.data().bio || '') : '';
                 selectedAvatarColor = snap.exists() ? (snap.data().avatarColor || '#d8839a') : '#d8839a';
+                selectedAvatarEmoji = snap.exists() ? (snap.data().avatarEmoji || '😊') : '😊';
+                if (avatarEmojiOptions) avatarEmojiOptions.querySelectorAll('[data-avatar-emoji]').forEach(option => option.classList.toggle('active', option.dataset.avatarEmoji === selectedAvatarEmoji));
                 applyAvatarColor(selectedAvatarColor);
                 if (avatarColorOptions) avatarColorOptions.querySelectorAll('[data-avatar-color]').forEach(option => option.classList.toggle('active', option.dataset.avatarColor === selectedAvatarColor));
             } catch (error) { document.getElementById('profile-edit-bio').value = ''; }
@@ -2639,11 +2703,12 @@
                 }
                 const profileSnap = await getDoc(profileRef);
                 selectedAvatarColor = applyAvatarColor(selectedAvatarColor);
-                if (profileSnap.exists()) await updateDoc(profileRef, { displayName: newName, bio, photoURL: user.photoURL || '', avatarColor: selectedAvatarColor });
+                if (profileSnap.exists()) await updateDoc(profileRef, { displayName: newName, bio, photoURL: user.photoURL || '', avatarColor: selectedAvatarColor, avatarEmoji: selectedAvatarEmoji });
                 localStorage.setItem(`bl_user_name_${user.uid}`, newName);
                 localStorage.setItem('bl_user_name', newName);
                 profileNameDisplay.textContent = newName;
                 profileViewName.textContent = newName;
+                applyAvatarEmoji(selectedAvatarEmoji, selectedAvatarColor);
                 document.getElementById('profile-view-bio').textContent = bio || 'Este jardín está esperando una pequeña presentación.';
                 profileEditOverlay.classList.remove('active');
                 await openMyProfile();
@@ -2707,6 +2772,29 @@
         }
 
         let selectedAvatarColor = '#d8839a';
+        let selectedAvatarEmoji = '😊';
+        const avatarEmojiOptions = document.getElementById('avatar-emoji-options');
+        if (avatarEmojiOptions) avatarEmojiOptions.addEventListener('click', event => {
+            const button = event.target.closest('[data-avatar-emoji]');
+            if (!button) return;
+            selectedAvatarEmoji = button.dataset.avatarEmoji;
+            avatarEmojiOptions.querySelectorAll('[data-avatar-emoji]').forEach(option => option.classList.toggle('active', option === button));
+        });
+        function emojiAvatarDataUrl(emoji, color) {
+            const safeEmoji = String(emoji || '😊').replace(/[<>]/g, '');
+            const safeColor = /^#[0-9a-fA-F]{6}$/.test(color || '') ? color : '#d8839a';
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><rect width="160" height="160" rx="80" fill="${safeColor}"/><text x="80" y="108" text-anchor="middle" font-size="88">${safeEmoji}</text></svg>`;
+            return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+        }
+        function applyAvatarEmoji(emoji, color) {
+            selectedAvatarEmoji = emoji || '😊';
+            const avatarSrc = emojiAvatarDataUrl(selectedAvatarEmoji, color || selectedAvatarColor);
+            const menuAvatar = document.getElementById('user-avatar-img');
+            const profileAvatar = document.getElementById('profile-view-img');
+            if (menuAvatar) menuAvatar.src = avatarSrc;
+            if (profileAvatar) profileAvatar.src = avatarSrc;
+            if (avatarEmojiOptions) avatarEmojiOptions.querySelectorAll('[data-avatar-emoji]').forEach(option => option.classList.toggle('active', option.dataset.avatarEmoji === selectedAvatarEmoji));
+        }
         const avatarColorOptions = document.getElementById('avatar-color-options');
         if (avatarColorOptions) avatarColorOptions.addEventListener('click', event => {
             const button = event.target.closest('[data-avatar-color]');
