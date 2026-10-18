@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#070c0a">
+    <meta name="description" content="Secret Garden BL: recomendaciones, conversaciones y comunidad BL.">
+    <link rel="manifest" href="manifest.webmanifest">
     <title>Secret Garden BL | Donde cada historia florece</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -78,8 +81,18 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: .5rem;
+            flex-shrink: 0;
         }
+
+        /* Menú principal compacto para dejar espacio al perfil */
+        header { gap: 1rem; }
+        header nav { gap: clamp(.55rem, 1.5vw, 1.25rem); }
+        header nav a { white-space: nowrap; }
+        .profile-notifications-btn { position:relative; }
+        .profile-notifications-btn .notif-badge { display:none; top:4px; right:10px; }
+        .profile-modal .notif-modal { position:relative; top:auto; right:auto; width:100%; max-height:280px; margin:.2rem 0 .65rem; box-shadow:none; backdrop-filter:none; }
+        .profile-modal .profile-btn { position:relative; }
 
         /* NOTIFICACIONES */
         .notif-container {
@@ -831,9 +844,11 @@
         }
         @media (max-width: 600px) {
             header { position: sticky; padding: .7rem .8rem; }
-            .logo { width: 100%; justify-content: center; font-size: 1rem; }
-            header nav { order: 3; width: 100%; justify-content: center; gap: 1rem; }
-            .header-actions { margin-left: auto; margin-right: auto; }
+            .logo { width: auto; justify-content: flex-start; font-size: 1rem; }
+            header nav { order: 3; width: 100%; justify-content: space-between; gap: .45rem; }
+            header nav a { font-size: .75rem; }
+            .header-actions { margin-left: auto; margin-right: 0; }
+            .profile-modal { width:min(280px, calc(100vw - 1.6rem)); }
             .section-title { align-items: flex-start; flex-direction: column; font-size: 1.12rem; }
             .section-title .btn-add { width: 100%; }
             .quiz-banner { flex-direction: column; align-items: stretch; text-align: center; }
@@ -866,9 +881,28 @@
         .rank-1 .rank-number { background:linear-gradient(135deg,#ffe7a1,#b88720); color:#241900; }
         .rank-2 .rank-number { background:linear-gradient(135deg,#f2f5f7,#8996a3); color:#172027; }
         .rank-3 .rank-number { background:linear-gradient(135deg,#f1c49c,#9b6035); color:#241307; }
+        .leaderboard-list { display:flex; flex-direction:row; gap:1rem; overflow-x:auto; padding:.25rem .1rem 1rem; scroll-snap-type:x proximity; }
+        .leaderboard-card { min-width:260px; max-width:320px; flex:0 0 280px; scroll-snap-align:start; position:relative; overflow:hidden; }
+        .leaderboard-card.rank-1 { border:1px solid #e8c65a; box-shadow:0 0 22px rgba(232,198,90,.28); background:linear-gradient(145deg,rgba(110,78,14,.38),var(--card-bg) 70%); }
+        .leaderboard-card.rank-2 { border:1px solid #bdc9d4; box-shadow:0 0 18px rgba(189,201,212,.18); }
+        .leaderboard-card.rank-3 { border:1px solid #c88758; box-shadow:0 0 18px rgba(200,135,88,.18); }
+        .leaderboard-card.rank-1::before { content:'👑 ✨'; position:absolute; right:12px; top:8px; font-size:1.2rem; }
+        .leaderboard-card.rank-2::before { content:'💎'; position:absolute; right:12px; top:8px; font-size:1.2rem; }
+        .leaderboard-card.rank-3::before { content:'🌟'; position:absolute; right:12px; top:8px; font-size:1.2rem; }
+        .rank-number { box-shadow:0 0 0 3px rgba(255,255,255,.06),0 4px 12px rgba(0,0,0,.25); }
+        .avatar-color-options { display:flex; flex-wrap:wrap; gap:.55rem; margin:.35rem 0 1rem; }
+        .avatar-color-choice { width:42px; height:42px; border-radius:50%; border:3px solid var(--avatar-color); background:color-mix(in srgb,var(--avatar-color) 28%, transparent); cursor:pointer; font-size:1.1rem; }
+        .avatar-color-choice.active { outline:2px solid var(--accent-gold); outline-offset:3px; transform:scale(1.08); }
+        .user-clickable-avatar.avatar-colorized, #profile-view-img.avatar-colorized, #user-avatar-img.avatar-colorized { background:var(--avatar-color,#d8839a); padding:3px; }
         .rank-user { display:flex; align-items:center; gap:.75rem; min-width:0; }
         .rank-user img { width:42px;height:42px;border-radius:50%;object-fit:cover; }
         .rank-meta { color:var(--text-dim); font-size:.78rem; }
+        .ranking-subtitle { margin:1rem 0 .6rem; color:var(--text-light); font-family:inherit; }
+        .ranking-tabs { display:flex; gap:.55rem; width:100%; margin:1rem 0 1.2rem; }
+        .ranking-tab { flex:1 1 0; min-width:0; border:1px solid var(--border-color); border-radius:12px; padding:.8rem .45rem; background:var(--card-bg); color:var(--text-light); font:inherit; font-size:clamp(.72rem,2.5vw,.95rem); font-weight:700; cursor:pointer; }
+        .ranking-tab.active { border-color:var(--accent-gold); color:var(--accent-gold); background:rgba(201,164,75,.12); box-shadow:0 0 14px rgba(201,164,75,.12); }
+        .ranking-panel[hidden] { display:none !important; }
+        @media(max-width:420px) { .ranking-tabs { gap:.3rem; } .ranking-tab { padding:.7rem .2rem; border-radius:9px; } }
         .rank-badge { display:inline-block; font-size:.68rem; font-weight:700; border-radius:999px; padding:.2rem .5rem; margin:.2rem .2rem 0 0; border:1px solid var(--border-color); }
         .rank-badge.rank-1 { color:#ffdf76; border-color:#c69b32; }
         .rank-badge.rank-2 { color:#dce5ed; border-color:#8798a8; }
@@ -950,6 +984,14 @@
             <h3 id="profile-edit-title">🌿 Editar mi perfil</h3>
             <label for="profile-edit-name">Nombre visible</label><input id="profile-edit-name" maxlength="40" placeholder="Tu nombre en el jardín">
             <label for="profile-edit-bio">Biografía</label><textarea id="profile-edit-bio" maxlength="240" placeholder="Cuéntale algo a la comunidad (máximo 240 caracteres)"></textarea>
+            <label>Color de tu carita de perfil</label><div id="avatar-color-options" class="avatar-color-options" role="group" aria-label="Colores del avatar">
+                <button type="button" class="avatar-color-choice" data-avatar-color="#d8839a" style="--avatar-color:#d8839a" aria-label="Rosa">🌸</button>
+                <button type="button" class="avatar-color-choice" data-avatar-color="#7b9cff" style="--avatar-color:#7b9cff" aria-label="Azul">💙</button>
+                <button type="button" class="avatar-color-choice" data-avatar-color="#a98bff" style="--avatar-color:#a98bff" aria-label="Lila">💜</button>
+                <button type="button" class="avatar-color-choice" data-avatar-color="#61c9a8" style="--avatar-color:#61c9a8" aria-label="Verde">🌿</button>
+                <button type="button" class="avatar-color-choice" data-avatar-color="#ffbf69" style="--avatar-color:#ffbf69" aria-label="Dorado">⭐</button>
+                <button type="button" class="avatar-color-choice" data-avatar-color="#ff7d7d" style="--avatar-color:#ff7d7d" aria-label="Rojo coral">❤️</button>
+            </div>
             <p style="color:var(--text-dim);font-size:.78rem;margin-top:-.5rem;">Tu nombre visible no cambia la identidad de tu cuenta.</p>
             <div class="modal-buttons"><button type="button" class="btn-cancel-modal" id="btn-cancel-profile-edit">Cancelar</button><button type="button" class="btn-confirm-modal" id="btn-save-profile-edit">Guardar cambios</button></div>
         </div>
@@ -966,34 +1008,15 @@
     <input type="file" id="fixed-gallery-input" accept="image/*" style="display: none;">
 
     <header>
-        <a href="#" class="logo" onclick="switchView('home')">🌸 Secret Garden BL</a>
+        <a href="#" class="logo" onclick="switchView('home')">🌸 SGB</a>
         <nav>
             <a onclick="switchView('home')">Inicio</a>
             <a onclick="switchView('recomendaciones')">Recomendaciones</a>
             <a onclick="switchView('foro')">Foro</a>
+            <a onclick="switchView('ranking'); loadLeaderboard()">Ranking</a>
         </nav>
         
         <div class="header-actions">
-            <!-- NOTIFICACIONES -->
-            <div class="notif-container">
-                <button class="notif-btn" id="notif-toggle-btn">
-                    🔔
-                    <span class="notif-badge" id="notif-badge">0</span>
-                </button>
-                <div class="notif-modal" id="notif-modal">
-                    <div class="notif-header">
-                        <h4>Notificaciones</h4>
-                        <button class="btn-clear-notif" id="btn-mark-all-read">Marcar leídas</button>
-                    </div>
-                    <div id="notif-list">
-                        <div class="notif-item unread">
-                            <div>🌸 ¡Bienvenida al refugio secreto!</div>
-                            <button class="btn-mark-read" onclick="markRead(this)">✓</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- CONTENEDOR DE USUARIO Y LOGIN -->
             <div class="auth-container">
                 <button class="btn-google" id="btn-login">
@@ -1010,9 +1033,22 @@
                         <h3><span id="profile-name-display">Usuario</span> <span id="admin-badge-slot"></span></h3>
                         <p class="profile-email" id="profile-email-display">correo@email.com</p>
                         
-                        <a class="profile-btn" onclick="openMyProfile(); profileModal.classList.remove('active');">👤 Mi Perfil</a>
+                        <a class="profile-btn" onclick="openMyProfile(); profileModal.classList.remove('active');">👤 Mi perfil</a>
+                        <button type="button" class="profile-btn profile-notifications-btn" id="notif-toggle-btn">🔔 Notificaciones <span class="notif-badge" id="notif-badge">0</span></button>
+                        <div class="notif-modal" id="notif-modal">
+                            <div class="notif-header">
+                                <h4>Notificaciones</h4>
+                                <button class="btn-clear-notif" id="btn-mark-all-read">Marcar leídas</button>
+                            </div>
+                            <div id="notif-list">
+                                <div class="notif-item unread">
+                                    <div>🌸 ¡Bienvenida al refugio secreto!</div>
+                                    <button class="btn-mark-read" onclick="markRead(this)">✓</button>
+                                </div>
+                            </div>
+                        </div>
                         <a class="profile-btn" onclick="openSettings(); profileModal.classList.remove('active');">⚙️ Ajustes</a>
-                        <button class="profile-btn logout" id="btn-logout">🚪 Cerrar Sesión</button>
+                        <button class="profile-btn logout" id="btn-logout">🚪 Cerrar sesión</button>
                     </div>
                 </div>
             </div>
@@ -1027,6 +1063,7 @@
                 <h1>SECRET GARDEN BL</h1>
                 <p>«Donde cada historia florece y cada corazón encuentra su refugio»</p>
                 <a onclick="switchView('recomendaciones')" class="btn-add" style="cursor: pointer; padding: 0.8rem 2rem; font-size: 1rem;">Explorar el jardín</a>
+                <button type="button" class="btn-add" id="btn-install-app" style="display:none;margin:1rem auto 0;cursor:pointer;">📲 Instalar Secret Garden BL</button>
             </div>
         </section>
 
@@ -1051,9 +1088,22 @@
             </div>
             <div class="section-title" style="margin-top:2.3rem"><h2>💭 Tema para conversar</h2></div>
             <div class="community-tile" id="daily-topic-card"><h3 id="daily-topic-title">Pregunta del jardín</h3><p id="daily-topic-text">Si pudieras recomendar un solo BL para que alguien se enamore del género, ¿cuál elegirías?</p><button class="btn-add" style="margin-top:.9rem" onclick="switchView('foro'); setForumCategory('fans')">Participar en el foro</button></div>
-            <div class="section-title" style="margin-top:2.3rem"><h2>🏆 Top 10 de la comunidad</h2><button class="btn-add" onclick="loadLeaderboard()">Actualizar</button></div>
-            <p style="color:var(--text-dim);font-size:.85rem;margin:-.8rem 0 1rem">Reconocemos la participación positiva. Los tres primeros tienen insignias especiales y los puestos 4 al 10 comparten la insignia Top 10.</p>
-            <div id="leaderboard-list" class="leaderboard-list"><p style="color:var(--text-dim)">Preparando el ranking de la comunidad…</p></div>
+        </div>
+    </div>
+
+    <!-- VISTA: RANKING -->
+    <div id="view-ranking" class="view-section">
+        <div class="container">
+            <div class="section-title"><h2>🏆 Ranking de la comunidad</h2><button class="btn-add" onclick="loadLeaderboard()">Actualizar</button></div>
+            <p style="color:var(--text-dim);font-size:.88rem;margin:-.7rem 0 1rem">Celebremos la participación y el cariño que recibe cada miembro del jardín.</p>
+            <div class="ranking-tabs" role="tablist" aria-label="Categorías del ranking">
+                <button class="ranking-tab active" id="ranking-tab-posts" role="tab" aria-selected="true" onclick="showRankingTab('posts')">🌸 Publicaciones</button>
+                <button class="ranking-tab" id="ranking-tab-comments" role="tab" aria-selected="false" onclick="showRankingTab('comments')">💬 Comentarios</button>
+                <button class="ranking-tab" id="ranking-tab-famous" role="tab" aria-selected="false" onclick="showRankingTab('famous')">👑 Más famoso</button>
+            </div>
+            <section id="ranking-panel-posts" class="ranking-panel"><h3 class="ranking-subtitle">🌸 Ranking de publicaciones</h3><div id="leaderboard-posts-list" class="leaderboard-list"><p style="color:var(--text-dim)">Preparando el ranking de publicaciones…</p></div></section>
+            <section id="ranking-panel-comments" class="ranking-panel" hidden><h3 class="ranking-subtitle">💬 Ranking de comentarios</h3><div id="leaderboard-comments-list" class="leaderboard-list"><p style="color:var(--text-dim)">Preparando el ranking de comentarios…</p></div></section>
+            <section id="ranking-panel-famous" class="ranking-panel" hidden><h3 class="ranking-subtitle">👑 Ranking de más famosos</h3><p style="color:var(--text-dim);font-size:.85rem">Ordenado por la suma de los Me gusta recibidos en todas las publicaciones de cada persona.</p><div id="leaderboard-famous-list" class="leaderboard-list"><p style="color:var(--text-dim)">Preparando el ranking de popularidad…</p></div></section>
         </div>
     </div>
 
@@ -1125,8 +1175,9 @@
                 <div id="profile-action-container"></div>
             </div>
             <p id="profile-view-bio" class="profile-bio">Este jardín está esperando una pequeña presentación.</p>
-            <div class="profile-tabs"><button class="profile-tab active" data-profile-tab="posts" onclick="showProfileTab('posts')">📝 Publicaciones</button><button class="profile-tab" data-profile-tab="about" onclick="showProfileTab('about')">🌿 Sobre el perfil</button></div>
+            <div class="profile-tabs"><button class="profile-tab active" data-profile-tab="posts" onclick="showProfileTab('posts')">📝 Publicaciones</button><button class="profile-tab" data-profile-tab="comments" onclick="showProfileTab('comments')">💬 Comentarios</button><button class="profile-tab" data-profile-tab="about" onclick="showProfileTab('about')">🌿 Sobre el perfil</button></div>
             <div id="profile-posts-panel"><div id="profile-post-grid" class="profile-post-grid"><p style="color:var(--text-dim)">Las publicaciones aparecerán aquí.</p></div></div>
+            <div id="profile-comments-panel" style="display:none"><div id="profile-comment-list" class="profile-post-grid"><p style="color:var(--text-dim)">Los comentarios aparecerán aquí.</p></div></div>
             <div id="profile-about-panel" style="display:none" class="rules-card"><h3>Sobre este perfil</h3><p id="profile-about-copy">Aquí podrás conocer un poco más a este miembro de la comunidad.</p></div>
         </div>
     </div>
@@ -1326,7 +1377,7 @@
             if (notificationsUnsubscribe) notificationsUnsubscribe();
             const q = query(
                 collection(db, "notifications"),
-                where("recipientEmail", "==", currentEmail.toLowerCase()),
+                where("recipientEmail", "==", auth.currentUser.email),
                 orderBy("createdAt", "desc")
             );
 
@@ -1341,7 +1392,7 @@
                     const data = docSnap.data();
                     html += `
                         <div class="notif-item ${data.read ? '' : 'unread'}" data-notification-id="${docSnap.id}">
-                            <div>❤️ <strong>@${escapeHTML(data.sender)}</strong> le dio me gusta a tu obra "${escapeHTML(data.postTitle)}"</div>
+                            <div>${data.type === 'rank_badge' ? '🏆 ' + escapeHTML(data.message || '¡Has ganado una insignia en el ranking de Secret Garden BL!') : '❤️ <strong>@' + escapeHTML(data.sender || 'Alguien') + '</strong> le dio me gusta a tu obra "' + escapeHTML(data.postTitle || '') + '"'}</div>
                             <button class="btn-mark-read" onclick="markRead(this)">${data.read ? '✓✓' : '✓'}</button>
                         </div>
                     `;
@@ -1369,6 +1420,7 @@
             document.getElementById('profile-about-copy').textContent = 'Este miembro forma parte de Secret Garden BL.';
             showProfileTab('posts');
             loadProfilePosts(username, email);
+            loadProfileComments(username, email);
             const rank = rankByEmail.get((email||'').toLowerCase());
             profileViewBadge.innerHTML = email && email.toLowerCase() === ADMIN_EMAIL.toLowerCase() ? '<span class="admin-badge">Admin</span>' : '';
             if (rank) profileViewBadge.innerHTML += `<span class="rank-badge ${rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-top10'}">${rank===1?'Top 1 · Oro':rank===2?'Top 2 · Plata':rank===3?'Top 3 · Bronce':'Top 10'}</span>`;
@@ -1436,6 +1488,7 @@
             profileViewImg.src = currentPhoto;
             profileViewEmail.textContent = currentEmail ? '@' + currentEmail.split('@')[0] : '';
             loadProfilePosts(currentName, currentEmail, auth.currentUser.uid);
+            loadProfileComments(currentName, currentEmail, auth.currentUser.uid);
             document.getElementById('profile-view-bio').textContent = 'Cargando presentación…';
             showProfileTab('posts');
             
@@ -1452,6 +1505,7 @@
                 const userSnap = await getDoc(userDocRef);
                 if (userSnap.exists()) {
                     const data = userSnap.data();
+                    applyAvatarColor(data.avatarColor || '#d8839a');
                     profileStatFollowers.textContent = data.followersCount || 0;
                     profileStatFollowing.textContent = data.followingCount || 0;
                     document.getElementById('profile-view-bio').textContent = data.bio || 'Este jardín está esperando una pequeña presentación.';
@@ -1491,8 +1545,50 @@
         window.showProfileTab = function(tab) {
             document.querySelectorAll('[data-profile-tab]').forEach(button => button.classList.toggle('active', button.dataset.profileTab === tab));
             document.getElementById('profile-posts-panel').style.display = tab === 'posts' ? 'block' : 'none';
+            const commentsPanel = document.getElementById('profile-comments-panel');
+            if (commentsPanel) commentsPanel.style.display = tab === 'comments' ? 'block' : 'none';
             document.getElementById('profile-about-panel').style.display = tab === 'about' ? 'block' : 'none';
         };
+        async function loadProfileComments(username, email, uid = '') {
+            const root = document.getElementById('profile-comment-list');
+            if (!root) return;
+            root.innerHTML = '<p style="color:var(--text-dim)">Cargando los comentarios recientes…</p>';
+            const emailKey = (email || '').toLowerCase();
+            const matchesUser = c => (uid && c.authorUid === uid) || (emailKey && (c.authorEmail || '').toLowerCase() === emailKey) || (!c.authorUid && !c.authorEmail && c.author === username);
+            const timeValue = value => {
+                if (value && typeof value.toDate === 'function') return value.toDate().getTime();
+                if (value && typeof value.seconds === 'number') return value.seconds * 1000;
+                const parsed = Date.parse(value || ''); return Number.isFinite(parsed) ? parsed : 0;
+            };
+            try {
+                const items = [];
+                const parents = await Promise.all([getDocs(collection(db, 'recommendations')), getDocs(collection(db, 'forum_posts'))]);
+                for (let sourceIndex = 0; sourceIndex < parents.length; sourceIndex++) {
+                    const source = parents[sourceIndex];
+                    const collectionName = sourceIndex === 0 ? 'recommendations' : 'forum_posts';
+                    for (const parent of source.docs) {
+                        const data = parent.data();
+                        (data.comments || []).forEach((comment, index) => {
+                            if (matchesUser(comment)) items.push({ ...comment, _legacy: true, _parentTitle: data.title || 'Conversación', _kind: collectionName === 'recommendations' ? 'Recomendación' : 'Foro', _time: timeValue(comment.createdAt) });
+                        });
+                        try {
+                            const sub = await getDocs(collection(db, collectionName, parent.id, 'comments'));
+                            sub.forEach(commentDoc => {
+                                const comment = commentDoc.data();
+                                if (matchesUser(comment)) items.push({ ...comment, _parentTitle: data.title || 'Conversación', _kind: collectionName === 'recommendations' ? 'Recomendación' : 'Foro', _time: timeValue(comment.createdAt) });
+                            });
+                        } catch (subError) { console.warn('No se pudieron leer algunos comentarios del perfil:', subError); }
+                    }
+                }
+                items.sort((a,b) => b._time - a._time);
+                const recent = items.slice(0, 15);
+                if (!recent.length) { root.innerHTML = '<p style="color:var(--text-dim)">Todavía no hay comentarios públicos de este miembro. 🌱</p>'; return; }
+                root.innerHTML = recent.map(item => `<article class="profile-post-card"><span class="rank-badge rank-top10">${escapeHTML(item._kind)}</span><h4>${escapeHTML(item._parentTitle)}</h4><p>${escapeHTML(item.text || '')}</p></article>`).join('');
+            } catch (error) {
+                console.error('No se pudieron cargar los comentarios del perfil:', error);
+                root.innerHTML = '<p style="color:var(--text-dim)">No se pudieron cargar los comentarios en este momento.</p>';
+            }
+        }
         async function loadProfilePosts(username, email, uid = '') {
             const grid = document.getElementById('profile-post-grid');
             grid.innerHTML = '<p style="color:var(--text-dim)">Cargando publicaciones…</p>';
@@ -1508,28 +1604,104 @@
         }
 
         const rankByEmail = new Map();
+        const rankByUid = new Map();
+        window.showRankingTab = function(category) {
+            const valid = ['posts','comments','famous'].includes(category) ? category : 'posts';
+            ['posts','comments','famous'].forEach(key => {
+                const panel = document.getElementById('ranking-panel-' + key);
+                const tab = document.getElementById('ranking-tab-' + key);
+                if (panel) panel.hidden = key !== valid;
+                if (tab) { tab.classList.toggle('active', key === valid); tab.setAttribute('aria-selected', key === valid ? 'true' : 'false'); }
+            });
+        };
         window.loadLeaderboard = async function() {
-            const root = document.getElementById('leaderboard-list');
-            if (!root) return;
-            root.innerHTML = '<p style="color:var(--text-dim)">Actualizando el ranking…</p>';
+            const postsRoot = document.getElementById('leaderboard-posts-list');
+            const commentsRoot = document.getElementById('leaderboard-comments-list');
+            const famousRoot = document.getElementById('leaderboard-famous-list');
+            if (!postsRoot || !commentsRoot || !famousRoot) return;
+            postsRoot.innerHTML = '<p style="color:var(--text-dim)">Actualizando…</p>';
+            commentsRoot.innerHTML = '<p style="color:var(--text-dim)">Actualizando…</p>';
+            famousRoot.innerHTML = '<p style="color:var(--text-dim)">Actualizando…</p>';
             try {
-                const [recSnap, forumSnap] = await Promise.all([getDocs(collection(db,'recommendations')),getDocs(collection(db,'forum_posts'))]);
-                const members = new Map();
-                function addContribution(data, amount=1) {
-                    const key = data.authorUid || (data.authorEmail||'').toLowerCase() || data.author || '';
-                    if (!key) return;
-                    const item = members.get(key) || {key, name:data.author||'Miembro del jardín', email:(data.authorEmail||'').toLowerCase(), photo:data.authorPhoto||'', score:0};
-                    item.score += amount; if (data.author) item.name=data.author; if (data.authorPhoto) item.photo=data.authorPhoto; if (data.authorEmail) item.email=data.authorEmail.toLowerCase(); members.set(key,item);
+                const [recSnap, forumSnap] = await Promise.all([getDocs(collection(db,'recommendations')), getDocs(collection(db,'forum_posts'))]);
+                const postMembers = new Map();
+                const commentMembers = new Map();
+                const famousMembers = new Map();
+                const identity = data => data.authorUid || (data.authorEmail || '').toLowerCase() || data.author || '';
+                const add = (map, data, amount=1) => {
+                    const key = identity(data); if (!key) return;
+                    const item = map.get(key) || {key, uid:data.authorUid || '', name:data.author || 'Miembro del jardín', email:(data.authorEmail || '').toLowerCase(), photo:data.authorPhoto || '', score:0};
+                    item.score += amount;
+                    if (data.author) item.name = data.author;
+                    if (data.authorPhoto) item.photo = data.authorPhoto;
+                    if (data.authorEmail) item.email = data.authorEmail.toLowerCase();
+                    if (data.authorUid) item.uid = data.authorUid;
+                    map.set(key,item);
+                };
+                for (const [parentCollection, parentDocs] of [['recommendations', recSnap.docs], ['forum_posts', forumSnap.docs]]) {
+                  for (const parent of parentDocs) {
+                    const data = parent.data();
+                    add(postMembers, data, 1);
+                    const likesTotal = Math.max(Number(data.likes) || 0, Array.isArray(data.likedBy) ? new Set(data.likedBy).size : 0);
+                    add(famousMembers, data, likesTotal);
+                    (data.comments || []).forEach(c => add(commentMembers, c, 1));
+                    try {
+                        const sub = await getDocs(collection(db, parentCollection, parent.id, 'comments'));
+                        sub.forEach(c => add(commentMembers, c.data(), 1));
+                    } catch (subError) { console.warn('No se pudieron leer algunos comentarios para el ranking:', subError); }
+                  }
                 }
-                for (const snap of [...recSnap.docs,...forumSnap.docs]) {
-                    const data=snap.data(); addContribution(data,2);
-                    (data.comments||[]).forEach(comment=>addContribution(comment,1));
-                }
-                const ranked=[...members.values()].sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name)).slice(0,10);
-                rankByEmail.clear(); ranked.forEach((person,index)=>{person.rank=index+1;if(person.email)rankByEmail.set(person.email,person.rank);});
-                if (!ranked.length) { root.innerHTML='<div class="community-tile"><h3>Tu nombre puede estar aquí 🌱</h3><p>Aún no hay suficiente actividad para crear el ranking. Comparte una recomendación o participa en una conversación para empezar.</p></div>'; return; }
-                root.innerHTML=ranked.map(person=>{const rank=person.rank;const badge=rank===1?'Top 1 · Flor de Oro':rank===2?'Top 2 · Flor de Plata':rank===3?'Top 3 · Flor de Bronce':'Top 10 · Miembro destacado';const cls=rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-top10';return `<div class="leaderboard-card ${cls}"><div class="rank-user"><span class="rank-number">${rank}</span><img src="${escapeHTML(person.photo||'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop')}" alt=""><div style="min-width:0"><strong>${escapeHTML(person.name)}</strong><div class="rank-meta">${person.score} puntos de participación</div><span class="rank-badge ${cls}">${badge}</span></div></div></div>`}).join('');
-            } catch(error) { console.error('No se pudo cargar el ranking:',error); root.innerHTML='<p style="color:var(--text-dim)">No se pudo calcular el ranking. Comprueba los permisos de lectura de las publicaciones.</p>'; }
+                const sortTop = map => [...map.values()].sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name)).slice(0,10);
+                const postRanked = sortTop(postMembers);
+                const commentRanked = sortTop(commentMembers);
+                const famousRanked = sortTop(famousMembers).filter(person => person.score > 0);
+                rankByEmail.clear(); rankByUid.clear();
+                // Los puestos aún no están asignados aquí; los mapas se completan después de renderizar ambas listas.
+                const render = (root, ranked, emptyText, category) => {
+                    if (!ranked.length) { root.innerHTML = `<div class="community-tile"><p>${emptyText}</p></div>`; return; }
+                    ranked.forEach((person,index)=>person.rank=index+1);
+                    root.innerHTML = ranked.map(person => {
+                        const rank=person.rank;
+                        const badge=rank===1?'👑 Top 1 · Flor de Oro':rank===2?'🥈 Top 2 · Flor de Plata':rank===3?'🥉 Top 3 · Flor de Bronce':'🌟 Top 10 · Miembro destacado';
+                        const cls=rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-top10';
+                        return `<div class="leaderboard-card ${cls}"><div class="rank-user"><span class="rank-number">${rank}</span><img src="${escapeHTML(person.photo||'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop')}" alt=""><div style="min-width:0"><strong>${escapeHTML(person.name)}</strong><div class="rank-meta">${person.score} ${category==='posts'?'publicación(es)':category==='comments'?'comentario(s)':'Me gusta totales'}</div><span class="rank-badge ${cls}">${badge}</span></div></div></div>`;
+                    }).join('');
+                };
+                render(postsRoot, postRanked, 'Todavía no hay publicaciones para crear este ranking. ¡Anímate a compartir una! 🌱','posts');
+                render(commentsRoot, commentRanked, 'Todavía no hay comentarios para crear este ranking. ¡Participa en las conversaciones! 💬','comments');
+                render(famousRoot, famousRanked, 'Todavía no hay Me gusta suficientes para crear este ranking. ¡Comparte tus publicaciones! 💗','famous');
+                // Avisar una sola vez por categoría e insignia cuando una persona entra al Top 10.
+                const awardNotifications = async (ranked, category) => {
+                    for (const person of ranked) {
+                        if (!person.email || person.rank > 10) continue;
+                        const tier = person.rank === 1 ? 'oro' : person.rank === 2 ? 'plata' : person.rank === 3 ? 'bronce' : 'top10';
+                        const badgeKey = `${category}_${tier}`;
+                        try {
+                            const existing = await getDocs(query(collection(db, 'notifications'), where('recipientEmail', '==', person.email)));
+                            if (existing.docs.some(d => d.data().type === 'rank_badge' && d.data().badgeKey === badgeKey)) continue;
+                            const categoryName = category === 'posts' ? 'publicaciones' : category === 'comments' ? 'comentarios' : 'Me gusta totales';
+                            const badgeName = tier === 'oro' ? 'Flor de Oro (Top 1)' : tier === 'plata' ? 'Flor de Plata (Top 2)' : tier === 'bronce' ? 'Flor de Bronce (Top 3)' : 'Miembro destacado (Top 10)';
+                            await addDoc(collection(db, 'notifications'), {
+                                recipientEmail: person.email, recipientUid: person.uid || '', type: 'rank_badge', badgeKey,
+                                sender: 'Secret Garden BL', postTitle: '', read: false, createdAt: serverTimestamp(),
+                                message: `¡Felicidades! Entraste al ranking de ${categoryName} en el puesto #${person.rank} y ganaste la insignia ${badgeName}.`
+                            });
+                        } catch (notificationError) { console.warn('No se pudo enviar una notificación de insignia:', notificationError); }
+                    }
+                };
+                await Promise.all([awardNotifications(postRanked, 'posts'), awardNotifications(commentRanked, 'comments'), awardNotifications(famousRanked, 'famous')]);
+                // Actualizar mapas de insignias después de calcular ambos rankings.
+                [...postRanked, ...commentRanked].forEach(person => {
+                    const rank=person.rank;
+                    if (person.email && (!rankByEmail.has(person.email) || rank < rankByEmail.get(person.email))) rankByEmail.set(person.email,rank);
+                    if (person.uid && (!rankByUid.has(person.uid) || rank < rankByUid.get(person.uid))) rankByUid.set(person.uid,rank);
+                });
+            } catch(error) {
+                console.error('No se pudo cargar el ranking:',error);
+                postsRoot.innerHTML='<p style="color:var(--text-dim)">No se pudo calcular el ranking de publicaciones.</p>';
+                commentsRoot.innerHTML='<p style="color:var(--text-dim)">No se pudo calcular el ranking de comentarios.</p>';
+                famousRoot.innerHTML='<p style="color:var(--text-dim)">No se pudo calcular el ranking de más famosos.</p>';
+            }
         };
         window.loadLeaderboard();
 
@@ -1628,8 +1800,8 @@
         profileModal.addEventListener('click', e => e.stopPropagation());
         notifModal.addEventListener('click', e => e.stopPropagation());
 
-        // Crea o migra el documento del perfil usando el UID permanente de Firebase.
-        // Evita dos inicializaciones simultáneas cuando Firebase restaura la sesión.
+        // Crea o migra el documento del perfil usando o UID permanente de Firebase.
+        // Evita duas inicializações simultâneas quando o Firebase restaura a sessão.
         const profileInitializationTasks = new Map();
         function ensureCurrentUserProfile(user) {
             if (!user || !user.uid) return Promise.resolve();
@@ -1855,7 +2027,7 @@
                 spanCount.textContent = result.count;
                 if (result.liked && authorEmail && user.email && authorEmail.toLowerCase() !== user.email.toLowerCase()) {
                     await addDoc(collection(db, "notifications"), {
-                        recipientEmail: authorEmail.toLowerCase(), sender: getCurrentUserName(user),
+                        recipientEmail: authorEmail, sender: getCurrentUserName(user),
                         postTitle: postTitle, postId: id, senderUid: user.uid, type: 'like', createdAt: serverTimestamp()
                     }).catch(err => console.error('No se pudo enviar la notificación del me gusta:', err));
                 }
@@ -1872,7 +2044,7 @@
             if (recommendationsUnsubscribe) recommendationsUnsubscribe();
             const q = query(collection(db, "recommendations"), orderBy("createdAt", "desc"));
             
-            recommendationsUnsubscribe = onSnapshot(q, (querySnapshot) => {
+            recommendationsUnsubscribe = onSnapshot(q, async (querySnapshot) => {
                 const currentUser = auth.currentUser;
                 const currentEmail = currentUser && currentUser.email ? currentUser.email.toLowerCase() : '';
                 const isAdmin = isAdminUser(currentUser);
@@ -1882,7 +2054,7 @@
                 }
 
                 grid.innerHTML = '';
-                querySnapshot.forEach((docSnap) => {
+                querySnapshot.forEach(async (docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
                     const isOwner = recordBelongsToUser(data, currentUser);
@@ -1897,7 +2069,14 @@
                     const isLikedByCurrentUser = !!(currentUser && likedBy.includes(currentUser.uid));
                     const category = data.category || 'Manhwas';
                     const authorEmail = data.authorEmail || '';
-                    const comments = data.comments || [];
+                    // Compatibilidad: mostramos comentarios antiguos embebidos y los nuevos documentos.
+                    let comments = (data.comments || []).map((c, index) => ({ ...c, _legacy: true, _legacyIndex: index, id: `legacy-${index}` }));
+                    try {
+                        const commentsSnap = await getDocs(collection(db, "recommendations", id, "comments"));
+                        comments = comments.concat(commentsSnap.docs.map(commentDoc => ({ ...commentDoc.data(), id: commentDoc.id, _legacy: false })));
+                    } catch (commentErr) {
+                        console.warn("No se pudieron cargar los comentarios independientes:", commentErr);
+                    }
 
                     let menuOptions = '';
                     if (isOwner || isAdmin) {
@@ -1916,7 +2095,7 @@
                     let commentsHTML = '';
                     comments.forEach((c, index) => {
                         const isCommentOwner = recordBelongsToUser(c, currentUser);
-                        const showDeleteComment = isOwner || isAdmin;
+                        const showDeleteComment = isAdmin || (!c._legacy && isCommentOwner);
 
                         commentsHTML += `
                             <div class="comment-item">
@@ -1926,7 +2105,7 @@
                                         <strong onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')" style="cursor:pointer; color:var(--accent-gold);">@${c.author}:</strong> ${c.text}
                                     </div>
                                 </div>
-                                ${showDeleteComment ? `<button class="btn-delete-comment" onclick="deleteComment('${id}',${index})" title="Eliminar comentario">🗑️</button>` : ''}
+                                ${showDeleteComment ? `<button class="btn-delete-comment" onclick="deleteComment('${id}','${c.id}',${c._legacy ? 'true' : 'false'})" title="Eliminar comentario">🗑️</button>` : ''}
                             </div>
                         `;
                     });
@@ -1990,31 +2169,39 @@
             };
 
             try {
-                const docRef = doc(db, "recommendations", postId);
-                await updateDoc(docRef, {
-                    comments: arrayUnion(newComment)
-                });
+                await addDoc(collection(db, "recommendations", postId, "comments"), newComment);
                 input.value = '';
+                window.loadRecommendations();
             } catch (err) {
                 console.error("Error al guardar comentario:", err);
             }
         };
 
-        window.deleteComment = async function(postId, commentIndex) {
+        window.deleteComment = async function(postId, commentId, isLegacy = false) {
             if (!requireLogin()) return;
             if (!confirm('¿Deseas eliminar este comentario?')) return;
-
             try {
-                const docRef = doc(db, "recommendations", postId);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    let comments = data.comments || [];
-                    comments.splice(commentIndex, 1);
-                    await updateDoc(docRef, { comments: comments });
+                const user = auth.currentUser;
+                if (isLegacy) {
+                    if (!isAdminUser(user)) throw new Error('Los comentarios antiguos solo pueden ser eliminados por administración.');
+                    const postRef = doc(db, "recommendations", postId);
+                    const snap = await getDoc(postRef);
+                    if (!snap.exists()) return;
+                    const comments = (snap.data().comments || []).filter((_, index) => `legacy-${index}` !== commentId);
+                    await updateDoc(postRef, { comments });
+                } else {
+                    const commentRef = doc(db, "recommendations", postId, "comments", commentId);
+                    const commentSnap = await getDoc(commentRef);
+                    if (!commentSnap.exists()) return;
+                    if (!isAdminUser(user) && commentSnap.data().authorUid !== user.uid) {
+                        throw new Error('Solo puedes eliminar tus propios comentarios.');
+                    }
+                    await deleteDoc(commentRef);
                 }
+                window.loadRecommendations();
             } catch (err) {
                 console.error("Error al eliminar comentario:", err);
+                alert(err.message || 'No se pudo eliminar el comentario.');
             }
         };
 
@@ -2142,7 +2329,7 @@
             if (forumUnsubscribe) forumUnsubscribe();
             const q = query(collection(db, "forum_posts"), orderBy("createdAt", "desc"));
 
-            forumUnsubscribe = onSnapshot(q, (querySnapshot) => {
+            forumUnsubscribe = onSnapshot(q, async (querySnapshot) => {
                 const currentUser = auth.currentUser;
                 const currentEmail = currentUser && currentUser.email ? currentUser.email.toLowerCase() : '';
                 const isAdmin = isAdminUser(currentUser);
@@ -2153,7 +2340,7 @@
 
                 listForo.innerHTML = '';
                 let renderedForumCount = 0;
-                querySnapshot.forEach((docSnap) => {
+                querySnapshot.forEach(async (docSnap) => {
                     const data = docSnap.data();
                     const id = docSnap.id;
                     const category = data.category || 'debates';
@@ -2164,12 +2351,18 @@
                         updateDoc(doc(db, "forum_posts", id), { authorUid: currentUser.uid }).catch(err =>
                             console.warn("No se pudo vincular un debate antiguo a su cuenta:", err));
                     }
-                    const comments = data.comments || [];
+                    let comments = (data.comments || []).map((c, index) => ({ ...c, _legacy: true, _legacyIndex: index, id: `legacy-${index}` }));
+                    try {
+                        const commentsSnap = await getDocs(collection(db, "forum_posts", id, "comments"));
+                        comments = comments.concat(commentsSnap.docs.map(commentDoc => ({ ...commentDoc.data(), id: commentDoc.id, _legacy: false })));
+                    } catch (commentErr) {
+                        console.warn("No se pudieron cargar las respuestas independientes:", commentErr);
+                    }
 
                     let commentsHTML = '';
                     comments.forEach((c, index) => {
                         const isCommentOwner = recordBelongsToUser(c, currentUser);
-                        const showDeleteComment = isOwner || isAdmin;
+                        const showDeleteComment = isAdmin || (!c._legacy && isCommentOwner);
 
                         commentsHTML += `
                             <div class="comment-item">
@@ -2179,7 +2372,7 @@
                                         <strong onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')" style="cursor:pointer; color:var(--accent-gold);">@${c.author}:</strong> ${c.text}
                                     </div>
                                 </div>
-                                ${showDeleteComment ? `<button class="btn-delete-comment" onclick="deleteForumComment('${id}',${index})" title="Eliminar respuesta">🗑️</button>` : ''}
+                                ${showDeleteComment ? `<button class="btn-delete-comment" onclick="deleteForumComment('${id}','${c.id}',${c._legacy ? 'true' : 'false'})" title="Eliminar respuesta">🗑️</button>` : ''}
                             </div>
                         `;
                     });
@@ -2233,31 +2426,39 @@
             };
 
             try {
-                const docRef = doc(db, "forum_posts", postId);
-                await updateDoc(docRef, {
-                    comments: arrayUnion(newComment)
-                });
+                await addDoc(collection(db, "forum_posts", postId, "comments"), newComment);
                 input.value = '';
+                window.loadForo();
             } catch (err) {
                 console.error("Error al debatir:", err);
             }
         };
 
-        window.deleteForumComment = async function(postId, commentIndex) {
+        window.deleteForumComment = async function(postId, commentId, isLegacy = false) {
             if (!requireLogin()) return;
             if (!confirm('¿Deseas eliminar este comentario del debate?')) return;
-
             try {
-                const docRef = doc(db, "forum_posts", postId);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    let comments = data.comments || [];
-                    comments.splice(commentIndex, 1);
-                    await updateDoc(docRef, { comments: comments });
+                const user = auth.currentUser;
+                if (isLegacy) {
+                    if (!isAdminUser(user)) throw new Error('Las respuestas antiguas solo pueden ser eliminadas por administración.');
+                    const postRef = doc(db, "forum_posts", postId);
+                    const snap = await getDoc(postRef);
+                    if (!snap.exists()) return;
+                    const comments = (snap.data().comments || []).filter((_, index) => `legacy-${index}` !== commentId);
+                    await updateDoc(postRef, { comments });
+                } else {
+                    const commentRef = doc(db, "forum_posts", postId, "comments", commentId);
+                    const commentSnap = await getDoc(commentRef);
+                    if (!commentSnap.exists()) return;
+                    if (!isAdminUser(user) && commentSnap.data().authorUid !== user.uid) {
+                        throw new Error('Solo puedes eliminar tus propias respuestas.');
+                    }
+                    await deleteDoc(commentRef);
                 }
+                window.loadForo();
             } catch (err) {
-                console.error("Error al eliminar comentario:", err);
+                console.error("Error al eliminar respuesta:", err);
+                alert(err.message || 'No se pudo eliminar la respuesta.');
             }
         };
 
@@ -2412,6 +2613,9 @@
             try {
                 const snap = await getDoc(doc(db, 'users', getCurrentUserProfileKey(auth.currentUser)));
                 document.getElementById('profile-edit-bio').value = snap.exists() ? (snap.data().bio || '') : '';
+                selectedAvatarColor = snap.exists() ? (snap.data().avatarColor || '#d8839a') : '#d8839a';
+                applyAvatarColor(selectedAvatarColor);
+                if (avatarColorOptions) avatarColorOptions.querySelectorAll('[data-avatar-color]').forEach(option => option.classList.toggle('active', option.dataset.avatarColor === selectedAvatarColor));
             } catch (error) { document.getElementById('profile-edit-bio').value = ''; }
             profileEditOverlay.classList.add('active');
         });
@@ -2434,7 +2638,8 @@
                     alert('Ese nombre visible ya está en uso. Prueba con otro.'); return;
                 }
                 const profileSnap = await getDoc(profileRef);
-                if (profileSnap.exists()) await updateDoc(profileRef, { displayName: newName, bio, photoURL: user.photoURL || '' });
+                selectedAvatarColor = applyAvatarColor(selectedAvatarColor);
+                if (profileSnap.exists()) await updateDoc(profileRef, { displayName: newName, bio, photoURL: user.photoURL || '', avatarColor: selectedAvatarColor });
                 localStorage.setItem(`bl_user_name_${user.uid}`, newName);
                 localStorage.setItem('bl_user_name', newName);
                 profileNameDisplay.textContent = newName;
@@ -2474,6 +2679,51 @@
         document.getElementById('daily-topic-title').textContent = dailyTopics[topicIndex][0];
         document.getElementById('daily-topic-text').textContent = dailyTopics[topicIndex][1];
 
-    </script>
+    
+        // PWA: el navegador solo muestra instalación cuando cumple sus requisitos.
+        let deferredInstallPrompt = null;
+        const installAppButton = document.getElementById('btn-install-app');
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+            if (installAppButton) installAppButton.style.display = 'inline-block';
+        });
+        if (installAppButton) installAppButton.addEventListener('click', async () => {
+            if (!deferredInstallPrompt) {
+                alert('Si tu navegador no ofrece instalarla todavía, abre el menú del navegador y busca “Instalar aplicación” o “Añadir a pantalla de inicio”.');
+                return;
+            }
+            deferredInstallPrompt.prompt();
+            await deferredInstallPrompt.userChoice;
+            deferredInstallPrompt = null;
+            installAppButton.style.display = 'none';
+        });
+        window.addEventListener('appinstalled', () => {
+            if (installAppButton) installAppButton.style.display = 'none';
+            deferredInstallPrompt = null;
+        });
+        if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(error => console.warn('PWA: no se pudo registrar el service worker:', error)));
+        }
+
+        let selectedAvatarColor = '#d8839a';
+        const avatarColorOptions = document.getElementById('avatar-color-options');
+        if (avatarColorOptions) avatarColorOptions.addEventListener('click', event => {
+            const button = event.target.closest('[data-avatar-color]');
+            if (!button) return;
+            selectedAvatarColor = button.dataset.avatarColor;
+            avatarColorOptions.querySelectorAll('[data-avatar-color]').forEach(option => option.classList.toggle('active', option === button));
+        });
+        function applyAvatarColor(color) {
+            const safeColor = /^#[0-9a-fA-F]{6}$/.test(color || '') ? color : '#d8839a';
+            [document.getElementById('user-avatar-img'), document.getElementById('profile-view-img')].forEach(el => {
+                if (!el) return;
+                el.style.setProperty('--avatar-color', safeColor);
+                el.classList.add('avatar-colorized');
+            });
+            return safeColor;
+        }
+
+</script>
 </body>
 </html>
