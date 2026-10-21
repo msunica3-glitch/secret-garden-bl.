@@ -2505,6 +2505,7 @@
                                 <div>
                                     <span class="rank-badge rank-top10">${category==='suggestions'?'💡 Sugerencia':category==='fans'?'🌸 Entre fans':'💬 Debate'}</span>
                                     <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${escapeHTML(data.title)}</h3>
+                                    ${data.desc ? `<p style="font-size:0.9rem; color:var(--text-dim); line-height:1.6; margin:.45rem 0 .55rem; overflow-wrap:anywhere;">${escapeHTML(data.desc)}</p>` : ''}
                                     <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author} • Activo en tiempo real</p>
                                 </div>
                             </div>
