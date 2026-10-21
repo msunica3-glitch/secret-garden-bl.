@@ -1272,7 +1272,7 @@
         <div class="section-title"><h2>🌸 Sobre Secret Garden BL</h2></div>
         <div class="rules-card"><h3>¿Qué es SGB?</h3><p>Secret Garden BL es un refugio para fans del BL: un espacio para descubrir historias, compartir recomendaciones y conversar con otras personas que disfrutan este género.</p></div>
         <div class="rules-card" style="margin-top:1rem"><h3>🌱 Nuestro propósito</h3><p>Crear una comunidad acogedora donde cada miembro pueda expresarse con respeto, descubrir nuevas obras y ayudar a que el jardín crezca.</p></div>
-        <div class="rules-card" style="margin-top:1rem"><h3>✨ ¿Cómo funciona?</h3><p>Explora recomendaciones, publica obras que te gusten, participa in debates y sugerencias del foro, comenta, da «Me gusta» y descubre el ranking de participación.</p></div>
+        <div class="rules-card" style="margin-top:1rem"><h3>✨ ¿Cómo funciona?</h3><p>Explora recomendaciones, publica obras que te gusten, participa en debates y sugerencias del foro, comenta, da «Me gusta» y descubre el ranking de participación.</p></div>
         <div class="rules-card" style="margin-top:1rem"><h3>🌿 ¿Qué pueden hacer los miembros?</h3><ul class="rules-list"><li>Personalizar su perfil y biografía.</li><li>Compartir recomendaciones y participar en conversaciones.</li><li>Comentar, reaccionar y seguir perfiles.</li><li>Consultar notificaciones y participar en el quiz cuando esté disponible.</li></ul></div>
         <div class="rules-card" style="margin-top:1rem"><h3>🛡️ Reglas básicas</h3><p>Trata a los demás con respeto, evita el spam y la suplantación, protege tu información privada, publica en la sección adecuada y reporta los problemas. Consulta las <a href="#" onclick="switchView('reglas');return false;">Reglas de la comunidad</a> completas.</p></div>
         <div class="rules-card" id="aviso-propiedad-intelectual" style="margin-top:1rem"><h3>©️ Aviso de propiedad intelectual</h3><p>Todos los manhwas, personajes, nombres e imágenes que se muestran en este sitio web son propiedad intelectual de sus respectivos autores, ilustradores y editoriales oficiales. Secret Garden BL es un sitio web creado por fans y para fans, con fines informativos, de recomendación y entretenimiento, sin fines de lucro. No pretendemos infringir ningún derecho de autor.</p><p>Si eres titular de derechos sobre alguna imagen o contenido publicado en SGB y deseas solicitar su retirada, escríbenos a <a href="mailto:blandjina6@gmail.com?subject=Solicitud%20de%20retirada%20de%20contenido%20-%20Secret%20Garden%20BL">blandjina6@gmail.com</a>. Estas solicitudes se revisarán con especial atención y el contenido señalado será retirado cuando corresponda.</p><p style="font-size:.82rem">Este aviso no sustituye las autorizaciones que puedan ser necesarias para utilizar contenido protegido.</p></div>
@@ -1726,4 +1726,1357 @@
         const rankBadgesByEmail = new Map();
         const rankBadgesByUid = new Map();
         let activeProfileEmailForBadges = '';
-        const BADGE_IMAGES = {"posts_1":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAIBAQEBAQIBAQECAgICAgQDAgICAgUEBAMEBgUGBgYFBgYGBwkIBgcJBwYGCAsICQoKCgoKBggLDAsKDAkKCgr/2wBDAQICAgICAgUDAwUKBwYHCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgr/wAARCACRAI8DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD8N6KK2RfX4H/IQuPwnb/GuXE4n6vbS9xQgpbsxqK2BfagP+YjcfjO3+NL9v1DOf7RuP8Av+3+Nc39o/3Px/4Bp7KPcxqK2v7R1LBA1K4/7/t/jTP7S1b+HU7n6ee3+NH9or+T8Q9lHuZFFbSXmsN97UJyfXzm/wAanSTVnPF/cfhM3+NV/aCS+H8QVFPqc9RXULDrDoT9uuMjp++b/Go5YtZUE/brnHTPnN/jUrMot25fxKeHa6nN0VqXUmqxHP8AaNyP+27f41WkvtVU/wDIQuD/ANt2/wAa2WMv9n8TKVNxKlFTvqeqbcHUrgfSdv8AGoX1XVw2F1S5/wC/7f41ccTd2sS42EooGoaqeW1S4P1nb/GhtS1VR8uq3I+lw3+Nae0k9kSFFC6hqUoKy6lcMp4IadiCPTGaK0jLmQBWpWXWssbtyBXn5j9n5/odOHSbY2kJA61KIcDnmpSaKRuxmvMdkdXKiHy3IyBToombIK4ParUdpIQAycnpVy00lj96In3qXJAqbZBp9hLMBlM81t6d4eeYj91nJwBuxz2FWdG0KfIPlGux0PwxcSlFWEkt0wOh7Vw4nExhd3OqjQctDU+Cv7J/x0/aGnu7T4IfCjWfE0lhbPNdjTbYssSqMnc3Qd/yrhPEXgjWPDuoz6Pr2nz2tzbOY7i1uYykkTAkEFTX9Fv/AASM8cfs9/B79hXwXoXhmGztp9S043evXcACyz3G/a0btwWIAyB3r86f+C23gT4Wal430b4keEtCtrPWtYvb5dQijQB3gUrl5cjgdDxceuK+Xw/EUZ5j7A9aeVS+ruclbzPzB1DSHTjYRz3rFv7OSN+RivStd8NTxsSIPfj35/rXK6voc6tzB719lRxEdrnztWi0chcRnBHpVUxvv/wDrVvXekykny9oqi9g4P3Rz3r1aVdONjilBlDDA4NJjnPtVymn1jK7V0c+kQooopoaCiiiigAooophoKKKKACiimjlsGkF0P5B/E/yooor8oP0QKKKKAP//Z","famous_4":"data:image/jpeg;base64,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"}],"title":"#/components/schemas/PersonalDataResult","type":"OBJECT"}]}
+        const BADGE_IMAGES = {"posts_1":"data:image/jpeg;base64,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"}
+        const BADGE_RANK_NAMES = { 1:'Oro · puesto #1', 2:'Plata · puesto #2', 3:'Bronce · puesto #3' };
+        function renderUserRankBadges(email, size='tiny') {
+            const key = String(email || '').toLowerCase();
+            const badges = rankBadgesByEmail.get(key) || [];
+            if (!badges.length) return '';
+            return `<span class="rank-badge-images ${size}" aria-label="Insignias de ranking">${badges.map(b => `<img class="rank-badge-image" src="${BADGE_IMAGES[`${b.category}_${b.rank}`]}" alt="${BADGE_CATEGORY_NAMES[b.category]}: ${BADGE_RANK_NAMES[b.rank]}" title="${BADGE_CATEGORY_NAMES[b.category]} · ${BADGE_RANK_NAMES[b.rank]}">`).join('')}</span>`;
+        }
+        function renderRankingAward(category, rank) {
+            if (rank >= 1 && rank <= 3) {
+                const label = BADGE_RANK_NAMES[rank];
+                return `<div class="leaderboard-award"><img class="rank-badge-image" src="${BADGE_IMAGES[`${category}_${rank}`]}" alt="${BADGE_CATEGORY_NAMES[category]}: ${label}" title="${BADGE_CATEGORY_NAMES[category]} · ${label}"><span>${BADGE_CATEGORY_NAMES[category]} · ${label}</span></div>`;
+            }
+            return `<span class="rank-badge rank-top10">Top 10 · Miembro destacado</span>`;
+        }
+
+        window.showRankingTab = function(category) {
+            const valid = ['posts','comments','famous'].includes(category) ? category : 'posts';
+            ['posts','comments','famous'].forEach(key => {
+                const panel = document.getElementById('ranking-panel-' + key);
+                const tab = document.getElementById('ranking-tab-' + key);
+                if (panel) panel.hidden = key !== valid;
+                if (tab) { tab.classList.toggle('active', key === valid); tab.setAttribute('aria-selected', key === valid ? 'true' : 'false'); }
+            });
+        };
+        window.loadLeaderboard = async function() {
+            const postsRoot = document.getElementById('leaderboard-posts-list');
+            const commentsRoot = document.getElementById('leaderboard-comments-list');
+            const famousRoot = document.getElementById('leaderboard-famous-list');
+            if (!postsRoot || !commentsRoot || !famousRoot) return;
+            postsRoot.innerHTML = '<p style="color:var(--text-dim)">Actualizando…</p>';
+            commentsRoot.innerHTML = '<p style="color:var(--text-dim)">Actualizando…</p>';
+            famousRoot.innerHTML = '<p style="color:var(--text-dim)">Actualizando…</p>';
+            try {
+                const [recSnap, forumSnap] = await Promise.all([getDocs(collection(db,'recommendations')), getDocs(collection(db,'forum_posts'))]);
+                const postMembers = new Map();
+                const commentMembers = new Map();
+                const famousMembers = new Map();
+                const identity = data => data.authorUid || (data.authorEmail || '').toLowerCase() || data.author || '';
+                const add = (map, data, amount=1) => {
+                    const key = identity(data); if (!key) return;
+                    const item = map.get(key) || {key, uid:data.authorUid || '', name:data.author || 'Miembro del jardín', email:(data.authorEmail || '').toLowerCase(), photo:data.authorPhoto || '', score:0};
+                    item.score += amount;
+                    if (data.author) item.name = data.author;
+                    if (data.authorPhoto) item.photo = data.authorPhoto;
+                    if (data.authorEmail) item.email = data.authorEmail.toLowerCase();
+                    if (data.authorUid) item.uid = data.authorUid;
+                    map.set(key,item);
+                };
+                for (const [parentCollection, parentDocs] of [['recommendations', recSnap.docs], ['forum_posts', forumSnap.docs]]) {
+                  for (const parent of parentDocs) {
+                    const data = parent.data();
+                    add(postMembers, data, 1);
+                    const likesTotal = Math.max(Number(data.likes) || 0, Array.isArray(data.likedBy) ? new Set(data.likedBy).size : 0);
+                    add(famousMembers, data, likesTotal);
+                    (data.comments || []).forEach(c => add(commentMembers, c, 1));
+                    try {
+                        const sub = await getDocs(collection(db, parentCollection, parent.id, 'comments'));
+                        sub.forEach(c => add(commentMembers, c.data(), 1));
+                    } catch (subError) { console.warn('No se pudieron leer algunos comentarios para el ranking:', subError); }
+                  }
+                }
+                const sortTop = map => [...map.values()].sort((a,b)=>b.score-a.score || a.name.localeCompare(b.name)).slice(0,10);
+                const postRanked = sortTop(postMembers);
+                const commentRanked = sortTop(commentMembers);
+                const famousRanked = sortTop(famousMembers).filter(person => person.score > 0);
+                rankByEmail.clear(); rankByUid.clear(); rankBadgesByEmail.clear(); rankBadgesByUid.clear();
+                // Los mapas de insignias se reconstruyen desde los rankings actuales: no son premios permanentes.
+                const render = (root, ranked, emptyText, category) => {
+                    if (!ranked.length) { root.innerHTML = `<div class="community-tile"><p>${emptyText}</p></div>`; return; }
+                    ranked.forEach((person,index)=>person.rank=index+1);
+                    root.innerHTML = ranked.map(person => {
+                        const rank=person.rank;
+                        const cls=rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'rank-top10';
+                        return `<div class="leaderboard-card ${cls}"><div class="rank-user"><span class="rank-number">${rank}</span><img src="${escapeHTML(person.photo||'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=120&auto=format&fit=crop')}" alt=""><div style="min-width:0"><strong>${escapeHTML(person.name)}</strong><div class="rank-meta">${person.score} ${category==='posts'?'publicación(es)':category==='comments'?'comentario(s)':'Me gusta totales'}</div>${renderRankingAward(category, rank)}</div></div></div>`;
+                    }).join('');
+                };
+                render(postsRoot, postRanked, 'Todavía no hay publicaciones para crear este ranking. ¡Anímate a compartir una! 🌱','posts');
+                render(commentsRoot, commentRanked, 'Todavía no hay comentarios para crear este ranking. ¡Participa en las conversaciones! 💬','comments');
+                render(famousRoot, famousRanked, 'Todavía no hay Me gusta suficientes para crear este ranking. ¡Comparte tus publicaciones! 💗','famous');
+                // Avisar una sola vez por categoría e insignia cuando una persona entra al Top 10.
+                const awardNotifications = async (ranked, category) => {
+                    for (const person of ranked) {
+                        if (!person.email || person.rank > 10) continue;
+                        const tier = person.rank === 1 ? 'oro' : person.rank === 2 ? 'plata' : person.rank === 3 ? 'bronce' : 'top10';
+                        const badgeKey = `${category}_${tier}`;
+                        try {
+                            const existing = await getDocs(query(collection(db, 'notifications'), where('recipientEmail', '==', person.email)));
+                            if (existing.docs.some(d => d.data().type === 'rank_badge' && d.data().badgeKey === badgeKey)) continue;
+                            const categoryName = category === 'posts' ? 'publicaciones' : category === 'comments' ? 'comentarios' : 'Me gusta totales';
+                            const badgeName = tier === 'oro' ? 'Flor de Oro (Top 1)' : tier === 'plata' ? 'Flor de Plata (Top 2)' : tier === 'bronce' ? 'Flor de Bronce (Top 3)' : 'Miembro destacado (Top 10)';
+                            await addDoc(collection(db, 'notifications'), {
+                                recipientEmail: person.email, recipientUid: person.uid || '', type: 'rank_badge', badgeKey,
+                                sender: 'Secret Garden BL', postTitle: '', read: false, createdAt: serverTimestamp(),
+                                message: `¡Felicidades! Entraste al ranking de ${categoryName} en el puesto #${person.rank} y ganaste la insignia ${badgeName}.`
+                            });
+                        } catch (notificationError) { console.warn('No se pudo enviar una notificación de insignia:', notificationError); }
+                    }
+                };
+                await Promise.all([awardNotifications(postRanked, 'posts'), awardNotifications(commentRanked, 'comments'), awardNotifications(famousRanked, 'famous')]);
+                // Guardar solo el puesto actual de cada categoría en memoria, sin persistir premios.
+                const rememberCurrentRanks = (ranked, category) => ranked.forEach(person => {
+                    const rank = person.rank;
+                    if (person.email && (!rankByEmail.has(person.email) || rank < rankByEmail.get(person.email))) rankByEmail.set(person.email, rank);
+                    if (person.uid && (!rankByUid.has(person.uid) || rank < rankByUid.get(person.uid))) rankByUid.set(person.uid, rank);
+                    if (rank > 3) return;
+                    const badge = { category, rank };
+                    if (person.email) {
+                        const key = person.email.toLowerCase();
+                        const current = rankBadgesByEmail.get(key) || [];
+                        current.push(badge); rankBadgesByEmail.set(key, current);
+                    }
+                    if (person.uid) {
+                        const current = rankBadgesByUid.get(person.uid) || [];
+                        current.push(badge); rankBadgesByUid.set(person.uid, current);
+                    }
+                });
+                rememberCurrentRanks(postRanked, 'posts');
+                rememberCurrentRanks(commentRanked, 'comments');
+                rememberCurrentRanks(famousRanked, 'famous');
+                // Si el perfil está abierto, reflejar las insignias recién calculadas.
+                if (activeProfileEmailForBadges && document.getElementById('view-perfil')?.classList.contains('active')) {
+                    const badgeSlot = document.getElementById('profile-view-badge');
+                    if (badgeSlot) badgeSlot.innerHTML = (activeProfileEmailForBadges === ADMIN_EMAIL.toLowerCase() ? '<span class="admin-badge">Admin</span>' : '') + renderUserRankBadges(activeProfileEmailForBadges, 'profile');
+                }
+                // Refrescar autores y comentarios para que sus insignias coincidan con los rankings recién calculados.
+                if (typeof window.loadRecommendations === 'function') window.loadRecommendations();
+                if (typeof window.loadForo === 'function') window.loadForo();
+            } catch(error) {
+                console.error('No se pudo cargar el ranking:',error);
+                postsRoot.innerHTML='<p style="color:var(--text-dim)">No se pudo calcular el ranking de publicaciones.</p>';
+                commentsRoot.innerHTML='<p style="color:var(--text-dim)">No se pudo calcular el ranking de comentarios.</p>';
+                famousRoot.innerHTML='<p style="color:var(--text-dim)">No se pudo calcular el ranking de más famosos.</p>';
+            }
+        };
+        window.loadLeaderboard();
+
+        // AVISOS: lectura pública en tiempo real; las acciones de escritura son solo para admin.
+        let announcementsUnsubscribe = null;
+        const announcementsCache = new Map();
+        let editingAnnouncementId = null;
+        const announcementAdminPanel = document.getElementById('announcement-admin-panel');
+        const announcementForm = document.getElementById('announcement-form');
+        const announcementList = document.getElementById('announcement-list');
+        const announcementTitleInput = document.getElementById('announcement-title');
+        const announcementCategoryInput = document.getElementById('announcement-category');
+        const announcementBodyInput = document.getElementById('announcement-body');
+        const announcementSubmitButton = document.getElementById('announcement-submit-btn');
+        const announcementCancelEditButton = document.getElementById('announcement-cancel-edit');
+
+        function updateAnnouncementAdminUI(user = auth.currentUser) {
+            if (announcementAdminPanel) announcementAdminPanel.hidden = !isAdminUser(user);
+        }
+        function announcementDate(value) {
+            let date = value?.toDate ? value.toDate() : (value ? new Date(value) : null);
+            if (!date || Number.isNaN(date.getTime())) return 'Fecha no disponible';
+            return new Intl.DateTimeFormat('es-DO', { dateStyle:'medium', timeStyle:'short' }).format(date);
+        }
+        function resetAnnouncementForm() {
+            editingAnnouncementId = null;
+            announcementForm?.reset();
+            const heading = document.getElementById('announcement-form-heading');
+            if (heading) heading.textContent = '✍️ Publicar un aviso';
+            if (announcementSubmitButton) announcementSubmitButton.textContent = 'Publicar aviso';
+            if (announcementCancelEditButton) announcementCancelEditButton.hidden = true;
+        }
+        window.editAnnouncement = function(id) {
+            if (!isAdminUser()) { alert('Solo la administración puede editar avisos.'); return; }
+            const data = announcementsCache.get(id);
+            if (!data) return;
+            editingAnnouncementId = id;
+            announcementTitleInput.value = data.title || '';
+            announcementCategoryInput.value = data.category || 'Novedad';
+            announcementBodyInput.value = data.body || '';
+            const heading = document.getElementById('announcement-form-heading');
+            if (heading) heading.textContent = '✏️ Editar aviso';
+            announcementSubmitButton.textContent = 'Guardar cambios';
+            announcementCancelEditButton.hidden = false;
+            announcementAdminPanel.scrollIntoView({ behavior:'smooth', block:'start' });
+            announcementTitleInput.focus();
+        };
+        window.deleteAnnouncement = async function(id) {
+            if (!isAdminUser()) { alert('Solo la administración puede eliminar avisos.'); return; }
+            if (!confirm('¿Seguro que quieres eliminar este aviso?')) return;
+            try { await deleteDoc(doc(db, 'announcements', id)); }
+            catch (error) { console.error('No se pudo eliminar el aviso:', error); alert('No se pudo eliminar. Revisa que las reglas de Firestore estén actualizadas.'); }
+        };
+        announcementCancelEditButton?.addEventListener('click', resetAnnouncementForm);
+        announcementForm?.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            if (!isAdminUser()) { alert('Solo la administración puede publicar o editar avisos.'); return; }
+            const title = announcementTitleInput.value.trim();
+            const body = announcementBodyInput.value.trim();
+            const category = announcementCategoryInput.value;
+            if (!title || !body) { alert('Escribe un título y el contenido del aviso.'); return; }
+            announcementSubmitButton.disabled = true;
+            try {
+                if (editingAnnouncementId) {
+                    await updateDoc(doc(db, 'announcements', editingAnnouncementId), { title, body, category, updatedAt:serverTimestamp() });
+                } else {
+                    await addDoc(collection(db, 'announcements'), { title, body, category, authorUid:auth.currentUser.uid, authorEmail:auth.currentUser.email || '', createdAt:serverTimestamp(), updatedAt:serverTimestamp() });
+                }
+                resetAnnouncementForm();
+            } catch (error) {
+                console.error('No se pudo guardar el aviso:', error);
+                alert('No se pudo guardar. Comprueba que hayas publicado las reglas de Firestore actualizadas.');
+            } finally { announcementSubmitButton.disabled = false; }
+        });
+        function loadAnnouncements() {
+            if (announcementsUnsubscribe) return;
+            const q = query(collection(db, 'announcements'), orderBy('createdAt', 'desc'));
+            announcementsUnsubscribe = onSnapshot(q, (snapshot) => {
+                announcementsCache.clear();
+                if (snapshot.empty) {
+                    announcementList.innerHTML = '<div class="community-tile"><h3>🌱 El jardín todavía no tiene avisos</h3><p>Cuando haya noticias o actualizaciones oficiales, aparecerán aquí.</p></div>';
+                    return;
+                }
+                announcementList.innerHTML = snapshot.docs.map(docSnap => {
+                    const data = docSnap.data();
+                    announcementsCache.set(docSnap.id, data);
+                    const isAdmin = isAdminUser();
+                    const date = announcementDate(data.updatedAt || data.createdAt);
+                    return `<article class="announcement-card"><div class="announcement-meta"><span class="announcement-type">${escapeHTML(data.category || 'Novedad')}</span><span>${escapeHTML(date)}</span>${data.updatedAt && data.createdAt && data.updatedAt.toMillis && data.createdAt.toMillis && data.updatedAt.toMillis() !== data.createdAt.toMillis() ? '<span>· Editado</span>' : ''}</div><h3>${escapeHTML(data.title || 'Aviso de Secret Garden BL')}</h3><div class="announcement-body">${escapeHTML(data.body || '')}</div>${isAdmin ? `<div class="announcement-actions"><button type="button" onclick="editAnnouncement('${docSnap.id}')">✏️ Editar</button><button type="button" class="announcement-delete" onclick="deleteAnnouncement('${docSnap.id}')">🗑️ Eliminar</button></div>` : ''}</article>`;
+                }).join('');
+            }, (error) => {
+                console.error('Error cargando avisos:', error);
+                announcementList.innerHTML = '<div class="community-tile"><h3>No se pudieron cargar los avisos</h3><p>Comprueba que las reglas de Firestore incluyan lectura pública para la colección announcements.</p></div>';
+            });
+        }
+        loadAnnouncements();
+        updateAnnouncementAdminUI();
+
+        window.toggleFollow = async function(targetUsername, targetEmail, targetDisplayName = targetUsername) {
+            if (!requireLogin()) return;
+            const currentUser = auth.currentUser;
+            if (!currentUser || !targetEmail || targetEmail.toLowerCase() === (currentUser.email || '').toLowerCase()) return;
+
+            await ensureCurrentUserProfile(currentUser);
+            const currentName = getCurrentUserName(currentUser);
+            const currentEmail = currentUser.email || '';
+            const btn = document.getElementById('btn-follow-toggle');
+            if (!btn) return;
+
+            const targetRef = doc(db, "users", targetUsername);
+            const followRef = doc(db, "users", targetUsername, "followers", currentEmail);
+            const myUserRef = doc(db, "users", getCurrentUserProfileKey(currentUser));
+            const followingRef = doc(db, "users", getCurrentUserProfileKey(currentUser), "following", targetEmail);
+
+            btn.disabled = true;
+            try {
+                // Los perfiles y sus contadores se actualizan en una sola transacción.
+                // Así las reglas pueden comprobar el cambio real del documento follower.
+                const result = await runTransaction(db, async (transaction) => {
+                    const targetSnap = await transaction.get(targetRef);
+                    const mySnap = await transaction.get(myUserRef);
+                    const followSnap = await transaction.get(followRef);
+                    const followingSnap = await transaction.get(followingRef);
+
+                    if (!targetSnap.exists() || !mySnap.exists()) {
+                        throw new Error('PROFILE_NOT_READY');
+                    }
+                    if (targetSnap.data().ownerUid === currentUser.uid) {
+                        throw new Error('CANNOT_FOLLOW_SELF');
+                    }
+
+                    const currentlyFollowing = followSnap.exists();
+                    const targetCount = Number(targetSnap.data().followersCount || 0);
+                    const myCount = Number(mySnap.data().followingCount || 0);
+
+                    if (currentlyFollowing) {
+                        transaction.delete(followRef);
+                        transaction.update(targetRef, { followersCount: Math.max(0, targetCount - 1) });
+                        if (followingSnap.exists()) transaction.delete(followingRef);
+                        transaction.update(myUserRef, { followingCount: Math.max(0, myCount - 1) });
+                        return { following: false, followersCount: Math.max(0, targetCount - 1) };
+                    }
+
+                    transaction.set(followRef, {
+                        email: currentEmail,
+                        name: currentName,
+                        followerUid: currentUser.uid,
+                        timestamp: serverTimestamp()
+                    });
+                    transaction.update(targetRef, { followersCount: targetCount + 1 });
+                    transaction.set(followingRef, {
+                        email: targetEmail,
+                        name: targetDisplayName,
+                        targetUid: targetSnap.data().ownerUid || '',
+                        timestamp: serverTimestamp()
+                    });
+                    transaction.update(myUserRef, { followingCount: myCount + 1 });
+                    return { following: true, followersCount: targetCount + 1 };
+                });
+
+                btn.textContent = result.following ? 'Dejar de seguir' : '✨ Seguir';
+                if (result.following && targetEmail) {
+                    try { await addDoc(collection(db, 'notifications'), { recipientEmail: targetEmail, sender: currentName, senderUid: currentUser.uid, type: 'follow', targetUsername, read: false, message: `🌱 @${currentName} comenzó a seguirte.`, createdAt: serverTimestamp() }); }
+                    catch (notificationError) { console.warn('El seguimiento se guardó, pero no se pudo crear su notificación:', notificationError); }
+                }
+                profileStatFollowers.textContent = result.followersCount;
+                profileStatFollowing.textContent = result.following
+                    ? Number(profileStatFollowing.textContent || 0) + 1
+                    : Math.max(0, Number(profileStatFollowing.textContent || 0) - 1);
+            } catch (err) {
+                console.error("Error al actualizar seguimiento:", err);
+                if (err.message === 'PROFILE_NOT_READY') {
+                    alert('Este perfil todavía se está preparando. Pídele a su titular que inicie sesión una vez y vuelve a intentarlo.');
+                } else if (err.message === 'CANNOT_FOLLOW_SELF') {
+                    alert('No puedes seguir tu propio perfil.');
+                } else {
+                    alert('No se pudo actualizar el seguimiento. Inténtalo de nuevo.');
+                }
+            } finally {
+                btn.disabled = false;
+            }
+        };
+
+        avatarToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileModal.classList.toggle('active');
+        });
+
+        window.addEventListener('click', () => {
+            profileModal.classList.remove('active');
+            notifModal.classList.remove('active');
+            document.querySelectorAll('.card-dropdown').forEach(d => d.classList.remove('active'));
+        });
+
+        profileModal.addEventListener('click', e => e.stopPropagation());
+        notifModal.addEventListener('click', e => e.stopPropagation());
+
+        // Crea o migra el documento del perfil usando el UID permanente de Firebase.
+        // Evita dos inicializaciones simultáneas cuando Firebase restaura la sesión.
+        const profileInitializationTasks = new Map();
+        function ensureCurrentUserProfile(user) {
+            if (!user || !user.uid) return Promise.resolve();
+            if (profileInitializationTasks.has(user.uid)) return profileInitializationTasks.get(user.uid);
+            const task = (async () => {
+            const username = getCurrentUserName(user);
+            const keyStorageName = `bl_profile_key_${user.uid}`;
+            let profileKey = localStorage.getItem(keyStorageName);
+            if (!profileKey) {
+                try {
+                    let existing = await getDocs(query(collection(db, 'users'), where('ownerUid', '==', user.uid), limit(1)));
+                    if (existing.empty && user.email) existing = await getDocs(query(collection(db, 'users'), where('email', '==', user.email), limit(1)));
+                    profileKey = existing.empty ? username : existing.docs[0].id;
+                } catch (error) { profileKey = username; }
+                localStorage.setItem(keyStorageName, profileKey);
+            }
+            const profileRef = doc(db, "users", profileKey);
+            const profileSnap = await getDoc(profileRef);
+            const email = user.email || '';
+            const photoURL = user.photoURL || '';
+
+            if (!profileSnap.exists()) {
+                await setDoc(profileRef, {
+                    ownerUid: user.uid,
+                    email,
+                    displayName: username,
+                    photoURL,
+                    followersCount: 0,
+                    followingCount: 0,
+                    createdAt: serverTimestamp()
+                });
+                return;
+            }
+
+            const profile = profileSnap.data();
+            if (profile.ownerUid && profile.ownerUid !== user.uid) {
+                console.warn('El nombre de perfil ya está vinculado a otra cuenta; no se modificó.');
+                return;
+            }
+            if (!profile.ownerUid && profile.email && email && profile.email.toLowerCase() !== email.toLowerCase()) {
+                console.warn('No se pudo migrar el perfil antiguo porque el correo no coincide.');
+                return;
+            }
+
+            const updates = {};
+            if (!profile.ownerUid) updates.ownerUid = user.uid;
+            if (!profile.email) updates.email = email;
+            if (!profile.displayName) updates.displayName = username;
+            if (!profile.photoURL && photoURL) updates.photoURL = photoURL;
+            if (Object.keys(updates).length) await updateDoc(profileRef, updates);
+            })();
+            profileInitializationTasks.set(user.uid, task);
+            task.catch(() => profileInitializationTasks.delete(user.uid));
+            return task;
+        }
+
+        function updateUI(user) {
+            if (user) {
+                ensureCurrentUserProfile(user).catch(err => console.warn('No se pudo preparar el perfil de Firebase:', err));
+                btnLogin.style.display = 'none';
+                userMenuContainer.style.display = 'block';
+
+                const name = getCurrentUserName(user);
+                const email = user.email || '';
+                const photo = user.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+
+                userAvatarImg.src = photo;
+                getDoc(doc(db, 'users', getCurrentUserProfileKey(user))).then(profileSnap => {
+                    if (profileSnap.exists()) {
+                        const profileData = profileSnap.data();
+                        if (profileData.avatarEmoji) applyAvatarEmoji(profileData.avatarEmoji, profileData.avatarColor || '#d8839a');
+                    }
+                }).catch(error => console.warn('No se pudo cargar la carita del perfil:', error));
+                profileNameDisplay.textContent = name;
+                profileEmailDisplay.textContent = email;
+
+                if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                    if (adminBadgeSlot) adminBadgeSlot.innerHTML = '<span class="admin-badge">Admin</span>';
+                } else {
+                    if (adminBadgeSlot) adminBadgeSlot.innerHTML = '';
+                }
+
+                localStorage.setItem(`bl_user_name_${user.uid}`, name);
+                localStorage.setItem('bl_user_name', name);
+                localStorage.setItem('bl_user_email', email);
+                localStorage.setItem('bl_user_photo', photo);
+
+                loadNotifications();
+                const createQuizButton = document.getElementById('btn-create-quiz');
+                if (createQuizButton) createQuizButton.style.display = isAdminUser(user) ? 'inline-flex' : 'none';
+            } else {
+                if (notificationsUnsubscribe) { notificationsUnsubscribe(); notificationsUnsubscribe = null; }
+                const createQuizButton = document.getElementById('btn-create-quiz');
+                if (createQuizButton) createQuizButton.style.display = 'none';
+                btnLogin.style.display = 'flex';
+                userMenuContainer.style.display = 'none';
+                if (adminBadgeSlot) adminBadgeSlot.innerHTML = '';
+                
+                // No borrar el nombre guardado por UID: se recupera al volver a entrar.
+                localStorage.removeItem('bl_user_name');
+                localStorage.removeItem('bl_user_email');
+                localStorage.removeItem('bl_user_photo');
+            }
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            updateUI(user || null);
+            updateAnnouncementAdminUI(user || null);
+            // Refresca los botones de avisos para que aparezcan/desaparezcan al entrar o salir.
+            if (announcementsUnsubscribe) {
+                announcementsUnsubscribe();
+                announcementsUnsubscribe = null;
+                loadAnnouncements();
+            }
+            // Re-renderizar permisos al entrar/salir. Antes se calculaban una sola vez
+            // cuando Firebase aún no había terminado de restaurar la sesión.
+            if (typeof window.loadRecommendations === 'function') window.loadRecommendations();
+            if (typeof window.loadForo === 'function') window.loadForo();
+            if (!user) {
+                loginGateOverlay.classList.remove('active');
+                notifModal.classList.remove('active');
+            }
+        });
+
+        btnLogin.addEventListener('click', async () => {
+            try {
+                await authPersistenceReady;
+                const result = await signInWithPopup(auth, provider);
+                if (result && result.user) {
+                    loginGateOverlay.classList.remove('active');
+                    updateUI(result.user);
+                    alert(`¡Bienvenid@ a Secret Garden, ${result.user.displayName}!`);
+                }
+            } catch (err) {
+                console.error("Error al iniciar sesión:", err);
+                alert('No se pudo iniciar sesión con Google. Comprueba tu conexión e inténtalo de nuevo.');
+            }
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                profileModal.classList.remove('active');
+                updateUI(null);
+            } catch (err) {
+                console.error("Error al salir:", err);
+            }
+        });
+
+        window.toggleCardMenu = function(event, btn) {
+            event.stopPropagation();
+            document.querySelectorAll('.card-dropdown').forEach(d => {
+                if (d !== btn.nextElementSibling) d.classList.remove('active');
+            });
+            const dropdown = btn.nextElementSibling;
+            dropdown.classList.toggle('active');
+        };
+
+        window.sharePost = function(title) {
+            if (navigator.share) {
+                navigator.share({ title: title, text: `¡Mira esta recomendación en Secret Garden BL: ${title}!`, url: window.location.href })
+                .catch(() => alert('Enlace copiado al portapapeles.'));
+            } else {
+                alert(`Compartir: "${title}" — ${window.location.href}`);
+            }
+        };
+
+        window.reportPost = function() {
+            alert('Gracias por reportar. Nuestro equipo de administración revisará el contenido.');
+        };
+
+        window.deletePost = async function(id) {
+            if (!requireLogin()) return;
+            try {
+                const postRef = doc(db, "recommendations", id);
+                const postSnap = await getDoc(postRef);
+                if (!postSnap.exists()) return;
+                if (!recordBelongsToUser(postSnap.data(), auth.currentUser) && !isAdminUser()) {
+                    alert('Solo la autora o la administradora pueden eliminar esta publicación.');
+                    return;
+                }
+                if (confirm('¿Estás segura de que deseas eliminar esta publicación?')) {
+                    await deleteDoc(postRef);
+                }
+            } catch (err) {
+                console.error("Error al eliminar:", err);
+                alert('No se pudo eliminar. Comprueba los permisos de Firebase.');
+            }
+        };
+
+        window.editPost = async function(id, oldTitle, oldDesc) {
+            if (!requireLogin()) return;
+            const postSnap = await getDoc(doc(db, "recommendations", id));
+            if (!postSnap.exists() || !recordBelongsToUser(postSnap.data(), auth.currentUser)) {
+                alert('Solo puedes editar tus propias publicaciones.');
+                return;
+            }
+            const newTitle = prompt('Editar título:', oldTitle);
+            if (!newTitle) return;
+            const newDesc = prompt('Editar descripción:', oldDesc);
+            if (!newDesc) return;
+
+            try {
+                await updateDoc(doc(db, "recommendations", id), {
+                    title: newTitle,
+                    desc: newDesc
+                });
+            } catch (err) {
+                console.error("Error al editar:", err);
+            }
+        };
+
+        // Un único me gusta por cuenta y publicación: el UID queda registrado en likedBy.
+        window.toggleLike = async function(btn, id, authorEmail, postTitle) {
+            if (!requireLogin()) return;
+            const user = auth.currentUser;
+            const spanCount = btn.querySelector('.like-count');
+            const docRef = doc(db, "recommendations", id);
+            const wasLiked = btn.classList.contains('liked');
+            btn.disabled = true;
+            try {
+                const result = await runTransaction(db, async (transaction) => {
+                    const snap = await transaction.get(docRef);
+                    if (!snap.exists()) throw new Error('La publicación ya no existe.');
+                    const data = snap.data();
+                    const likedBy = Array.isArray(data.likedBy) ? data.likedBy : [];
+                    const hasLiked = likedBy.includes(user.uid);
+                    if (hasLiked) {
+                        transaction.update(docRef, { likedBy: likedBy.filter(uid => uid !== user.uid), likes: Math.max(0, (Number(data.likes) || 0) - 1) });
+                        return { liked: false, count: Math.max(0, (Number(data.likes) || 0) - 1), changed: true };
+                    }
+                    transaction.update(docRef, { likedBy: [...likedBy, user.uid], likes: (Number(data.likes) || 0) + 1 });
+                    return { liked: true, count: (Number(data.likes) || 0) + 1, changed: true };
+                });
+                btn.classList.toggle('liked', result.liked);
+                spanCount.textContent = result.count;
+                if (result.liked && authorEmail && user.email && authorEmail.toLowerCase() !== user.email.toLowerCase()) {
+                    await addDoc(collection(db, "notifications"), {
+                        recipientEmail: authorEmail, sender: getCurrentUserName(user),
+                        postTitle: postTitle, postId: id, senderUid: user.uid, type: 'like', read: false,
+                        message: `❤️ @${getCurrentUserName(user)} le dio Me gusta a tu publicación “${postTitle || ''}”.`, createdAt: serverTimestamp()
+                    }).catch(err => console.error('No se pudo enviar la notificación del me gusta:', err));
+                }
+            } catch (err) {
+                console.error('Error actualizando me gusta:', err);
+                btn.classList.toggle('liked', wasLiked);
+                alert('No se pudo guardar el me gusta. Inténtalo de nuevo.');
+            } finally { btn.disabled = false; }
+        };
+
+        const liveCommentUnsubscribers = new Map();
+        function watchLiveComments(parentCollection, parentId, containerId, isForum = false) {
+            const key = `${parentCollection}/${parentId}`;
+            if (liveCommentUnsubscribers.has(key)) liveCommentUnsubscribers.get(key)();
+            const commentsRef = collection(db, parentCollection, parentId, 'comments');
+            const unsubscribe = onSnapshot(commentsRef, async snapshot => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                let legacy = [];
+                try {
+                    const parentSnap = await getDoc(doc(db, parentCollection, parentId));
+                    if (parentSnap.exists()) legacy = (parentSnap.data().comments || []).map((c, index) => ({ ...c, _legacy:true, id:`legacy-${index}` }));
+                } catch (error) { console.warn('No se pudieron actualizar comentarios antiguos:', error); }
+                const currentUser = auth.currentUser;
+                const isAdmin = isAdminUser(currentUser);
+                const independent = snapshot.docs.map(commentDoc => ({ ...commentDoc.data(), id:commentDoc.id, _legacy:false }));
+                const comments = legacy.concat(independent);
+                const html = comments.map(c => {
+                    const owner = recordBelongsToUser(c, currentUser);
+                    const canDelete = isAdmin || (!c._legacy && owner);
+                    const deleteCall = isForum ? 'deleteForumComment' : 'deleteComment';
+                    const escapedText = escapeHTML(c.text || '');
+                    const escapedName = escapeHTML(c.author || 'Miembro');
+                    const escapedPhoto = escapeHTML(c.authorPhoto || '');
+                    const escapedEmail = escapeHTML(c.authorEmail || '');
+                    return `<div class="comment-item"><div class="comment-content-wrapper"><img src="${escapedPhoto}" class="user-clickable-avatar" alt="" onclick="openUserProfile('${escapedName}','${escapedPhoto}','${escapedEmail}')"><div class="comment-text"><strong onclick="openUserProfile('${escapedName}','${escapedPhoto}','${escapedEmail}')" style="cursor:pointer;color:var(--accent-gold)">@${escapedName}:</strong> ${escapedText}</div></div>${canDelete ? `<button class="btn-delete-comment" onclick="${deleteCall}('${parentId}','${c.id}',${c._legacy?'true':'false'})" title="Eliminar comentario">🗑️</button>` : ''}</div>`;
+                }).join('');
+                const inputBox = container.querySelector('.comment-input-box');
+                container.innerHTML = html;
+                if (inputBox) container.appendChild(inputBox);
+                else container.insertAdjacentHTML('beforeend', isForum ? `<div class="comment-input-box"><input type="text" placeholder="Escribe tu argumento para debatir..." class="input-forum-comment"><button onclick="addForumComment('${parentId}')">Debatir</button></div>` : `<div class="comment-input-box"><input type="text" placeholder="Escribe un comentario..." class="input-comment"><button onclick="addComment('${parentId}')">Comentar</button></div>`);
+            }, error => console.warn('No se pudo escuchar comentarios en tiempo real:', error));
+            liveCommentUnsubscribers.set(key, unsubscribe);
+        }
+
+        // TIEMPO REAL CON ONSNAPSHOT PARA RECOMENDACIONES
+        window.loadRecommendations = function() {
+            const grid = document.getElementById('grid-recomendaciones');
+            if (recommendationsUnsubscribe) recommendationsUnsubscribe();
+            const q = query(collection(db, "recommendations"), orderBy("createdAt", "desc"));
+            
+            recommendationsUnsubscribe = onSnapshot(q, async (querySnapshot) => {
+                const preservedScrollY = window.scrollY;
+                const currentUser = auth.currentUser;
+                const currentEmail = currentUser && currentUser.email ? currentUser.email.toLowerCase() : '';
+                const isAdmin = isAdminUser(currentUser);
+                if (querySnapshot.empty) {
+                    grid.innerHTML = '<p style="color: var(--text-dim); grid-column: 1/-1;">Aún no hay obras publicadas en el jardín. ¡Sé la primera persona en publicar una!</p>';
+                    return;
+                }
+
+                grid.innerHTML = '';
+                querySnapshot.forEach(async (docSnap) => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
+                    const isOwner = recordBelongsToUser(data, currentUser);
+                    // Recuperación gradual de publicaciones antiguas: una vez validado el
+                    // correo de Google, se les añade el UID permanente de su autora.
+                    if (currentUser && !data.authorUid && data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail) {
+                        updateDoc(doc(db, "recommendations", id), { authorUid: currentUser.uid }).catch(err =>
+                            console.warn("No se pudo vincular una publicación antigua a su cuenta:", err));
+                    }
+                    const likes = data.likes || 0;
+                    const likedBy = Array.isArray(data.likedBy) ? data.likedBy : [];
+                    const isLikedByCurrentUser = !!(currentUser && likedBy.includes(currentUser.uid));
+                    const category = data.category || 'Manhwas';
+                    const authorEmail = data.authorEmail || '';
+                    // Compatibilidad: mostramos comentarios antiguos embebidos y los nuevos documentos.
+                    let comments = (data.comments || []).map((c, index) => ({ ...c, _legacy: true, _legacyIndex: index, id: `legacy-${index}` }));
+                    try {
+                        const commentsSnap = await getDocs(collection(db, "recommendations", id, "comments"));
+                        comments = comments.concat(commentsSnap.docs.map(commentDoc => ({ ...commentDoc.data(), id: commentDoc.id, _legacy: false })));
+                    } catch (commentErr) {
+                        console.warn("No se pudieron cargar los comentarios independientes:", commentErr);
+                    }
+
+                    let menuOptions = '';
+                    if (isOwner || isAdmin) {
+                        menuOptions = `
+                            ${isOwner ? `<button onclick="editPost('${id}', '${data.title.replace(/'/g, "\\'")}', '${data.desc.replace(/'/g, "\\'")}')">✏️ Editar</button>` : ''}
+                            <button onclick="deletePost('${id}')" style="color:#ff9999;">🗑️ Eliminar</button>
+                            <button onclick="sharePost('${data.title.replace(/'/g, "\\'")}')">🔗 Compartir</button>
+                        `;
+                    } else {
+                        menuOptions = `
+                            <button onclick="reportPost()">🚩 Reportar</button>
+                            <button onclick="sharePost('${data.title.replace(/'/g, "\\'")}')">🔗 Compartir</button>
+                        `;
+                    }
+
+                    let commentsHTML = '';
+                    comments.forEach((c, index) => {
+                        const isCommentOwner = recordBelongsToUser(c, currentUser);
+                        const showDeleteComment = isAdmin || (!c._legacy && isCommentOwner);
+
+                        commentsHTML += `
+                            <div class="comment-item">
+                                <div class="comment-content-wrapper">
+                                    <img src="${c.authorPhoto}" class="user-clickable-avatar" onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')">
+                                    <div class="comment-text">
+                                        <strong onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')" style="cursor:pointer; color:var(--accent-gold);">@${c.author}:</strong>${renderUserRankBadges(c.authorEmail, 'tiny')} ${c.text}
+                                    </div>
+                                </div>
+                                ${showDeleteComment ? `<button class="btn-delete-comment" onclick="deleteComment('${id}','${c.id}',${c._legacy ? 'true' : 'false'})" title="Eliminar comentario">🗑️</button>` : ''}
+                            </div>
+                        `;
+                    });
+
+                    if (activeRecommendationCategory !== 'Todas' && category !== activeRecommendationCategory) return;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-menu-container">
+                            <button class="card-menu-btn" onclick="toggleCardMenu(event, this)">⋮</button>
+                            <div class="card-dropdown">
+                                ${menuOptions}
+                            </div>
+                        </div>
+                        <img src="${data.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop'}" class="card-img" alt="Recomendación">
+                        <div class="card-body">
+                            <span class="card-tag">${escapeHTML(category)}</span>
+                            <h3 class="card-title">${escapeHTML(data.title)}</h3>
+                            <p class="card-desc">${escapeHTML(data.desc)}</p>
+                            <div class="card-footer">
+                                <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', '${authorEmail}')">
+                                    <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
+                                    <span>@${data.author}${renderUserRankBadges(authorEmail, 'tiny')}</span>
+                                </div>
+                                <button class="like-btn ${isLikedByCurrentUser ? 'liked' : ''}" onclick="toggleLike(this, '${id}', '${authorEmail}', '${String(data.title || '').replace(/'/g, "\\'")}')">
+                                    ❤️ <span class="like-count">${likes}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="comments-section" id="comments-container-${id}">
+                            ${commentsHTML}
+                            <div class="comment-input-box">
+                                <input type="text" placeholder="Escribe un comentario..." class="input-comment">
+                                <button onclick="addComment('${id}')">Comentar</button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                    // Mantiene la posición de lectura cuando el snapshot se dispara por un like.
+                    window.scrollTo({ top: preservedScrollY, behavior: 'auto' });
+                    watchLiveComments('recommendations', id, `comments-container-${id}`, false);
+                });
+            });
+        };
+
+        window.addComment = async function(postId) {
+            if (!requireLogin()) return;
+            const container = document.getElementById(`comments-container-${postId}`);
+            const input = container.querySelector('.input-comment');
+            const commentText = input.value.trim();
+            if (!commentText) return;
+
+            const currentName = getCurrentUserName(auth.currentUser);
+            const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = auth.currentUser.email || '';
+
+            const newComment = {
+                author: currentName,
+                authorPhoto: currentPhoto,
+                authorEmail: currentEmail,
+                authorUid: auth.currentUser.uid,
+                text: commentText,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                const savedCommentRef = await addDoc(collection(db, "recommendations", postId, "comments"), newComment);
+                const postSnapForNotif = await getDoc(doc(db, 'recommendations', postId));
+                const postDataForNotif = postSnapForNotif.exists() ? postSnapForNotif.data() : null;
+                if (postDataForNotif?.authorEmail && postDataForNotif.authorEmail.toLowerCase() !== currentEmail.toLowerCase()) {
+                    try { await addDoc(collection(db, 'notifications'), { recipientEmail: postDataForNotif.authorEmail, sender: currentName, senderUid: auth.currentUser.uid, type: 'comment', postId, commentId: savedCommentRef.id, postTitle: postDataForNotif.title || '', read: false, message: `💬 @${currentName} comentó en tu publicación “${postDataForNotif.title || ''}”.`, createdAt: serverTimestamp() }); }
+                    catch (notificationError) { console.warn('El comentario se guardó, pero no se pudo crear su notificación:', notificationError); }
+                }
+                input.value = '';
+                // El listener en tiempo real actualiza solo la zona de comentarios.
+                // No reconstruimos el muro completo después de comentar.
+            } catch (err) {
+                console.error("Error al guardar comentario:", err);
+            }
+        };
+
+        window.deleteComment = async function(postId, commentId, isLegacy = false) {
+            if (!requireLogin()) return;
+            if (!confirm('¿Deseas eliminar este comentario?')) return;
+            try {
+                const user = auth.currentUser;
+                if (isLegacy) {
+                    if (!isAdminUser(user)) throw new Error('Los comentarios antiguos solo pueden ser eliminados por administración.');
+                    const postRef = doc(db, "recommendations", postId);
+                    const snap = await getDoc(postRef);
+                    if (!snap.exists()) return;
+                    const comments = (snap.data().comments || []).filter((_, index) => `legacy-${index}` !== commentId);
+                    await updateDoc(postRef, { comments });
+                } else {
+                    const commentRef = doc(db, "recommendations", postId, "comments", commentId);
+                    const commentSnap = await getDoc(commentRef);
+                    if (!commentSnap.exists()) return;
+                    if (!isAdminUser(user) && commentSnap.data().authorUid !== user.uid) {
+                        throw new Error('Solo puedes eliminar tus propios comentarios.');
+                    }
+                    await deleteDoc(commentRef);
+                }
+                window.loadRecommendations();
+            } catch (err) {
+                console.error("Error al eliminar comentario:", err);
+                alert(err.message || 'No se pudo eliminar el comentario.');
+            }
+        };
+
+        document.querySelectorAll('.category-chip').forEach(button => {
+            button.addEventListener('click', () => {
+                activeRecommendationCategory = button.dataset.category || 'Todas';
+                document.querySelectorAll('.category-chip').forEach(chip => chip.classList.toggle('active', chip === button));
+                if (typeof window.loadRecommendations === 'function') window.loadRecommendations();
+            });
+        });
+
+        // MODAL DE PUBLICACIÓN
+        let selectedCustomImage = null;
+        const postModalOverlay = document.getElementById('post-modal-overlay');
+        const modalInputTitle = document.getElementById('modal-input-title');
+        const modalInputDesc = document.getElementById('modal-input-desc');
+        const selectedFileName = document.getElementById('selected-file-name');
+        const fixedInput = document.getElementById('fixed-gallery-input');
+
+        document.getElementById('btn-open-modal').addEventListener('click', () => {
+            if (!requireLogin()) return;
+            postModalMode = 'recommendation';
+            document.getElementById('modal-input-category').innerHTML = '<option value="Manhwas">Manhwas</option><option value="Novelas">Novelas</option><option value="Mangas">Mangas</option><option value="Otros BL">Otros BL</option>';
+            document.getElementById('modal-input-category').style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').textContent = 'Categoría';
+            document.getElementById('image-label').style.display = 'block';
+            document.getElementById('btn-pick-gallery').style.display = 'block';
+            document.getElementById('btn-use-default-img').style.display = 'block';
+            selectedFileName.style.display = 'block';
+            originalPostModalTitle.textContent = '🌸 Publicar Nueva Obra';
+            modalInputTitle.previousElementSibling.textContent = 'Título de la obra';
+            originalDescLabel.textContent = 'Reseña o descripción';
+            modalInputTitle.placeholder = 'Ej. Jinx, La tiendita...';
+            modalInputDesc.placeholder = 'Escribe por qué la recomiendas...';
+            document.getElementById('modal-input-category').style.display = '';
+            document.querySelector('label[for="modal-input-category"]').style.display = '';
+            document.getElementById('image-label').style.display = '';
+            document.getElementById('btn-pick-gallery').style.display = '';
+            document.getElementById('btn-use-default-img').style.display = '';
+            selectedFileName.style.display = '';
+            modalInputTitle.value = '';
+            modalInputDesc.value = '';
+            selectedCustomImage = null;
+            selectedFileName.textContent = 'Ningún archivo seleccionado (se elegirá una imagen variada automáticamente).';
+            document.getElementById('modal-input-category').value = 'Manhwas';
+            postModalOverlay.classList.add('active');
+        });
+
+        document.getElementById('btn-close-modal').addEventListener('click', () => {
+            postModalOverlay.classList.remove('active');
+        });
+
+        document.getElementById('btn-pick-gallery').addEventListener('click', () => {
+            fixedInput.value = '';
+            fixedInput.click();
+        });
+
+        fixedInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFileName.textContent = `Archivo seleccionado: ${file.name}`;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    selectedCustomImage = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        document.getElementById('btn-use-default-img').addEventListener('click', () => {
+            selectedCustomImage = randomAutoImage();
+            selectedFileName.textContent = 'Imagen automática elegida al azar. Puedes volver a pulsar para cambiarla.';
+        });
+
+        document.getElementById('btn-submit-post').addEventListener('click', async () => {
+            if (!requireLogin()) return;
+            const title = modalInputTitle.value.trim();
+            const desc = modalInputDesc.value.trim();
+
+            if (!title || !desc) {
+                alert('Por favor, completa el título y la descripción.');
+                return;
+            }
+
+            const finalImage = selectedCustomImage || randomAutoImage();
+            const category = document.getElementById('modal-input-category').value;
+            const currentName = getCurrentUserName(auth.currentUser);
+            const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = auth.currentUser.email || '';
+
+            try {
+                if (postModalMode === 'forum') {
+                    await addDoc(collection(db, "forum_posts"), {
+                        title, desc, author: currentName, authorPhoto: currentPhoto, authorEmail: currentEmail,
+                        authorUid: auth.currentUser.uid, category: document.getElementById('modal-input-category').value || 'debates', comments: [], createdAt: serverTimestamp()
+                    });
+                    postModalOverlay.classList.remove('active');
+                    return;
+                }
+                await addDoc(collection(db, "recommendations"), {
+                    title: title,
+                    desc: desc,
+                    author: currentName,
+                    authorPhoto: currentPhoto,
+                    authorEmail: currentEmail,
+                    authorUid: auth.currentUser.uid,
+                    image: finalImage,
+                    category: category,
+                    likes: 0,
+                    likedBy: [],
+                    comments: [],
+                    createdAt: serverTimestamp()
+                });
+                postModalOverlay.classList.remove('active');
+            } catch (err) {
+                console.error("Error al publicar:", err);
+                alert('No se pudo publicar. Comprueba tu sesión e inténtalo de nuevo.');
+            }
+        });
+
+        // TIEMPO REAL CON ONSNAPSHOT PARA EL FORO
+        window.loadForo = function() {
+            const listForo = document.getElementById('list-foro');
+            if (forumUnsubscribe) forumUnsubscribe();
+            const q = query(collection(db, "forum_posts"), orderBy("createdAt", "desc"));
+
+            forumUnsubscribe = onSnapshot(q, async (querySnapshot) => {
+                const preservedScrollY = window.scrollY;
+                const currentUser = auth.currentUser;
+                const currentEmail = currentUser && currentUser.email ? currentUser.email.toLowerCase() : '';
+                const isAdmin = isAdminUser(currentUser);
+                if (querySnapshot.empty) {
+                    listForo.innerHTML = '<div class="community-tile"><h3>🌱 Este espacio está esperando su primera conversación</h3><p>Empieza con una sugerencia, una pregunta divertida o un debate BL.</p><button class="btn-add" style="margin-top:.8rem" onclick="openForumComposer()">Crear publicación</button></div>';
+                    return;
+                }
+
+                listForo.innerHTML = '';
+                let renderedForumCount = 0;
+                querySnapshot.forEach(async (docSnap) => {
+                    const data = docSnap.data();
+                    const id = docSnap.id;
+                    const category = data.category || 'debates';
+                    if (activeForumCategory !== 'all' && category !== activeForumCategory) return;
+                    renderedForumCount += 1;
+                    const isOwner = recordBelongsToUser(data, currentUser);
+                    if (currentUser && !data.authorUid && data.authorEmail && currentEmail && data.authorEmail.toLowerCase() === currentEmail) {
+                        updateDoc(doc(db, "forum_posts", id), { authorUid: currentUser.uid }).catch(err =>
+                            console.warn("No se pudo vincular un debate antiguo a su cuenta:", err));
+                    }
+                    let comments = (data.comments || []).map((c, index) => ({ ...c, _legacy: true, _legacyIndex: index, id: `legacy-${index}` }));
+                    try {
+                        const commentsSnap = await getDocs(collection(db, "forum_posts", id, "comments"));
+                        comments = comments.concat(commentsSnap.docs.map(commentDoc => ({ ...commentDoc.data(), id: commentDoc.id, _legacy: false })));
+                    } catch (commentErr) {
+                        console.warn("No se pudieron cargar las respuestas independientes:", commentErr);
+                    }
+
+                    let commentsHTML = '';
+                    comments.forEach((c, index) => {
+                        const isCommentOwner = recordBelongsToUser(c, currentUser);
+                        const showDeleteComment = isAdmin || (!c._legacy && isCommentOwner);
+
+                        commentsHTML += `
+                            <div class="comment-item">
+                                <div class="comment-content-wrapper">
+                                    <img src="${c.authorPhoto}" class="user-clickable-avatar" onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')">
+                                    <div class="comment-text">
+                                        <strong onclick="openUserProfile('${c.author}', '${c.authorPhoto}', '${c.authorEmail || ''}')" style="cursor:pointer; color:var(--accent-gold);">@${c.author}:</strong>${renderUserRankBadges(c.authorEmail, 'tiny')} ${c.text}
+                                    </div>
+                                </div>
+                                ${showDeleteComment ? `<button class="btn-delete-comment" onclick="deleteForumComment('${id}','${c.id}',${c._legacy ? 'true' : 'false'})" title="Eliminar respuesta">🗑️</button>` : ''}
+                            </div>
+                        `;
+                    });
+
+                    const item = document.createElement('div');
+                    item.className = 'forum-card';
+                    item.innerHTML = `
+                        <div class="forum-header">
+                            <div class="user-info-clickable" onclick="openUserProfile('${data.author}', '${data.authorPhoto}', '${data.authorEmail || ''}')">
+                                <img src="${data.authorPhoto}" class="user-clickable-avatar" alt="${data.author}">
+                                <div>
+                                    <span class="rank-badge rank-top10">${category==='suggestions'?'💡 Sugerencia':category==='fans'?'🌸 Entre fans':'💬 Debate'}</span>
+                                    <h3 style="font-family:'Cinzel', serif; font-size:1.1rem; color:var(--text-light);">${escapeHTML(data.title)}</h3>
+                                    ${data.desc ? `<p style="font-size:0.9rem; color:var(--text-dim); line-height:1.6; margin:.45rem 0 .55rem; overflow-wrap:anywhere;">${escapeHTML(data.desc)}</p>` : ''}
+                                    <p style="font-size:0.83rem; color:var(--text-dim)">Iniciado por @${data.author}${renderUserRankBadges(data.authorEmail, 'tiny')} • Activo en tiempo real</p>
+                                </div>
+                            </div>
+                            ${(isOwner || isAdmin) ? `<button onclick="deleteForumPost('${id}')" style="background:none; border:none; color:#ff9999; cursor:pointer; font-size:1rem;" title="Eliminar debate">🗑️ Eliminar debate</button>` : ''}
+                        </div>
+                        <div class="comments-section" id="forum-comments-${id}">
+                            ${commentsHTML}
+                            <div class="comment-input-box">
+                                <input type="text" placeholder="Escribe tu argumento para debatir..." class="input-forum-comment">
+                                <button onclick="addForumComment('${id}')">Debatir</button>
+                            </div>
+                        </div>
+                    `;
+                    listForo.appendChild(item);
+                    window.scrollTo({ top: preservedScrollY, behavior: 'auto' });
+                    watchLiveComments('forum_posts', id, `forum-comments-${id}`, true);
+                });
+                if (renderedForumCount === 0) listForo.innerHTML = '<div class="community-tile"><h3>🌱 Todavía no hay publicaciones en esta sección</h3><p>¡Puedes ser la primera persona en iniciar la conversación!</p><button class="btn-add" style="margin-top:.8rem" onclick="openForumComposer()">Crear publicación</button></div>';
+            });
+        };
+
+        window.addForumComment = async function(postId) {
+            if (!requireLogin()) return;
+            const container = document.getElementById(`forum-comments-${postId}`);
+            const input = container.querySelector('.input-forum-comment');
+            const commentText = input.value.trim();
+            if (!commentText) return;
+
+            const currentName = getCurrentUserName(auth.currentUser);
+            const currentPhoto = localStorage.getItem('bl_user_photo') || auth.currentUser.photoURL || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop';
+            const currentEmail = auth.currentUser.email || '';
+
+            const newComment = {
+                author: currentName,
+                authorPhoto: currentPhoto,
+                authorEmail: currentEmail,
+                authorUid: auth.currentUser.uid,
+                text: commentText,
+                createdAt: new Date().toISOString()
+            };
+
+            try {
+                const savedCommentRef = await addDoc(collection(db, "forum_posts", postId, "comments"), newComment);
+                const postSnapForNotif = await getDoc(doc(db, 'forum_posts', postId));
+                const postDataForNotif = postSnapForNotif.exists() ? postSnapForNotif.data() : null;
+                if (postDataForNotif?.authorEmail && postDataForNotif.authorEmail.toLowerCase() !== currentEmail.toLowerCase()) {
+                    try { await addDoc(collection(db, 'notifications'), { recipientEmail: postDataForNotif.authorEmail, sender: currentName, senderUid: auth.currentUser.uid, type: 'comment', postId, commentId: savedCommentRef.id, postTitle: postDataForNotif.title || '', read: false, message: `💬 @${currentName} comentó en tu publicación “${postDataForNotif.title || ''}”.`, createdAt: serverTimestamp() }); }
+                    catch (notificationError) { console.warn('El comentario se guardó, pero no se pudo crear su notificación:', notificationError); }
+                }
+                input.value = '';
+                // El listener en tiempo real actualiza la conversación sin recrear todo el foro.
+            } catch (err) {
+                console.error("Error al debatir:", err);
+            }
+        };
+
+        window.deleteForumComment = async function(postId, commentId, isLegacy = false) {
+            if (!requireLogin()) return;
+            if (!confirm('¿Deseas eliminar este comentario del debate?')) return;
+            try {
+                const user = auth.currentUser;
+                if (isLegacy) {
+                    if (!isAdminUser(user)) throw new Error('Las respuestas antiguas solo pueden ser eliminadas por administración.');
+                    const postRef = doc(db, "forum_posts", postId);
+                    const snap = await getDoc(postRef);
+                    if (!snap.exists()) return;
+                    const comments = (snap.data().comments || []).filter((_, index) => `legacy-${index}` !== commentId);
+                    await updateDoc(postRef, { comments });
+                } else {
+                    const commentRef = doc(db, "forum_posts", postId, "comments", commentId);
+                    const commentSnap = await getDoc(commentRef);
+                    if (!commentSnap.exists()) return;
+                    if (!isAdminUser(user) && commentSnap.data().authorUid !== user.uid) {
+                        throw new Error('Solo puedes eliminar tus propias respuestas.');
+                    }
+                    await deleteDoc(commentRef);
+                }
+                window.loadForo();
+            } catch (err) {
+                console.error("Error al eliminar respuesta:", err);
+                alert(err.message || 'No se pudo eliminar la respuesta.');
+            }
+        };
+
+        window.deleteForumPost = async function(id) {
+            if (!requireLogin()) return;
+            try {
+                const postRef = doc(db, "forum_posts", id);
+                const postSnap = await getDoc(postRef);
+                if (!postSnap.exists()) return;
+                if (!recordBelongsToUser(postSnap.data(), auth.currentUser) && !isAdminUser()) {
+                    alert('Solo la autora o la administradora pueden eliminar este debate.');
+                    return;
+                }
+                if (!confirm('¿Estás segura de que deseas eliminar este debate completo?')) return;
+                await deleteDoc(postRef);
+            } catch (err) {
+                console.error("Error al eliminar debate:", err);
+                alert('No se pudo eliminar. Comprueba los permisos de Firebase.');
+            }
+        };
+
+        let postModalMode = 'recommendation';
+        const originalPostModalTitle = postModalOverlay.querySelector('h3');
+        const originalDescLabel = document.querySelector('label[for="modal-input-desc"]');
+        document.getElementById('btn-add-forum').addEventListener('click', () => {
+            if (!requireLogin()) return;
+            postModalMode = 'forum';
+            originalPostModalTitle.textContent = '💬 Nuevo Debate';
+            modalInputTitle.previousElementSibling.textContent = 'Título del debate';
+            originalDescLabel.textContent = 'Tema y contexto del debate';
+            modalInputTitle.placeholder = '¿Qué tema quieres debatir?';
+            modalInputDesc.placeholder = 'Explica el tema para que la comunidad pueda debatir...';
+            document.getElementById('modal-input-category').innerHTML = '<option value="debates">Debates</option><option value="suggestions">Sugerencias</option><option value="fans">Entre fans</option>';
+            document.getElementById('modal-input-category').style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').style.display = 'block';
+            document.querySelector('label[for="modal-input-category"]').textContent = 'Sección del foro';
+            document.getElementById('image-label').style.display = 'none';
+            document.getElementById('btn-pick-gallery').style.display = 'none';
+            document.getElementById('btn-use-default-img').style.display = 'none';
+            selectedFileName.style.display = 'none';
+            modalInputTitle.value = ''; modalInputDesc.value = '';
+            postModalOverlay.classList.add('active');
+        });
+
+        // QUIZ BL DEL DÍA: creación para administración y participación de la comunidad.
+        const quizModalOverlay = document.getElementById('quiz-modal-overlay');
+        const quizModalBody = document.getElementById('quiz-modal-body');
+        const quizModalActions = document.getElementById('quiz-modal-actions');
+        let currentDailyQuiz = null;
+        document.getElementById('btn-close-quiz').addEventListener('click', () => quizModalOverlay.classList.remove('active'));
+        quizModalOverlay.addEventListener('click', (event) => { if (event.target === quizModalOverlay) quizModalOverlay.classList.remove('active'); });
+
+        function loadDailyQuiz() {
+            if (dailyQuizUnsubscribe) dailyQuizUnsubscribe();
+            const q = query(collection(db, 'daily_quizzes'), orderBy('createdAt', 'desc'), limit(1));
+            dailyQuizUnsubscribe = onSnapshot(q, (snapshot) => {
+                const bannerText = document.querySelector('.quiz-info p');
+                const participateButton = document.getElementById('btn-participate-quiz');
+                if (snapshot.empty) {
+                    currentDailyQuiz = null;
+                    if (bannerText) bannerText.textContent = 'Todavía no hay un quiz publicado. ¡Pronto habrá uno nuevo!';
+                    if (participateButton) participateButton.textContent = 'Ver Quiz';
+                    return;
+                }
+                const docSnap = snapshot.docs[0];
+                currentDailyQuiz = { id: docSnap.id, ...docSnap.data() };
+                if (bannerText) bannerText.textContent = currentDailyQuiz.title || '¡Responde el Quiz BL de hoy!';
+                if (participateButton) participateButton.textContent = 'Participar';
+            }, (error) => console.error('No se pudo cargar el quiz diario:', error));
+        }
+        loadDailyQuiz();
+
+        document.getElementById('btn-participate-quiz').addEventListener('click', async () => {
+            if (!requireLogin()) return;
+            if (!currentDailyQuiz) {
+                quizModalBody.innerHTML = '<p>Todavía no hay un quiz publicado. ¡Vuelve pronto!</p>';
+                quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-close-quiz-inner">Cerrar</button>';
+                quizModalOverlay.classList.add('active');
+                document.getElementById('btn-close-quiz-inner').onclick = () => quizModalOverlay.classList.remove('active');
+                return;
+            }
+            const quiz = currentDailyQuiz;
+            const responseRef = doc(db, 'daily_quizzes', quiz.id, 'responses', auth.currentUser.uid);
+            const responseSnap = await getDoc(responseRef).catch(() => null);
+            if (responseSnap && responseSnap.exists()) {
+                const response = responseSnap.data();
+                let answerData = {};
+                try { const answerSnap = await getDoc(doc(db, 'daily_quizzes', quiz.id, 'answer', 'key')); if (answerSnap.exists()) answerData = answerSnap.data(); } catch (error) { console.warn('Solución del quiz no disponible:', error); }
+                const hasAnswer = Number.isInteger(answerData.correctIndex);
+                const correct = hasAnswer && Number(response.answerIndex) === Number(answerData.correctIndex);
+                quizModalBody.innerHTML = `<p style="margin-bottom:1rem">Ya participaste en este quiz.</p><h4>${escapeHTML(quiz.question || '')}</h4><p>Tu respuesta: <strong>${escapeHTML((quiz.options || [])[response.answerIndex] || 'Respuesta registrada')}</strong></p>${hasAnswer ? (correct ? '<p style="color:var(--accent-gold)">¡Correcto! 🌟</p>' : `<p>¡Gracias por participar! 🌱 La respuesta correcta era: <strong>${escapeHTML((quiz.options || [])[Number(answerData.correctIndex)] || '')}</strong></p>`) : '<p>¡Gracias por participar! 🌱</p>'}${answerData.explanation ? `<p style="margin-top:.7rem;color:var(--text-dim)">${escapeHTML(answerData.explanation)}</p>` : ''}`;
+                quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-close-quiz-inner">Cerrar</button>';
+                document.getElementById('btn-close-quiz-inner').onclick = () => quizModalOverlay.classList.remove('active');
+                quizModalOverlay.classList.add('active'); return;
+            }
+            quizModalBody.innerHTML = `<p style="color:var(--text-dim); margin-bottom:1rem">${escapeHTML(quiz.title || 'Quiz BL del Día')}</p><h4 style="margin-bottom:1rem">${escapeHTML(quiz.question || '')}</h4><div id="quiz-options" style="display:grid;gap:.65rem">${(quiz.options || []).map((option, i) => `<label style="display:flex;gap:.6rem;align-items:center;border:1px solid var(--border-color);padding:.7rem;border-radius:10px;cursor:pointer"><input type="radio" name="daily-quiz-answer" value="${i}" style="width:auto;margin:0"> <span>${escapeHTML(option)}</span></label>`).join('')}</div>`;
+            quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-close-quiz-inner">Cerrar</button><button type="button" class="btn-confirm-modal" id="btn-submit-quiz-answer">Enviar respuesta</button>';
+            document.getElementById('btn-close-quiz-inner').onclick = () => quizModalOverlay.classList.remove('active');
+            document.getElementById('btn-submit-quiz-answer').onclick = async () => {
+                const selected = document.querySelector('input[name="daily-quiz-answer"]:checked');
+                if (!selected) { alert('Elige una respuesta antes de enviar.'); return; }
+                const answerIndex = Number(selected.value);
+                try {
+                    await setDoc(responseRef, { uid: auth.currentUser.uid, answerIndex, answeredAt: serverTimestamp() });
+                    let answerData = {};
+                    try { const answerSnap = await getDoc(doc(db, 'daily_quizzes', quiz.id, 'answer', 'key')); if (answerSnap.exists()) answerData = answerSnap.data(); } catch (answerError) { console.warn('Solución del quiz no disponible:', answerError); }
+                    const hasAnswer = Number.isInteger(answerData.correctIndex);
+                    const correct = hasAnswer && answerIndex === Number(answerData.correctIndex);
+                    quizModalBody.innerHTML = `<h4 style="margin-bottom:1rem">${hasAnswer ? (correct ? '¡Respuesta correcta! 🌟' : '¡Gracias por participar! 🌱') : '¡Respuesta registrada! 🌱'}</h4>${hasAnswer && !correct ? `<p>La respuesta correcta era: <strong>${escapeHTML((quiz.options || [])[Number(answerData.correctIndex)] || '')}</strong></p>` : ''}<p>${escapeHTML(answerData.explanation || '')}</p>`;
+                    quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-close-quiz-result">Cerrar</button>';
+                    document.getElementById('btn-close-quiz-result').onclick = () => quizModalOverlay.classList.remove('active');
+                } catch (error) { console.error('No se pudo guardar la respuesta:', error); alert('No se pudo guardar tu respuesta. Inténtalo de nuevo.'); }
+            };
+            quizModalOverlay.classList.add('active');
+        });
+
+        document.getElementById('btn-create-quiz').addEventListener('click', () => {
+            if (!isAdminUser()) { alert('Solo la administradora puede publicar el Quiz BL del Día.'); return; }
+            quizModalBody.innerHTML = `
+                <label for="quiz-create-title">Título del quiz</label><input id="quiz-create-title" placeholder="Ej. ¿Qué tropo BL eres hoy?">
+                <label for="quiz-create-question">Pregunta</label><textarea id="quiz-create-question" placeholder="Escribe la pregunta"></textarea>
+                <label for="quiz-option-0">Opción 1 (correcta)</label><input id="quiz-option-0" placeholder="Respuesta correcta">
+                <label for="quiz-option-1">Opción 2</label><input id="quiz-option-1" placeholder="Segunda opción">
+                <label for="quiz-option-2">Opción 3</label><input id="quiz-option-2" placeholder="Tercera opción">
+                <label for="quiz-option-3">Opción 4</label><input id="quiz-option-3" placeholder="Cuarta opción">
+                <label for="quiz-create-explanation">Explicación (opcional)</label><textarea id="quiz-create-explanation" placeholder="Una breve explicación"></textarea>
+                <p style="color:var(--text-dim);font-size:.8rem">La primera opción se marca como correcta. Puedes preparar el contenido antes de publicarlo.</p>`;
+            quizModalActions.innerHTML = '<button type="button" class="btn-cancel-modal" id="btn-cancel-create-quiz">Cancelar</button><button type="button" class="btn-confirm-modal" id="btn-save-create-quiz">Publicar Quiz</button>';
+            document.getElementById('btn-cancel-create-quiz').onclick = () => quizModalOverlay.classList.remove('active');
+            document.getElementById('btn-save-create-quiz').onclick = async () => {
+                if (!isAdminUser()) return;
+                const title = document.getElementById('quiz-create-title').value.trim();
+                const question = document.getElementById('quiz-create-question').value.trim();
+                const options = [0,1,2,3].map(i => document.getElementById(`quiz-option-${i}`).value.trim());
+                const explanation = document.getElementById('quiz-create-explanation').value.trim();
+                if (!title || !question || options.some(option => !option)) { alert('Completa el título, la pregunta y las cuatro opciones.'); return; }
+                try {
+                    const quizRef = await addDoc(collection(db, 'daily_quizzes'), { title, question, options, createdBy: auth.currentUser.uid, createdAt: serverTimestamp() });
+                    await setDoc(doc(db, 'daily_quizzes', quizRef.id, 'answer', 'key'), { correctIndex: 0, explanation, createdBy: auth.currentUser.uid });
+                    quizModalOverlay.classList.remove('active');
+                    alert('¡Quiz BL del Día publicado! 🌸');
+                } catch (error) { console.error('No se pudo publicar el quiz:', error); alert('No se pudo publicar el quiz. Revisa los permisos de Firebase.'); }
+            };
+            quizModalOverlay.classList.add('active');
+        });
+
+        const profileEditOverlay = document.getElementById('profile-edit-overlay');
+        btnEditName.addEventListener('click', async () => {
+            if (!requireLogin()) return;
+            const currentName = getCurrentUserName();
+            document.getElementById('profile-edit-name').value = currentName;
+            try {
+                const snap = await getDoc(doc(db, 'users', getCurrentUserProfileKey(auth.currentUser)));
+                document.getElementById('profile-edit-bio').value = snap.exists() ? (snap.data().bio || '') : '';
+                selectedAvatarColor = snap.exists() ? (snap.data().avatarColor || '#d8839a') : '#d8839a';
+                selectedAvatarEmoji = snap.exists() ? (snap.data().avatarEmoji || '😊') : '😊';
+                if (avatarEmojiOptions) avatarEmojiOptions.querySelectorAll('[data-avatar-emoji]').forEach(option => option.classList.toggle('active', option.dataset.avatarEmoji === selectedAvatarEmoji));
+                applyAvatarColor(selectedAvatarColor);
+                if (avatarColorOptions) avatarColorOptions.querySelectorAll('[data-avatar-color]').forEach(option => option.classList.toggle('active', option.dataset.avatarColor === selectedAvatarColor));
+            } catch (error) { document.getElementById('profile-edit-bio').value = ''; }
+            profileEditOverlay.classList.add('active');
+        });
+        document.getElementById('btn-cancel-profile-edit').addEventListener('click', () => profileEditOverlay.classList.remove('active'));
+        profileEditOverlay.addEventListener('click', e => { if (e.target === profileEditOverlay) profileEditOverlay.classList.remove('active'); });
+        document.getElementById('btn-save-profile-edit').addEventListener('click', async () => {
+            if (!requireLogin()) return;
+            const user = auth.currentUser;
+            const oldName = getCurrentUserName(user);
+            const newName = document.getElementById('profile-edit-name').value.trim();
+            const bio = document.getElementById('profile-edit-bio').value.trim();
+            if (!newName) { alert('El nombre no puede quedar vacío.'); return; }
+            if (newName.length > 40 || bio.length > 240) { alert('El nombre admite 40 caracteres y la biografía 240.'); return; }
+            try {
+                await ensureCurrentUserProfile(user);
+                const profileKey = getCurrentUserProfileKey(user);
+                const profileRef = doc(db, 'users', profileKey);
+                const duplicateNames = await getDocs(query(collection(db, 'users'), where('displayName', '==', newName), limit(5)));
+                if (duplicateNames.docs.some(item => item.id !== profileKey && (item.data().displayName || '').toLowerCase() === newName.toLowerCase())) {
+                    alert('Ese nombre visible ya está en uso. Prueba con otro.'); return;
+                }
+                const profileSnap = await getDoc(profileRef);
+                selectedAvatarColor = applyAvatarColor(selectedAvatarColor);
+                if (profileSnap.exists()) await updateDoc(profileRef, { displayName: newName, bio, photoURL: user.photoURL || '', avatarColor: selectedAvatarColor, avatarEmoji: selectedAvatarEmoji });
+                localStorage.setItem(`bl_user_name_${user.uid}`, newName);
+                localStorage.setItem('bl_user_name', newName);
+                profileNameDisplay.textContent = newName;
+                profileViewName.textContent = newName;
+                applyAvatarEmoji(selectedAvatarEmoji, selectedAvatarColor);
+                document.getElementById('profile-view-bio').textContent = bio || 'Este jardín está esperando una pequeña presentación.';
+                profileEditOverlay.classList.remove('active');
+                await openMyProfile();
+            } catch (error) {
+                console.error('No se pudo guardar el perfil:', error);
+                alert('No se pudieron guardar los cambios. Comprueba los permisos de Firebase.');
+            }
+        });
+
+        // Ajustes de apariencia guardados localmente en este dispositivo.
+        const settingsOverlay = document.getElementById('settings-modal-overlay');
+        function applyTheme(choice) {
+            const resolved = choice === 'system' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : choice;
+            document.body.classList.toggle('light-theme', resolved === 'light');
+            localStorage.setItem('secretGardenTheme', choice);
+            document.querySelectorAll('[data-theme-choice]').forEach(button => button.classList.toggle('active', button.dataset.themeChoice === choice));
+        }
+        window.openSettings = function() { settingsOverlay.classList.add('active'); applyTheme(localStorage.getItem('secretGardenTheme') || 'dark'); };
+        document.querySelectorAll('[data-theme-choice]').forEach(button => button.addEventListener('click', () => applyTheme(button.dataset.themeChoice)));
+        document.getElementById('btn-close-settings').addEventListener('click', () => settingsOverlay.classList.remove('active'));
+        settingsOverlay.addEventListener('click', e => { if (e.target === settingsOverlay) settingsOverlay.classList.remove('active'); });
+        applyTheme(localStorage.getItem('secretGardenTheme') || 'dark');
+        const dailyTopics = [
+            ['Pregunta del jardín','Si pudieras recomendar un solo BL para que alguien se enamore del género, ¿cuál elegirías?'],
+            ['Debate amistoso','¿Qué personaje secundario merecía tener su propia historia?'],
+            ['Pregunta del día','¿Qué tropo BL nunca te cansas de leer y por qué?'],
+            ['Entre fans','¿Qué pareja tiene la mejor química para ti?'],
+            ['Teoría del jardín','¿Qué historia te hizo cambiar de opinión sobre un personaje?'],
+            ['Recomendación exprés','Recomienda un BL para alguien que necesita una historia que enganche desde el capítulo uno.'],
+            ['Día de opiniones','¿Prefieres leer la historia completa o esperar capítulo por capítulo?']
+        ];
+        const topicIndex = Math.floor(Date.now()/86400000)%dailyTopics.length;
+        document.getElementById('daily-topic-title').textContent = dailyTopics[topicIndex][0];
+        document.getElementById('daily-topic-text').textContent = dailyTopics[topicIndex][1];
+
+    
+        // PWA: el navegador solo muestra instalación cuando cumple sus requisitos.
+        let deferredInstallPrompt = null;
+        const installAppButton = document.getElementById('btn-install-app');
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+            if (installAppButton) installAppButton.style.display = 'inline-block';
+        });
+        if (installAppButton) installAppButton.addEventListener('click', async () => {
+            if (!deferredInstallPrompt) {
+                alert('Si tu navegador no ofrece instalarla todavía, abre el menú del navegador y busca “Instalar aplicación” o “Añadir a pantalla de inicio”.');
+                return;
+            }
+            deferredInstallPrompt.prompt();
+            await deferredInstallPrompt.userChoice;
+            deferredInstallPrompt = null;
+            installAppButton.style.display = 'none';
+        });
+        window.addEventListener('appinstalled', () => {
+            if (installAppButton) installAppButton.style.display = 'none';
+            deferredInstallPrompt = null;
+        });
+        if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(error => console.warn('PWA: no se pudo registrar el service worker:', error)));
+        }
+
+        let selectedAvatarColor = '#d8839a';
+        let selectedAvatarEmoji = '😊';
+        const avatarEmojiOptions = document.getElementById('avatar-emoji-options');
+        if (avatarEmojiOptions) avatarEmojiOptions.addEventListener('click', event => {
+            const button = event.target.closest('[data-avatar-emoji]');
+            if (!button) return;
+            selectedAvatarEmoji = button.dataset.avatarEmoji;
+            avatarEmojiOptions.querySelectorAll('[data-avatar-emoji]').forEach(option => option.classList.toggle('active', option === button));
+        });
+        function emojiAvatarDataUrl(emoji, color) {
+            const safeEmoji = String(emoji || '😊').replace(/[<>]/g, '');
+            const safeColor = /^#[0-9a-fA-F]{6}$/.test(color || '') ? color : '#d8839a';
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><rect width="160" height="160" rx="80" fill="${safeColor}"/><text x="80" y="108" text-anchor="middle" font-size="88">${safeEmoji}</text></svg>`;
+            return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+        }
+        function applyAvatarEmoji(emoji, color) {
+            selectedAvatarEmoji = emoji || '😊';
+            const avatarSrc = emojiAvatarDataUrl(selectedAvatarEmoji, color || selectedAvatarColor);
+            const menuAvatar = document.getElementById('user-avatar-img');
+            const profileAvatar = document.getElementById('profile-view-img');
+            if (menuAvatar) menuAvatar.src = avatarSrc;
+            if (profileAvatar) profileAvatar.src = avatarSrc;
+            if (avatarEmojiOptions) avatarEmojiOptions.querySelectorAll('[data-avatar-emoji]').forEach(option => option.classList.toggle('active', option.dataset.avatarEmoji === selectedAvatarEmoji));
+        }
+        const avatarColorOptions = document.getElementById('avatar-color-options');
+        if (avatarColorOptions) avatarColorOptions.addEventListener('click', event => {
+            const button = event.target.closest('[data-avatar-color]');
+            if (!button) return;
+            selectedAvatarColor = button.dataset.avatarColor;
+            avatarColorOptions.querySelectorAll('[data-avatar-color]').forEach(option => option.classList.toggle('active', option === button));
+        });
+        function applyAvatarColor(color) {
+            const safeColor = /^#[0-9a-fA-F]{6}$/.test(color || '') ? color : '#d8839a';
+            [document.getElementById('user-avatar-img'), document.getElementById('profile-view-img')].forEach(el => {
+                if (!el) return;
+                el.style.setProperty('--avatar-color', safeColor);
+                el.classList.add('avatar-colorized');
+            });
+            return safeColor;
+        }
+
+</script>
+</body>
+</html>
